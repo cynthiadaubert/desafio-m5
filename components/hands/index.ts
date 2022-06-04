@@ -39,8 +39,10 @@ export function handsComp() {
         }
 
           .hand {
+            display: flex;
+            justify-content: center;
           position: fixed;
-        padding-left: 20px
+        
           }       
     `;
 

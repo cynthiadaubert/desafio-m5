@@ -24,7 +24,8 @@ export function buttonComp() {
                   height: 87px;
                   font-family: Odibee sans;
                   color: #D8FCFC;
-                  width: 100%;
+                 
+                 margin: 40px 0px 80px 0px;
                 }
                 
                 `;

@@ -5,7 +5,7 @@ export function instructionsPage(params) {
     div.innerHTML = `
    
     
-      <h1 class="title">Presioná jugar
+      <h1 class="desc">Presioná jugar
       y elegí: piedra, papel o tijera antes de que pasen los 3 segundos.</h1>
       
       <button-comp>¡Jugar!</button-comp>
@@ -17,23 +17,23 @@ export function instructionsPage(params) {
   
     const style = document.createElement("style");
     style.innerHTML = `
-  
-  
-   .title {
+
+   .desc {
       font-size: 40px;
       font-family: courier new;
       width: 316px;
       height 240px;
       text-align: center;
-   
+        margin: 0;
+        padding: 0;
     }
   
     `
   
-     const buttonElem = div.querySelector("button-comp");
+    const buttonElem = div.querySelector("button-comp");
   
     buttonElem.addEventListener("click", () => {
-      params.goTo("/instructions");
+      params.goTo("/play");
     }); 
   
     div.appendChild(style)

@@ -18,12 +18,12 @@ const routes = [
     path: /\/instructions/,
     component: instructionsPage,
   },
-/*   {
+  {
     path: /\/play/,
     component: playPage,
   },
 
-  {
+ /*  {
     path: /\/results/,
     component: resultsPage,
   },  */

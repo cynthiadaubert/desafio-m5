@@ -518,6 +518,7 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "initRouter", ()=>initRouter);
 var _welcome = require("./pages/welcome");
 var _instructions = require("./pages/instructions");
+var _play = require("./pages/play");
 const BASE_PATH = "/desafio-m5";
 function isGithubPages() {
     return location.host.includes("github.io");
@@ -530,6 +531,10 @@ const routes = [
     {
         path: /\/instructions/,
         component: (0, _instructions.instructionsPage)
+    },
+    {
+        path: /\/play/,
+        component: (0, _play.playPage)
     }
 ];
 function initRouter(container) {
@@ -555,7 +560,7 @@ function initRouter(container) {
     else handleRoute(location.pathname);
 }
 
-},{"./pages/welcome":"9DGFD","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./pages/instructions":"8vgGD"}],"9DGFD":[function(require,module,exports) {
+},{"./pages/welcome":"9DGFD","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./pages/instructions":"8vgGD","./pages/play":"jlIcx"}],"9DGFD":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "welcomePage", ()=>welcomePage) /* .
@@ -593,7 +598,6 @@ parcelHelpers.export(exports, "welcomePage", ()=>welcomePage) /* .
     ` */  /* usar position fixed o absolute para la ubicacion de las manos */ ;
 function welcomePage(params) {
     const div = document.createElement("div");
-    div.className = "container";
     div.innerHTML = `
  
   
@@ -608,7 +612,6 @@ function welcomePage(params) {
   `;
     const style = document.createElement("style");
     style.innerHTML = `
-
 
  .title {
     font-size: 80px;
@@ -670,7 +673,7 @@ function instructionsPage(params) {
     div.innerHTML = `
    
     
-      <h1 class="title">Presioná jugar
+      <h1 class="desc">Presioná jugar
       y elegí: piedra, papel o tijera antes de que pasen los 3 segundos.</h1>
       
       <button-comp>¡Jugar!</button-comp>
@@ -681,25 +684,38 @@ function instructionsPage(params) {
     `;
     const style = document.createElement("style");
     style.innerHTML = `
-  
-  
-   .title {
+
+   .desc {
       font-size: 40px;
       font-family: courier new;
       width: 316px;
       height 240px;
       text-align: center;
-   
+        margin: 0;
+        padding: 0;
     }
   
     `;
     const buttonElem = div.querySelector("button-comp");
     buttonElem.addEventListener("click", ()=>{
-        params.goTo("/instructions");
+        params.goTo("/play");
     });
     div.appendChild(style);
     return div;
 }
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"jlIcx":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "playPage", ()=>playPage) /* let counter = 0;
+const intervalId = setInterval(() => {
+  counter++;
+  console.log("hola" + counter);
+  if (counter > 2) {
+    clearInterval(intervalId);
+  }
+}, 1000); */ ;
+function playPage() {}
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"4iqCu":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -728,7 +744,8 @@ function buttonComp() {
                   height: 87px;
                   font-family: Odibee sans;
                   color: #D8FCFC;
-                  width: 100%;
+                 
+                 margin: 40px 0px 80px 0px;
                 }
                 
                 `;
@@ -777,8 +794,10 @@ function handsComp() {
         }
 
           .hand {
+            display: flex;
+            justify-content: center;
           position: fixed;
-        padding-left: 20px
+        
           }       
     `;
             shadow.appendChild(handsContainer);

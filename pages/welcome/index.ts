@@ -1,9 +1,7 @@
-import { buttonComp } from "../../components/button";
-import { handsComp } from "../../components/hands";
+
 
 export function welcomePage(params) {
   const div = document.createElement("div");
-  div.className = "container"
 
   div.innerHTML = `
  
@@ -20,7 +18,6 @@ export function welcomePage(params) {
 
   const style = document.createElement("style");
   style.innerHTML = `
-
 
  .title {
     font-size: 80px;
