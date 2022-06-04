@@ -3,23 +3,45 @@ import { handsComp } from "../../components/hands";
 
 export function welcomePage(params) {
   const div = document.createElement("div");
+  div.className = "container"
 
   div.innerHTML = `
  
-  <h1 class="title">Piedra, papel o tijera</h1>
-    
-  <button-comp class="button-elem">Empezar</button-comp>
   
-  <hands-comp></hands-comp>
-
+    <h1 class="title">Piedra papel o tijera</h1>
+    
+    <button-comp>Empezar</button-comp>
+  
+    
+    <hands-comp></handscomp>
+   
+  
   `;
 
-  const buttonElem = div.querySelector("button-comp");
+  const style = document.createElement("style");
+  style.innerHTML = `
+
+
+ .title {
+    font-size: 80px;
+    font-family: courier new;
+    width: 284px;
+    height 204px;
+    font-style: bold;
+    color: #009048;
+    margin: 0;
+    padding; 0;
+  }
+
+  `
+
+   const buttonElem = div.querySelector("button-comp");
 
   buttonElem.addEventListener("click", () => {
-    params.goTo("/desafio-m5/instructions");
-  });
+    params.goTo("/instructions");
+  }); 
 
+  div.appendChild(style)
   return div;
 }
 

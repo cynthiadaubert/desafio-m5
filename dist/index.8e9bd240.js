@@ -504,15 +504,20 @@ function hmrAcceptRun(bundle, id) {
 
 },{}],"1jwFz":[function(require,module,exports) {
 var _router = require("./router");
+var _button = require("./components/button");
+var _hands = require("./components/hands");
 (function() {
+    (0, _button.buttonComp)();
+    (0, _hands.handsComp)();
     (0, _router.initRouter)(document.querySelector(".root"));
 })();
 
-},{"./router":"eBUGN"}],"eBUGN":[function(require,module,exports) {
+},{"./router":"eBUGN","./components/button":"4iqCu","./components/hands":"bPPIi"}],"eBUGN":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "initRouter", ()=>initRouter);
 var _welcome = require("./pages/welcome");
+var _instructions = require("./pages/instructions");
 const BASE_PATH = "/desafio-m5";
 function isGithubPages() {
     return location.host.includes("github.io");
@@ -521,6 +526,10 @@ const routes = [
     {
         path: /\/welcome/,
         component: (0, _welcome.welcomePage)
+    },
+    {
+        path: /\/instructions/,
+        component: (0, _instructions.instructionsPage)
     }
 ];
 function initRouter(container) {
@@ -546,7 +555,7 @@ function initRouter(container) {
     else handleRoute(location.pathname);
 }
 
-},{"./pages/welcome":"9DGFD","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"9DGFD":[function(require,module,exports) {
+},{"./pages/welcome":"9DGFD","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./pages/instructions":"8vgGD"}],"9DGFD":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "welcomePage", ()=>welcomePage) /* .
@@ -584,19 +593,40 @@ parcelHelpers.export(exports, "welcomePage", ()=>welcomePage) /* .
     ` */  /* usar position fixed o absolute para la ubicacion de las manos */ ;
 function welcomePage(params) {
     const div = document.createElement("div");
+    div.className = "container";
     div.innerHTML = `
  
-  <h1 class="title">Piedra, papel o tijera</h1>
-    
-  <button-comp class="button-elem">Empezar</button-comp>
   
-  <hands-comp></hands-comp>
+    <h1 class="title">Piedra papel o tijera</h1>
+    
+    <button-comp>Empezar</button-comp>
+  
+    
+    <hands-comp></handscomp>
+   
+  
+  `;
+    const style = document.createElement("style");
+    style.innerHTML = `
+
+
+ .title {
+    font-size: 80px;
+    font-family: courier new;
+    width: 284px;
+    height 204px;
+    font-style: bold;
+    color: #009048;
+    margin: 0;
+    padding; 0;
+  }
 
   `;
     const buttonElem = div.querySelector("button-comp");
     buttonElem.addEventListener("click", ()=>{
-        params.goTo("/desafio-m5/instructions");
+        params.goTo("/instructions");
     });
+    div.appendChild(style);
     return div;
 }
 
@@ -630,6 +660,176 @@ exports.export = function(dest, destName, get) {
     });
 };
 
-},{}]},["em2cd","1jwFz"], "1jwFz", "parcelRequire94c2")
+},{}],"8vgGD":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "instructionsPage", ()=>instructionsPage);
+function instructionsPage(params) {
+    const div = document.createElement("div");
+    div.className = "container";
+    div.innerHTML = `
+   
+    
+      <h1 class="title">Presioná jugar
+      y elegí: piedra, papel o tijera antes de que pasen los 3 segundos.</h1>
+      
+      <button-comp>¡Jugar!</button-comp>
+    
+      <hands-comp></handscomp>
+     
+    
+    `;
+    const style = document.createElement("style");
+    style.innerHTML = `
+  
+  
+   .title {
+      font-size: 40px;
+      font-family: courier new;
+      width: 316px;
+      height 240px;
+      text-align: center;
+   
+    }
+  
+    `;
+    const buttonElem = div.querySelector("button-comp");
+    buttonElem.addEventListener("click", ()=>{
+        params.goTo("/instructions");
+    });
+    div.appendChild(style);
+    return div;
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"4iqCu":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "buttonComp", ()=>buttonComp);
+function buttonComp() {
+    customElements.define("button-comp", class extends HTMLElement {
+        constructor(){
+            super();
+            this.render();
+        }
+        render() {
+            const shadow = this.attachShadow({
+                mode: "open"
+            });
+            const button = document.createElement("button");
+            const style = document.createElement("style");
+            button.className = "root";
+            style.innerHTML = `
+                
+                .root {
+                  background-color: #006CFC;
+                  font-size: 45px;
+                  border: 10px solid #001997;
+                  width: 322px;
+                  height: 87px;
+                  font-family: Odibee sans;
+                  color: #D8FCFC;
+                  width: 100%;
+                }
+                
+                `;
+            button.textContent = this.textContent;
+            shadow.appendChild(button);
+            shadow.appendChild(style);
+        }
+    });
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"bPPIi":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "handsComp", ()=>handsComp);
+const imagePiedraURL = require("url:../../img/piedra.png");
+const imagePapelURL = require("url:../../img/papel.png");
+const imageTijeraURL = require("url:../../img/tijera.png");
+function handsComp() {
+    customElements.define("hands-comp", class extends HTMLElement {
+        constructor(){
+            super();
+            this.render();
+        }
+        render() {
+            const shadow = this.attachShadow({
+                mode: "open"
+            });
+            const handsContainer = document.createElement("div");
+            const style = document.createElement("style");
+            handsContainer.className = "hand";
+            handsContainer.innerHTML = `
+
+        <img class="piedra" src=${imagePiedraURL}>
+        <img class="papel" src=${imagePapelURL}>
+        <img src=${imageTijeraURL}>
+
+      `;
+            style.innerHTML = `
+
+        .piedra {
+          padding-right: 40px;
+        }
+
+        .papel {
+          padding-right:40px;
+        }
+
+          .hand {
+          position: fixed;
+        padding-left: 20px
+          }       
+    `;
+            shadow.appendChild(handsContainer);
+            shadow.appendChild(style);
+        }
+    });
+}
+
+},{"url:../../img/piedra.png":"lzIoH","url:../../img/papel.png":"3UuT5","url:../../img/tijera.png":"3dltE","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"lzIoH":[function(require,module,exports) {
+module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "piedra.09238fcc.png" + "?" + Date.now();
+
+},{"./helpers/bundle-url":"lgJ39"}],"lgJ39":[function(require,module,exports) {
+"use strict";
+var bundleURL = {};
+function getBundleURLCached(id) {
+    var value = bundleURL[id];
+    if (!value) {
+        value = getBundleURL();
+        bundleURL[id] = value;
+    }
+    return value;
+}
+function getBundleURL() {
+    try {
+        throw new Error();
+    } catch (err) {
+        var matches = ("" + err.stack).match(/(https?|file|ftp|(chrome|moz)-extension):\/\/[^)\n]+/g);
+        if (matches) // The first two stack frames will be this function and getBundleURLCached.
+        // Use the 3rd one, which will be a runtime in the original bundle.
+        return getBaseURL(matches[2]);
+    }
+    return "/";
+}
+function getBaseURL(url) {
+    return ("" + url).replace(/^((?:https?|file|ftp|(chrome|moz)-extension):\/\/.+)\/[^/]+$/, "$1") + "/";
+} // TODO: Replace uses with `new URL(url).origin` when ie11 is no longer supported.
+function getOrigin(url) {
+    var matches = ("" + url).match(/(https?|file|ftp|(chrome|moz)-extension):\/\/[^/]+/);
+    if (!matches) throw new Error("Origin not found");
+    return matches[0];
+}
+exports.getBundleURL = getBundleURLCached;
+exports.getBaseURL = getBaseURL;
+exports.getOrigin = getOrigin;
+
+},{}],"3UuT5":[function(require,module,exports) {
+module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "papel.02ed7e33.png" + "?" + Date.now();
+
+},{"./helpers/bundle-url":"lgJ39"}],"3dltE":[function(require,module,exports) {
+module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "tijera.bcbc49ac.png" + "?" + Date.now();
+
+},{"./helpers/bundle-url":"lgJ39"}]},["em2cd","1jwFz"], "1jwFz", "parcelRequire4c92")
 
 //# sourceMappingURL=index.8e9bd240.js.map

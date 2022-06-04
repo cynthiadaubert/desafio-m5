@@ -9,7 +9,7 @@ export function buttonComp() {
       }
 
       render() {
-        const shadow = this.attachShadow({ mode: "open" });
+        const shadow = this.attachShadow({ mode: "open" }); 
         const button = document.createElement("button");
         const style = document.createElement("style");
         button.className = "root";
@@ -22,13 +22,15 @@ export function buttonComp() {
                   border: 10px solid #001997;
                   width: 322px;
                   height: 87px;
-                  padding: 15px 70px;
+                  font-family: Odibee sans;
                   color: #D8FCFC;
+                  width: 100%;
                 }
                 
                 `;
 
-        shadow.appendChild(button);
+        button.textContent = this.textContent
+        shadow.appendChild(button); 
         shadow.appendChild(style);
       }
     }

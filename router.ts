@@ -14,11 +14,11 @@ const routes = [
     path: /\/welcome/,
     component: welcomePage,
   },
-  /* {
+  {
     path: /\/instructions/,
     component: instructionsPage,
   },
-  {
+/*   {
     path: /\/play/,
     component: playPage,
   },
@@ -26,7 +26,7 @@ const routes = [
   {
     path: /\/results/,
     component: resultsPage,
-  }, */
+  },  */
 ];
 
 export function initRouter(container: Element) {

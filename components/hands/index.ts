@@ -2,15 +2,6 @@ const imagePiedraURL = require("url:../../img/piedra.png");
 const imagePapelURL = require("url:../../img/papel.png");
 const imageTijeraURL = require("url:../../img/tijera.png");
 
-const handsContainer = document.querySelector(".root");
-
-handsContainer.innerHTML = `
-
-  <img src=${imagePiedraURL}>
-  <img src=${imagePapelURL}>
-  <img src=${imageTijeraURL}>
-
-`;
 
 export function handsComp() {
   customElements.define(
@@ -24,18 +15,38 @@ export function handsComp() {
 
       render() {
         const shadow = this.attachShadow({ mode: "open" });
+        const handsContainer = document.createElement("div")
         const style = document.createElement("style");
         handsContainer.className = "hand";
 
+        handsContainer.innerHTML = `
+
+        <img class="piedra" src=${imagePiedraURL}>
+        <img class="papel" src=${imagePapelURL}>
+        <img src=${imageTijeraURL}>
+
+      `;
+
+
         style.innerHTML = `
 
+        .piedra {
+          padding-right: 40px;
+        }
+
+        .papel {
+          padding-right:40px;
+        }
+
           .hand {
-            width:80px;
-            height:180px;
+          position: fixed;
+        padding-left: 20px
           }       
     `;
 
-        shadow.appendChild(style);
+      shadow.appendChild(handsContainer)
+      shadow.appendChild(style);
+      
       }
     }
   );
