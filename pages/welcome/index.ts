@@ -2,6 +2,7 @@
 
 export function welcomePage(params) {
   const div = document.createElement("div");
+  div.className = "container"
 
   div.innerHTML = `
  
@@ -9,7 +10,6 @@ export function welcomePage(params) {
     <h1 class="title">Piedra papel o tijera</h1>
     
     <button-comp>Empezar</button-comp>
-  
     
     <hands-comp></handscomp>
    
@@ -18,6 +18,15 @@ export function welcomePage(params) {
 
   const style = document.createElement("style");
   style.innerHTML = `
+
+
+  @media (min-width: 769px) {
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding-top: 80px;
+    }
+  }
 
  .title {
     font-size: 80px;

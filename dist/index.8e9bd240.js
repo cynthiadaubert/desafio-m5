@@ -598,13 +598,13 @@ parcelHelpers.export(exports, "welcomePage", ()=>welcomePage) /* .
     ` */  /* usar position fixed o absolute para la ubicacion de las manos */ ;
 function welcomePage(params) {
     const div = document.createElement("div");
+    div.className = "container";
     div.innerHTML = `
  
   
     <h1 class="title">Piedra papel o tijera</h1>
     
     <button-comp>Empezar</button-comp>
-  
     
     <hands-comp></handscomp>
    
@@ -612,6 +612,15 @@ function welcomePage(params) {
   `;
     const style = document.createElement("style");
     style.innerHTML = `
+
+
+  @media (min-width: 769px) {
+    .container {
+      max-width: 500px;
+      margin: 0 auto;
+      padding-top: 80px;
+    }
+  }
 
  .title {
     font-size: 80px;
@@ -673,7 +682,7 @@ function instructionsPage(params) {
     div.innerHTML = `
    
     
-      <h1 class="desc">Presioná jugar
+      <h1 class="text">Presioná jugar
       y elegí: piedra, papel o tijera antes de que pasen los 3 segundos.</h1>
       
       <button-comp>¡Jugar!</button-comp>
@@ -685,14 +694,15 @@ function instructionsPage(params) {
     const style = document.createElement("style");
     style.innerHTML = `
 
-   .desc {
+   .text {
+    background-image: none;
       font-size: 40px;
       font-family: courier new;
       width: 316px;
       height 240px;
       text-align: center;
-        margin: 0;
-        padding: 0;
+      margin: 0;
+      padding: 0;
     }
   
     `;
@@ -707,15 +717,91 @@ function instructionsPage(params) {
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"jlIcx":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "playPage", ()=>playPage) /* let counter = 0;
-const intervalId = setInterval(() => {
-  counter++;
-  console.log("hola" + counter);
-  if (counter > 2) {
-    clearInterval(intervalId);
+parcelHelpers.export(exports, "playPage", ()=>playPage);
+function playPage(params) {
+    console.log("soy params", params);
+    const div = document.createElement("div");
+    div.innerHTML = `
+ 
+    <div class=circle></div>
+
+    <hands-comp></hands-comp>
+  
+  `;
+    /* CONTADOR */ let counter = 3;
+    const countdownElem = div.querySelector(".circle");
+    const intervalId = setInterval(()=>{
+        countdownElem.innerHTML = `${counter}`;
+        counter--;
+        console.log("hola" + counter);
+        if (counter < 0) {
+            clearInterval(intervalId);
+            params.goTo("./instructions");
+        }
+    }, 1000);
+    /* ESTILOS */ const style = document.createElement("style");
+    style.innerHTML = `
+
+  .root {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 118px 0px 80px 0px;
   }
-}, 1000); */ ;
-function playPage() {}
+
+  .circle {
+    border-radius: 50%;
+    width: 243px;
+    height: 243px;
+    padding: 20px 0px 0px 0px;
+    margin: 0;
+    background-color: none;
+    border: 24px solid #000;
+    color: #000;
+    text-align: center;
+    font-family: arial black;
+    font-size: 100px;
+    animation: loading 3s forwards;
+    animation-delay: 1s;
+  }
+
+  @keyframes loading {
+
+    0% {
+      
+      border-top: 24px solid grey;
+      border-right: 24px solid black;
+      border-bottom: 24px solid black;
+      border-left: 24px solid black;
+    }
+
+    25% {
+      border-right: 24px solid grey;
+      border-bottom: 24px solid black;
+      border-left: 24px solid black;
+    }
+
+    75% {
+      
+      border-right: 24px solid white;
+      border-bottom: 24px solid white;
+      border-left: 24px solid black;
+    }
+
+    100% {
+      border-top: 24px solid white;
+      border-right: 24px solid white;
+      border-bottom: 24px solid white;
+      border-left: 24px solid white;
+    }
+
+
+  }
+
+  `;
+    /*   JUEGO */ div.appendChild(style);
+    return div;
+}
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"4iqCu":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
