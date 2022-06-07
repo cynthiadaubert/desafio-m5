@@ -506,19 +506,22 @@ function hmrAcceptRun(bundle, id) {
 var _router = require("./router");
 var _button = require("./components/button");
 var _hands = require("./components/hands");
+var _state = require("./state");
 (function() {
     (0, _button.buttonComp)();
     (0, _hands.handsComp)();
+    (0, _state.state).initState();
     (0, _router.initRouter)(document.querySelector(".root"));
 })();
 
-},{"./router":"eBUGN","./components/button":"4iqCu","./components/hands":"bPPIi"}],"eBUGN":[function(require,module,exports) {
+},{"./router":"eBUGN","./components/button":"4iqCu","./components/hands":"bPPIi","./state":"d4y3Q"}],"eBUGN":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "initRouter", ()=>initRouter);
 var _welcome = require("./pages/welcome");
 var _instructions = require("./pages/instructions");
 var _play = require("./pages/play");
+var _results = require("./pages/results");
 const BASE_PATH = "/desafio-m5";
 function isGithubPages() {
     return location.host.includes("github.io");
@@ -535,7 +538,11 @@ const routes = [
     {
         path: /\/play/,
         component: (0, _play.playPage)
-    }
+    },
+    {
+        path: /\/results/,
+        component: (0, _results.resultsPage)
+    }, 
 ];
 function initRouter(container) {
     function goTo(path) {
@@ -558,9 +565,13 @@ function initRouter(container) {
     }
     if (location.pathname == "/") goTo("/welcome");
     else handleRoute(location.pathname);
+    ///ESCUCHA LOS CAMBIOS DE ESTADO DE LA PAGINA PARA NAVEGAR POR EL HISTORIAL///
+    window.onpopstate = function() {
+        handleRoute(location.pathname);
+    };
 }
 
-},{"./pages/welcome":"9DGFD","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./pages/instructions":"8vgGD","./pages/play":"jlIcx"}],"9DGFD":[function(require,module,exports) {
+},{"./pages/welcome":"9DGFD","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./pages/instructions":"8vgGD","./pages/play":"jlIcx","./pages/results":"bQd14"}],"9DGFD":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "welcomePage", ()=>welcomePage) /* .
@@ -606,13 +617,12 @@ function welcomePage(params) {
     
     <button-comp>Empezar</button-comp>
     
-    <hands-comp></handscomp>
+    <hands-comp class="hands"></handscomp>
    
   
   `;
     const style = document.createElement("style");
     style.innerHTML = `
-
 
   @media (min-width: 769px) {
     .container {
@@ -632,6 +642,13 @@ function welcomePage(params) {
     margin: 0;
     padding; 0;
   }
+
+  @media (min-width: 769px) {
+    .hands {
+      
+    }
+  }
+  
 
   `;
     const buttonElem = div.querySelector("button-comp");
@@ -718,28 +735,24 @@ function instructionsPage(params) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "playPage", ()=>playPage);
+const imagePiedraURL = require("url:../../img/piedra.png");
+const imagePapelURL = require("url:../../img/papel.png");
+const imageTijeraURL = require("url:../../img/tijera.png");
 function playPage(params) {
-    console.log("soy params", params);
     const div = document.createElement("div");
     div.innerHTML = `
  
     <div class=circle></div>
 
-    <hands-comp></hands-comp>
+    <hands-container class="hands">
+      <img class="piedra" src=${imagePiedraURL}>
+      <img class="papel" src=${imagePapelURL}>
+      <img class="tijera" src=${imageTijeraURL}>
+    </hands-container>
   
   `;
-    /* CONTADOR */ let counter = 3;
-    const countdownElem = div.querySelector(".circle");
-    const intervalId = setInterval(()=>{
-        countdownElem.innerHTML = `${counter}`;
-        counter--;
-        console.log("hola" + counter);
-        if (counter < 0) {
-            clearInterval(intervalId);
-            params.goTo("./instructions");
-        }
-    }, 1000);
-    /* ESTILOS */ const style = document.createElement("style");
+    //////* ESTILOS *//////
+    const style = document.createElement("style");
     style.innerHTML = `
 
   .root {
@@ -754,7 +767,7 @@ function playPage(params) {
     width: 243px;
     height: 243px;
     padding: 20px 0px 0px 0px;
-    margin: 0;
+    margin-bottom: 80px;
     background-color: none;
     border: 24px solid #000;
     color: #000;
@@ -763,6 +776,20 @@ function playPage(params) {
     font-size: 100px;
     animation: loading 3s forwards;
     animation-delay: 1s;
+  }
+
+  .hands {
+    width: 375px;
+   /*  border: solid 3px black; */
+    position: fixed;
+  }
+
+  .piedra {
+    padding-right: 30px;
+  }
+
+  .papel {
+    padding-right: 30px;
   }
 
   @keyframes loading {
@@ -776,6 +803,7 @@ function playPage(params) {
     }
 
     25% {
+  
       border-right: 24px solid grey;
       border-bottom: 24px solid black;
       border-left: 24px solid black;
@@ -799,100 +827,26 @@ function playPage(params) {
   }
 
   `;
-    /*   JUEGO */ div.appendChild(style);
+    //////* CONTADOR */////
+    let counter = 3;
+    const countdownElem = div.querySelector(".circle");
+    const intervalId = setInterval(()=>{
+        countdownElem.innerHTML = `${counter}`;
+        counter--;
+        if (counter < 0) clearInterval(intervalId) /* params.goTo("./instructions") */ ;
+    }, 1000);
+    ////// TIMEOUT PARA PASAR A RESULTS //////
+    const handsContainer = div.querySelector(".hands");
+    handsContainer.addEventListener("click", ()=>{
+        setTimeout(()=>{
+            params.goTo("/results");
+        }, 1500);
+    });
+    div.appendChild(style);
     return div;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"4iqCu":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "buttonComp", ()=>buttonComp);
-function buttonComp() {
-    customElements.define("button-comp", class extends HTMLElement {
-        constructor(){
-            super();
-            this.render();
-        }
-        render() {
-            const shadow = this.attachShadow({
-                mode: "open"
-            });
-            const button = document.createElement("button");
-            const style = document.createElement("style");
-            button.className = "root";
-            style.innerHTML = `
-                
-                .root {
-                  background-color: #006CFC;
-                  font-size: 45px;
-                  border: 10px solid #001997;
-                  width: 322px;
-                  height: 87px;
-                  font-family: Odibee sans;
-                  color: #D8FCFC;
-                 
-                 margin: 40px 0px 80px 0px;
-                }
-                
-                `;
-            button.textContent = this.textContent;
-            shadow.appendChild(button);
-            shadow.appendChild(style);
-        }
-    });
-}
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"bPPIi":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "handsComp", ()=>handsComp);
-const imagePiedraURL = require("url:../../img/piedra.png");
-const imagePapelURL = require("url:../../img/papel.png");
-const imageTijeraURL = require("url:../../img/tijera.png");
-function handsComp() {
-    customElements.define("hands-comp", class extends HTMLElement {
-        constructor(){
-            super();
-            this.render();
-        }
-        render() {
-            const shadow = this.attachShadow({
-                mode: "open"
-            });
-            const handsContainer = document.createElement("div");
-            const style = document.createElement("style");
-            handsContainer.className = "hand";
-            handsContainer.innerHTML = `
-
-        <img class="piedra" src=${imagePiedraURL}>
-        <img class="papel" src=${imagePapelURL}>
-        <img src=${imageTijeraURL}>
-
-      `;
-            style.innerHTML = `
-
-        .piedra {
-          padding-right: 40px;
-        }
-
-        .papel {
-          padding-right:40px;
-        }
-
-          .hand {
-            display: flex;
-            justify-content: center;
-          position: fixed;
-        
-          }       
-    `;
-            shadow.appendChild(handsContainer);
-            shadow.appendChild(style);
-        }
-    });
-}
-
-},{"url:../../img/piedra.png":"lzIoH","url:../../img/papel.png":"3UuT5","url:../../img/tijera.png":"3dltE","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"lzIoH":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","url:../../img/piedra.png":"lzIoH","url:../../img/papel.png":"3UuT5","url:../../img/tijera.png":"3dltE"}],"lzIoH":[function(require,module,exports) {
 module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "piedra.09238fcc.png" + "?" + Date.now();
 
 },{"./helpers/bundle-url":"lgJ39"}],"lgJ39":[function(require,module,exports) {
@@ -935,6 +889,226 @@ module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "papel.
 },{"./helpers/bundle-url":"lgJ39"}],"3dltE":[function(require,module,exports) {
 module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "tijera.bcbc49ac.png" + "?" + Date.now();
 
-},{"./helpers/bundle-url":"lgJ39"}]},["em2cd","1jwFz"], "1jwFz", "parcelRequire4c92")
+},{"./helpers/bundle-url":"lgJ39"}],"bQd14":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "resultsPage", ()=>resultsPage);
+const imageWinURL = require("url:../../img/ganaste.png");
+const imageLoseURL = require("url:../../img/perdiste.png");
+const imageTieURL = require("url:../../img/empate.png");
+function resultsPage() {
+    console.log("hola");
+}
+
+},{"url:../../img/ganaste.png":"etiOr","url:../../img/perdiste.png":"9ho5B","url:../../img/empate.png":"6aNTq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"etiOr":[function(require,module,exports) {
+module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "ganaste.1aab8f76.png" + "?" + Date.now();
+
+},{"./helpers/bundle-url":"lgJ39"}],"9ho5B":[function(require,module,exports) {
+module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "perdiste.90c6bbd7.png" + "?" + Date.now();
+
+},{"./helpers/bundle-url":"lgJ39"}],"6aNTq":[function(require,module,exports) {
+module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "empate.ef275105.png" + "?" + Date.now();
+
+},{"./helpers/bundle-url":"lgJ39"}],"4iqCu":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "buttonComp", ()=>buttonComp);
+function buttonComp() {
+    customElements.define("button-comp", class extends HTMLElement {
+        constructor(){
+            super();
+            this.render();
+        }
+        render() {
+            const shadow = this.attachShadow({
+                mode: "open"
+            });
+            const button = document.createElement("button");
+            const style = document.createElement("style");
+            button.className = "root";
+            style.innerHTML = `
+                
+                .root {
+                  background-color: #006CFC;
+                  font-size: 45px;
+                  border: 10px solid #001997;
+                  width: 322px;
+                  height: 87px;
+                  font-family: Odibee sans;
+                  color: #D8FCFC;
+                 
+                 margin: 40px 0px 80px 0px;
+                }
+                
+                `;
+            button.textContent = this.textContent;
+            shadow.appendChild(button);
+            shadow.appendChild(style);
+        }
+    });
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"bPPIi":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "handsComp", ()=>handsComp);
+var _state = require("../../state");
+const imagePiedraURL = require("url:../../img/piedra.png");
+const imagePapelURL = require("url:../../img/papel.png");
+const imageTijeraURL = require("url:../../img/tijera.png");
+function handsComp() {
+    customElements.define("hands-comp", class extends HTMLElement {
+        constructor(){
+            super();
+            this.shadow = this.attachShadow({
+                mode: "open"
+            });
+            this.type = this.getAttribute("type");
+        }
+        connectedCallback() {
+            this.render();
+        }
+        render() {
+            const div = document.createElement("div");
+            div.className = "hand";
+            div.innerHTML = `
+  
+          <img class="piedra" src=${imagePiedraURL}>
+          <img class="papel" src=${imagePapelURL}>
+          <img class="tijera" src=${imageTijeraURL}>
+  
+          `;
+            const style = document.createElement("style");
+            style.innerHTML = `
+
+        .piedra {
+          padding-right: 40px;
+        }
+
+        .papel {
+          padding-right:40px;
+        }
+
+          .hand {
+            display: flex;
+            justify-content: center;
+          position: fixed;
+        
+          }       
+        `;
+            const piedra = div.querySelector(".piedra");
+            piedra.addEventListener("click", (e)=>{
+                console.log("soy el targettttt", e.target);
+                style.innerHTML = `
+          .tijera, .papel {
+            opacity: 0.5;
+          }
+        `;
+                (0, _state.state).setMove("piedra");
+            });
+            const papel = div.querySelector(".papel");
+            papel.addEventListener("click", ()=>{
+                style.innerHTML = `
+          .tijera, .piedra {
+            opacity: 0.5;
+          }
+        `;
+                (0, _state.state).setMove("papel");
+            });
+            const tijera = div.querySelector(".tijera");
+            tijera.addEventListener("click", ()=>{
+                style.innerHTML = `
+          .piedra, .papel {
+            opacity: 0.5;
+          }
+        `;
+                (0, _state.state).setMove("tijera");
+            });
+            this.shadow.appendChild(style);
+            this.shadow.appendChild(div);
+        }
+    });
+}
+
+},{"url:../../img/piedra.png":"lzIoH","url:../../img/papel.png":"3UuT5","url:../../img/tijera.png":"3dltE","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../../state":"d4y3Q"}],"d4y3Q":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "state", ()=>state);
+const state = {
+    data: {
+        currentGame: {
+            computerPlay: "",
+            myPlay: ""
+        },
+        history: {
+            computer: "",
+            me: ""
+        }
+    },
+    listeners: [],
+    initState () {
+        const localData = localStorage.getItem("saved-game");
+        if (localData !== null) this.setState(JSON.parse(localData));
+    },
+    getState () {
+        return this.data;
+    },
+    setState (newState) {
+        this.data = newState;
+        console.log("nuevoestado", newState);
+        for (const cb of this.listeners)cb();
+        localStorage.setItem("saved-game", JSON.stringify(newState));
+    },
+    randomMove () {
+        const numbers = [
+            1,
+            2,
+            3
+        ];
+        const randomNumber = Math.floor(Math.random() * numbers.length);
+        return numbers[randomNumber];
+    },
+    setMove (move) {
+        const currentState = this.getState();
+        const myMove = currentState.currentGame.myPlay = move;
+        const computerMove = currentState.currentGame.computerPlay = this.randomMove();
+        this.setState(myMove, computerMove);
+    },
+    whoWins (myPlay, computerPlay) {
+        const currentState = this.getState();
+        const ganeConTijeras = myPlay == "tijera" && computerPlay == "papel";
+        const ganeConPiedra = myPlay == "piedra" && computerPlay == "tijera";
+        const ganeConPapel = myPlay == "papel" && computerPlay == "piedra";
+        const pcGanaTijeras = myPlay == "papel" && computerPlay == "tijera";
+        const pcGanaPiedra = myPlay == "tijera" && computerPlay == "piedra";
+        const pcGanaPapel = myPlay == "piedra" && computerPlay == "papel";
+        const empatePiedra = myPlay == "piedra" && computerPlay == "piedra";
+        const empatePapel = myPlay == "papel" && computerPlay == "papel";
+        const empateTijera = myPlay == "tijera" && computerPlay == "tijera";
+        const win = [
+            ganeConTijeras,
+            ganeConPiedra,
+            ganeConPapel
+        ].includes(true);
+        const lose = [
+            pcGanaPapel,
+            pcGanaPiedra,
+            pcGanaTijeras
+        ].includes(true);
+        const tie = [
+            empatePiedra,
+            empatePapel,
+            empateTijera
+        ].includes(true);
+        if (win == true) currentState.history.me++;
+        else if (lose == true) currentState.history.computer++;
+        else if (tie) return "tie";
+    },
+    subscribe (cb) {
+        this.listeners.push(cb);
+    }
+};
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["em2cd","1jwFz"], "1jwFz", "parcelRequire4c92")
 
 //# sourceMappingURL=index.8e9bd240.js.map

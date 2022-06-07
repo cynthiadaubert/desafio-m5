@@ -23,10 +23,10 @@ const routes = [
     component: playPage,
   },
 
- /*  {
+   {
     path: /\/results/,
     component: resultsPage,
-  },  */
+  },  
 ];
 
 export function initRouter(container: Element) {
@@ -47,7 +47,7 @@ export function initRouter(container: Element) {
         if (container.firstChild) {
           container.firstChild.remove();
         }
-        container.appendChild(elem);
+        container.appendChild(elem as any);
       }
     }
   }
@@ -56,5 +56,11 @@ export function initRouter(container: Element) {
     goTo("/welcome");
   } else {
     handleRoute(location.pathname);
+  }
+
+  ///ESCUCHA LOS CAMBIOS DE ESTADO DE LA PAGINA PARA NAVEGAR POR EL HISTORIAL///
+
+  window.onpopstate = function(){
+    handleRoute(location.pathname)
   }
 }

@@ -1,3 +1,5 @@
+import { state } from "../../state";
+
 const imagePiedraURL = require("url:../../img/piedra.png");
 const imagePapelURL = require("url:../../img/papel.png");
 const imageTijeraURL = require("url:../../img/tijera.png");
@@ -8,25 +10,31 @@ export function handsComp() {
     "hands-comp",
 
     class extends HTMLElement {
+      shadow: ShadowRoot;
+      type: string;
+
       constructor() {
         super();
-        this.render();
-      }
+        this.shadow = this.attachShadow({ mode: "open" });
+        this.type = this.getAttribute("type")
+       }
+        connectedCallback(){
+          this.render()
+        }
 
-      render() {
-        const shadow = this.attachShadow({ mode: "open" });
-        const handsContainer = document.createElement("div")
+        render() {
+          const div = document.createElement("div")
+          div.className = "hand";
+  
+         div.innerHTML = `
+  
+          <img class="piedra" src=${imagePiedraURL}>
+          <img class="papel" src=${imagePapelURL}>
+          <img class="tijera" src=${imageTijeraURL}>
+  
+          `;
+
         const style = document.createElement("style");
-        handsContainer.className = "hand";
-
-        handsContainer.innerHTML = `
-
-        <img class="piedra" src=${imagePiedraURL}>
-        <img class="papel" src=${imagePapelURL}>
-        <img src=${imageTijeraURL}>
-
-      `;
-
 
         style.innerHTML = `
 
@@ -44,12 +52,44 @@ export function handsComp() {
           position: fixed;
         
           }       
-    `;
+        `;
 
-      shadow.appendChild(handsContainer)
-      shadow.appendChild(style);
+      const piedra = div.querySelector(".piedra");
+      piedra.addEventListener("click", (e) => {
+        console.log("soy el targettttt",e.target)
+        style.innerHTML = `
+          .tijera, .papel {
+            opacity: 0.5;
+          }
+        `;
+        state.setMove("piedra");
+      });
+
+      const papel = div.querySelector(".papel");
+      papel.addEventListener("click", () => {
+        style.innerHTML = `
+          .tijera, .piedra {
+            opacity: 0.5;
+          }
+        `;
+        state.setMove("papel");
+      });
+
+      const tijera = div.querySelector(".tijera");
+      tijera.addEventListener("click", () => {
+        style.innerHTML = `
+          .piedra, .papel {
+            opacity: 0.5;
+          }
+        `;
+        state.setMove("tijera");
+      });
+
+      this.shadow.appendChild(style)
+      this.shadow.appendChild(div)
       
-      }
     }
-  );
+  });
 }
+   
+

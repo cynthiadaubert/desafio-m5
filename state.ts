@@ -5,46 +5,87 @@ type Game = {
 };
 
 const state = {
-  data: {
+
+data: {
     currentGame: {
-      computerPlay: "",
-      myPlay: "",
+        computerPlay: "",
+        myPlay: "",
     },
+    
+    history: {
+        computer: "",
+        me: "",
+    },
+},
 
-    /*  (HISTORIAL DE JUGADAS, arranca vacio y tiene que recuperarr la ultima version del local storage) */
-    history: [{}],
+listeners: [],
+
+initState(){
+    const localData = localStorage.getItem("saved-game")
+    if (localData !== null){
+    this.setState(JSON.parse(localData))}
   },
+  
+getState(){
+    return this.data;
+},
+  
+setState(newState) {
+    this.data = newState;
+    console.log("nuevoestado",newState)
+    for (const cb of this.listeners) {
+      cb();
+    }
+    localStorage.setItem("saved-game", JSON.stringify(newState));
+},
 
-  setMove(move: Jugada) {
+randomMove(){
+  const numbers = [1,2,3]
+  const randomNumber = Math.floor(Math.random() * numbers.length);
+  return numbers[randomNumber]
+},
+
+setMove(move: Jugada) {
     const currentState = this.getState();
-    currentState.currentGame.myPlay;
-  },
+    const myMove = currentState.currentGame.myPlay = move;
+    const computerMove = currentState.currentGame.computerPlay = this.randomMove();
+    this.setState(myMove,computerMove)
+},
 
-  pushToHistory(play: Game) {
-    const currentState = this.getState();
-    currentState.history(play);
-  },
+whoWins(myPlay: Jugada, computerPlay: Jugada) {
 
-  whoWins(myPlay: Jugada, computerPlay: Jugada) {
-    /* (lo mejor seria usar un array) aca va la logica de los ifs o algun chequeador rustico que se fije en que condiciones gano yo y en cuales gana la pc o hay empate */
+    const currentState = this.getState()
+ 
+     const ganeConTijeras = myPlay == "tijera" && computerPlay == "papel";
+     const ganeConPiedra = myPlay == "piedra" && computerPlay == "tijera";
+     const ganeConPapel = myPlay == "papel" && computerPlay == "piedra";
+ 
+     const pcGanaTijeras = myPlay == "papel" && computerPlay == "tijera"
+     const pcGanaPiedra = myPlay == "tijera" && computerPlay == "piedra"
+     const pcGanaPapel = myPlay == "piedra" && computerPlay == "papel"
+ 
+     const empatePiedra = myPlay == "piedra" && computerPlay == "piedra";
+     const empatePapel = myPlay == "papel" && computerPlay == "papel";
+     const empateTijera = myPlay == "tijera" && computerPlay == "tijera";
+ 
+     
+     const win = [ganeConTijeras, ganeConPiedra, ganeConPapel].includes(true);
+     const lose = [pcGanaPapel, pcGanaPiedra, pcGanaTijeras].includes(true);
+     const tie = [empatePiedra, empatePapel, empateTijera].includes(true)
+ 
+     if (win == true) {
+       currentState.history.me++;
+     } else if (lose == true){
+       currentState.history.computer++
+     }else if (tie) {
+       return "tie"
+     } 
+   },
+ 
+   subscribe(cb: (any)=> any) {
+       this.listeners.push(cb)
+   }
 
-    /*    puede devolver un cero o 1 o un texto */
+}
 
-    const ganeConTijeras = myPlay == "tijera" && computerPlay == "papel";
-    const ganeConPiedra = myPlay == "piedra" && computerPlay == "tijera";
-    const ganeConPapel = myPlay == "papel" && computerPlay == "piedra";
-
-    const gane = [ganeConTijeras, ganeConPiedra, ganeConPapel].includes(true);
-
-    /*    esta funcion (whowins) es un utilitario, solamente sirve para resolver la duda del resultado. No altera ni lee el estado sino que recibe dos parámetros y los devuelve */
-    /*    podemos guardar los datos del resultado, pero lo ideal es no acumular datos de más */
-  },
-};
-
-/* state.setMove("piedra") */
-
-state.pushToHistory({ computerPlay: "piedra", myPlay: "tijera" });
-
-/* este pushtohistory activa internamente un set state que a su vez activa un set local storage */
-
-export { state };
+export {state}

@@ -1,8 +1,6 @@
-
-
 export function welcomePage(params) {
   const div = document.createElement("div");
-  div.className = "container"
+  div.className ="container"
 
   div.innerHTML = `
  
@@ -11,14 +9,13 @@ export function welcomePage(params) {
     
     <button-comp>Empezar</button-comp>
     
-    <hands-comp></handscomp>
+    <hands-comp class="hands"></handscomp>
    
   
   `;
 
   const style = document.createElement("style");
   style.innerHTML = `
-
 
   @media (min-width: 769px) {
     .container {
@@ -39,6 +36,13 @@ export function welcomePage(params) {
     padding; 0;
   }
 
+  @media (min-width: 769px) {
+    .hands {
+      
+    }
+  }
+  
+
   `
 
    const buttonElem = div.querySelector("button-comp");
@@ -47,6 +51,7 @@ export function welcomePage(params) {
     params.goTo("/instructions");
   }); 
 
+  
   div.appendChild(style)
   return div;
 }
