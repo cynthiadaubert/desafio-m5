@@ -1,3 +1,4 @@
+
 import { welcomePage } from "./pages/welcome";
 import { instructionsPage } from "./pages/instructions";
 import { playPage } from "./pages/play";
@@ -36,18 +37,19 @@ export function initRouter(container: Element) {
     handleRoute(completePath);
   }
   function handleRoute(route) {
-    console.log("El handleRoute recibió una nueva ruta", route);
-    console.log("soy el location pathname", location.pathname);
+ /*    console.log("El handleRoute recibió una nueva ruta", route);
+    console.log("soy el location pathname", location.pathname); */
 
     const newRoute = isGithubPages() ? route.replace(BASE_PATH, "") : route;
     console.log("soy el new route", newRoute);
     for (const r of routes) {
       if (r.path.test(newRoute)) {
         const elem = r.component({ goTo: goTo });
+        console.log("soy el elem",elem)
         if (container.firstChild) {
           container.firstChild.remove();
         }
-        container.appendChild(elem as any);
+        container.appendChild(elem);
       }
     }
   }

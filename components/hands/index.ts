@@ -24,7 +24,7 @@ export function handsComp() {
 
         render() {
           const div = document.createElement("div")
-          div.className = "hand";
+          div.className = "hands-cont";
   
          div.innerHTML = `
   
@@ -46,12 +46,7 @@ export function handsComp() {
           padding-right:40px;
         }
 
-          .hand {
-            display: flex;
-            justify-content: center;
-          position: fixed;
-        
-          }       
+            
         `;
 
       const piedra = div.querySelector(".piedra");

@@ -551,14 +551,14 @@ function initRouter(container) {
         handleRoute(completePath);
     }
     function handleRoute(route) {
-        console.log("El handleRoute recibi\xf3 una nueva ruta", route);
-        console.log("soy el location pathname", location.pathname);
-        const newRoute = isGithubPages() ? route.replace(BASE_PATH, "") : route;
+        /*    console.log("El handleRoute recibió una nueva ruta", route);
+    console.log("soy el location pathname", location.pathname); */ const newRoute = isGithubPages() ? route.replace(BASE_PATH, "") : route;
         console.log("soy el new route", newRoute);
         for (const r of routes)if (r.path.test(newRoute)) {
             const elem = r.component({
                 goTo: goTo
             });
+            console.log("soy el elem", elem);
             if (container.firstChild) container.firstChild.remove();
             container.appendChild(elem);
         }
@@ -629,6 +629,7 @@ function welcomePage(params) {
       max-width: 500px;
       margin: 0 auto;
       padding-top: 80px;
+      border: solid 10px black;
     }
   }
 
@@ -641,6 +642,7 @@ function welcomePage(params) {
     color: #009048;
     margin: 0;
     padding; 0;
+    
   }
 
   @media (min-width: 769px) {
@@ -745,9 +747,9 @@ function playPage(params) {
     <div class=circle></div>
 
     <hands-container class="hands">
-      <img class="piedra" src=${imagePiedraURL}>
-      <img class="papel" src=${imagePapelURL}>
-      <img class="tijera" src=${imageTijeraURL}>
+        <img class="piedra" src=${imagePiedraURL}>
+       <img class="papel" src=${imagePapelURL}>
+        <img class="tijera" src=${imageTijeraURL}>
     </hands-container>
   
   `;
@@ -780,7 +782,6 @@ function playPage(params) {
 
   .hands {
     width: 375px;
-   /*  border: solid 3px black; */
     position: fixed;
   }
 
@@ -837,7 +838,24 @@ function playPage(params) {
     }, 1000);
     ////// TIMEOUT PARA PASAR A RESULTS //////
     const handsContainer = div.querySelector(".hands");
-    handsContainer.addEventListener("click", ()=>{
+    const imgPapel = div.querySelector(".papel");
+    const imgPiedra = div.querySelector(".piedra");
+    handsContainer.addEventListener("click", (event)=>{
+        if (event.target == imgPapel) style.innerHTML = `
+    .tijera, .piedra {
+      opacity: 0.5;
+    }
+  `;
+        else if (event.target == imgPiedra) style.innerHTML = `
+    .tijera, .papel {
+      opacity: 0.5;
+    }
+    `;
+        else style.innerHTML = `
+    .piedra, .papel {
+      opacity: 0.5;
+    }
+    `;
         setTimeout(()=>{
             params.goTo("/results");
         }, 1500);
@@ -893,14 +911,29 @@ module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "tijera
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "resultsPage", ()=>resultsPage);
+var _state = require("../../state");
 const imageWinURL = require("url:../../img/ganaste.png");
 const imageLoseURL = require("url:../../img/perdiste.png");
 const imageTieURL = require("url:../../img/empate.png");
-function resultsPage() {
-    console.log("hola");
+function resultsPage(params) {
+    const div = document.createElement("div");
+    div.innerHTML = `
+    <img>
+    <div class="results">
+        <h1>Resultado</h1>
+        <div class="myPlay"> Vos: ${0, _state.state}</div>
+
+
+    </div>
+    
+    
+    
+    
+    `;
+    return div;
 }
 
-},{"url:../../img/ganaste.png":"etiOr","url:../../img/perdiste.png":"9ho5B","url:../../img/empate.png":"6aNTq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"etiOr":[function(require,module,exports) {
+},{"url:../../img/ganaste.png":"etiOr","url:../../img/perdiste.png":"9ho5B","url:../../img/empate.png":"6aNTq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../../state":"d4y3Q"}],"etiOr":[function(require,module,exports) {
 module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "ganaste.1aab8f76.png" + "?" + Date.now();
 
 },{"./helpers/bundle-url":"lgJ39"}],"9ho5B":[function(require,module,exports) {
@@ -909,128 +942,7 @@ module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "perdis
 },{"./helpers/bundle-url":"lgJ39"}],"6aNTq":[function(require,module,exports) {
 module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "empate.ef275105.png" + "?" + Date.now();
 
-},{"./helpers/bundle-url":"lgJ39"}],"4iqCu":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "buttonComp", ()=>buttonComp);
-function buttonComp() {
-    customElements.define("button-comp", class extends HTMLElement {
-        constructor(){
-            super();
-            this.render();
-        }
-        render() {
-            const shadow = this.attachShadow({
-                mode: "open"
-            });
-            const button = document.createElement("button");
-            const style = document.createElement("style");
-            button.className = "root";
-            style.innerHTML = `
-                
-                .root {
-                  background-color: #006CFC;
-                  font-size: 45px;
-                  border: 10px solid #001997;
-                  width: 322px;
-                  height: 87px;
-                  font-family: Odibee sans;
-                  color: #D8FCFC;
-                 
-                 margin: 40px 0px 80px 0px;
-                }
-                
-                `;
-            button.textContent = this.textContent;
-            shadow.appendChild(button);
-            shadow.appendChild(style);
-        }
-    });
-}
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"bPPIi":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "handsComp", ()=>handsComp);
-var _state = require("../../state");
-const imagePiedraURL = require("url:../../img/piedra.png");
-const imagePapelURL = require("url:../../img/papel.png");
-const imageTijeraURL = require("url:../../img/tijera.png");
-function handsComp() {
-    customElements.define("hands-comp", class extends HTMLElement {
-        constructor(){
-            super();
-            this.shadow = this.attachShadow({
-                mode: "open"
-            });
-            this.type = this.getAttribute("type");
-        }
-        connectedCallback() {
-            this.render();
-        }
-        render() {
-            const div = document.createElement("div");
-            div.className = "hand";
-            div.innerHTML = `
-  
-          <img class="piedra" src=${imagePiedraURL}>
-          <img class="papel" src=${imagePapelURL}>
-          <img class="tijera" src=${imageTijeraURL}>
-  
-          `;
-            const style = document.createElement("style");
-            style.innerHTML = `
-
-        .piedra {
-          padding-right: 40px;
-        }
-
-        .papel {
-          padding-right:40px;
-        }
-
-          .hand {
-            display: flex;
-            justify-content: center;
-          position: fixed;
-        
-          }       
-        `;
-            const piedra = div.querySelector(".piedra");
-            piedra.addEventListener("click", (e)=>{
-                console.log("soy el targettttt", e.target);
-                style.innerHTML = `
-          .tijera, .papel {
-            opacity: 0.5;
-          }
-        `;
-                (0, _state.state).setMove("piedra");
-            });
-            const papel = div.querySelector(".papel");
-            papel.addEventListener("click", ()=>{
-                style.innerHTML = `
-          .tijera, .piedra {
-            opacity: 0.5;
-          }
-        `;
-                (0, _state.state).setMove("papel");
-            });
-            const tijera = div.querySelector(".tijera");
-            tijera.addEventListener("click", ()=>{
-                style.innerHTML = `
-          .piedra, .papel {
-            opacity: 0.5;
-          }
-        `;
-                (0, _state.state).setMove("tijera");
-            });
-            this.shadow.appendChild(style);
-            this.shadow.appendChild(div);
-        }
-    });
-}
-
-},{"url:../../img/piedra.png":"lzIoH","url:../../img/papel.png":"3UuT5","url:../../img/tijera.png":"3dltE","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../../state":"d4y3Q"}],"d4y3Q":[function(require,module,exports) {
+},{"./helpers/bundle-url":"lgJ39"}],"d4y3Q":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "state", ()=>state);
@@ -1109,6 +1021,122 @@ const state = {
     }
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["em2cd","1jwFz"], "1jwFz", "parcelRequire4c92")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"4iqCu":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "buttonComp", ()=>buttonComp);
+function buttonComp() {
+    customElements.define("button-comp", class extends HTMLElement {
+        constructor(){
+            super();
+            this.render();
+        }
+        render() {
+            const shadow = this.attachShadow({
+                mode: "open"
+            });
+            const button = document.createElement("button");
+            const style = document.createElement("style");
+            button.className = "root";
+            style.innerHTML = `
+                
+                .root {
+                  background-color: #006CFC;
+                  font-size: 45px;
+                  border: 10px solid #001997;
+                  width: 322px;
+                  height: 87px;
+                  font-family: Odibee sans;
+                  color: #D8FCFC;
+                 
+                 margin: 40px 0px 80px 0px;
+                }
+                
+                `;
+            button.textContent = this.textContent;
+            shadow.appendChild(button);
+            shadow.appendChild(style);
+        }
+    });
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"bPPIi":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "handsComp", ()=>handsComp);
+var _state = require("../../state");
+const imagePiedraURL = require("url:../../img/piedra.png");
+const imagePapelURL = require("url:../../img/papel.png");
+const imageTijeraURL = require("url:../../img/tijera.png");
+function handsComp() {
+    customElements.define("hands-comp", class extends HTMLElement {
+        constructor(){
+            super();
+            this.shadow = this.attachShadow({
+                mode: "open"
+            });
+            this.type = this.getAttribute("type");
+        }
+        connectedCallback() {
+            this.render();
+        }
+        render() {
+            const div = document.createElement("div");
+            div.className = "hands-cont";
+            div.innerHTML = `
+  
+          <img class="piedra" src=${imagePiedraURL}>
+          <img class="papel" src=${imagePapelURL}>
+          <img class="tijera" src=${imageTijeraURL}>
+  
+          `;
+            const style = document.createElement("style");
+            style.innerHTML = `
+
+        .piedra {
+          padding-right: 40px;
+        }
+
+        .papel {
+          padding-right:40px;
+        }
+
+            
+        `;
+            const piedra = div.querySelector(".piedra");
+            piedra.addEventListener("click", (e)=>{
+                console.log("soy el targettttt", e.target);
+                style.innerHTML = `
+          .tijera, .papel {
+            opacity: 0.5;
+          }
+        `;
+                (0, _state.state).setMove("piedra");
+            });
+            const papel = div.querySelector(".papel");
+            papel.addEventListener("click", ()=>{
+                style.innerHTML = `
+          .tijera, .piedra {
+            opacity: 0.5;
+          }
+        `;
+                (0, _state.state).setMove("papel");
+            });
+            const tijera = div.querySelector(".tijera");
+            tijera.addEventListener("click", ()=>{
+                style.innerHTML = `
+          .piedra, .papel {
+            opacity: 0.5;
+          }
+        `;
+                (0, _state.state).setMove("tijera");
+            });
+            this.shadow.appendChild(style);
+            this.shadow.appendChild(div);
+        }
+    });
+}
+
+},{"url:../../img/piedra.png":"lzIoH","url:../../img/papel.png":"3UuT5","url:../../img/tijera.png":"3dltE","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../../state":"d4y3Q"}]},["em2cd","1jwFz"], "1jwFz", "parcelRequire4c92")
 
 //# sourceMappingURL=index.8e9bd240.js.map

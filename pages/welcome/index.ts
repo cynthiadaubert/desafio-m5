@@ -22,6 +22,7 @@ export function welcomePage(params) {
       max-width: 500px;
       margin: 0 auto;
       padding-top: 80px;
+      border: solid 10px black;
     }
   }
 
@@ -34,6 +35,7 @@ export function welcomePage(params) {
     color: #009048;
     margin: 0;
     padding; 0;
+    
   }
 
   @media (min-width: 769px) {

@@ -13,9 +13,9 @@ export function playPage(params) {
     <div class=circle></div>
 
     <hands-container class="hands">
-      <img class="piedra" src=${imagePiedraURL}>
-      <img class="papel" src=${imagePapelURL}>
-      <img class="tijera" src=${imageTijeraURL}>
+        <img class="piedra" src=${imagePiedraURL}>
+       <img class="papel" src=${imagePapelURL}>
+        <img class="tijera" src=${imageTijeraURL}>
     </hands-container>
   
   `;
@@ -50,7 +50,6 @@ export function playPage(params) {
 
   .hands {
     width: 375px;
-   /*  border: solid 3px black; */
     position: fixed;
   }
 
@@ -115,13 +114,37 @@ const intervalId = setInterval(() => {
 }, 1000); 
 
 
+
+
 ////// TIMEOUT PARA PASAR A RESULTS //////
 
 const handsContainer = div.querySelector(".hands")
-handsContainer.addEventListener("click", () => {
+const imgPapel = div.querySelector(".papel")
+const imgPiedra = div.querySelector(".piedra")
+
+handsContainer.addEventListener("click", (event) => {
+  if(event.target == imgPapel){
+    style.innerHTML =`
+    .tijera, .piedra {
+      opacity: 0.5;
+    }
+  `;
+  }else if(event.target == imgPiedra){
+    style.innerHTML =`
+    .tijera, .papel {
+      opacity: 0.5;
+    }
+    `;
+  }else {
+    style.innerHTML =`
+    .piedra, .papel {
+      opacity: 0.5;
+    }
+    `;
+  }
+
   setTimeout(() => {  params.goTo("/results") }, 1500);
 });
-
 
 
   div.appendChild(style)

@@ -21,6 +21,7 @@ data: {
 listeners: [],
 
 initState(){
+  
     const localData = localStorage.getItem("saved-game")
     if (localData !== null){
     this.setState(JSON.parse(localData))}
@@ -43,7 +44,10 @@ randomMove(){
   const numbers = [1,2,3]
   const randomNumber = Math.floor(Math.random() * numbers.length);
   return numbers[randomNumber]
+  
 },
+
+
 
 setMove(move: Jugada) {
     const currentState = this.getState();
