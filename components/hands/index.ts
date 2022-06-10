@@ -16,10 +16,22 @@ export function handsComp() {
       constructor() {
         super();
         this.shadow = this.attachShadow({ mode: "open" });
-        this.type = this.getAttribute("type")
+       
        }
         connectedCallback(){
+          this.addCallbacks()
           this.render()
+        }
+
+        addCallbacks() {
+          this.shadow.querySelector(".hand").addEventListener("click", (e) => {
+            const event = new CustomEvent("handEvent", {
+              detail: {
+                type: this.getAttribute("type"),
+              },
+            });
+            this.dispatchEvent(event);
+          });
         }
 
         render() {
@@ -28,9 +40,9 @@ export function handsComp() {
   
          div.innerHTML = `
   
-          <img class="piedra" src=${imagePiedraURL}>
-          <img class="papel" src=${imagePapelURL}>
-          <img class="tijera" src=${imageTijeraURL}>
+          <img type="piedra" class="piedra" src=${imagePiedraURL}>
+          <img type="papel" class="papel" src=${imagePapelURL}>
+          <img type="tijera" class="tijera" src=${imageTijeraURL}>
   
           `;
 
@@ -49,42 +61,13 @@ export function handsComp() {
             
         `;
 
-      const piedra = div.querySelector(".piedra");
-      piedra.addEventListener("click", (e) => {
-        console.log("soy el targettttt",e.target)
-        style.innerHTML = `
-          .tijera, .papel {
-            opacity: 0.5;
-          }
-        `;
-        state.setMove("piedra");
-      });
 
-      const papel = div.querySelector(".papel");
-      papel.addEventListener("click", () => {
-        style.innerHTML = `
-          .tijera, .piedra {
-            opacity: 0.5;
-          }
-        `;
-        state.setMove("papel");
-      });
-
-      const tijera = div.querySelector(".tijera");
-      tijera.addEventListener("click", () => {
-        style.innerHTML = `
-          .piedra, .papel {
-            opacity: 0.5;
-          }
-        `;
-        state.setMove("tijera");
-      });
 
       this.shadow.appendChild(style)
       this.shadow.appendChild(div)
       
-    }
-  });
+  }
+})
 }
    
 

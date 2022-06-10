@@ -737,19 +737,21 @@ function instructionsPage(params) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "playPage", ()=>playPage);
+var _state = require("../../state");
 const imagePiedraURL = require("url:../../img/piedra.png");
 const imagePapelURL = require("url:../../img/papel.png");
 const imageTijeraURL = require("url:../../img/tijera.png");
 function playPage(params) {
     const div = document.createElement("div");
+    div.className = "container-play";
     div.innerHTML = `
  
     <div class=circle></div>
 
     <hands-container class="hands">
-        <img class="piedra" src=${imagePiedraURL}>
-       <img class="papel" src=${imagePapelURL}>
-        <img class="tijera" src=${imageTijeraURL}>
+        <img  class="hand" type="piedra" src=${imagePiedraURL}>
+        <img  class="hand" type="papel" src=${imagePapelURL}>
+        <img class="hand" type="tijera" src=${imageTijeraURL}>
     </hands-container>
   
   `;
@@ -761,7 +763,9 @@ function playPage(params) {
     display: flex;
     flex-direction: column;
     align-items: center;
+    border: 5px solid #000;
     padding: 118px 0px 80px 0px;
+    width: 100%;
   }
 
   .circle {
@@ -781,17 +785,14 @@ function playPage(params) {
   }
 
   .hands {
-    width: 375px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
     position: fixed;
+    border: solid black 10px;
+   
   }
-
-  .piedra {
-    padding-right: 30px;
-  }
-
-  .papel {
-    padding-right: 30px;
-  }
+  
 
   @keyframes loading {
 
@@ -824,6 +825,9 @@ function playPage(params) {
       border-left: 24px solid white;
     }
 
+    .transparent {
+      opacity: 50%;
+    }
 
   }
 
@@ -841,30 +845,43 @@ function playPage(params) {
     const imgPapel = div.querySelector(".papel");
     const imgPiedra = div.querySelector(".piedra");
     handsContainer.addEventListener("click", (event)=>{
-        if (event.target == imgPapel) style.innerHTML = `
+        /*   if(event.target == imgPapel){
+    style.innerHTML =`
     .tijera, .piedra {
       opacity: 0.5;
     }
   `;
-        else if (event.target == imgPiedra) style.innerHTML = `
+  }else if(event.target == imgPiedra){
+    style.innerHTML =`
     .tijera, .papel {
       opacity: 0.5;
     }
     `;
-        else style.innerHTML = `
+  }else {
+    style.innerHTML =`
     .piedra, .papel {
       opacity: 0.5;
     }
     `;
-        setTimeout(()=>{
+  } */ setTimeout(()=>{
             params.goTo("/results");
         }, 1500);
+    });
+    //////////JUEGO//////////////////
+    /// EL STATE ESCUCHA LOS MOVIMIENTOS ////
+    const container = div.querySelector(".hands");
+    for (const h of container.children)h.addEventListener("election", (e)=>{
+        let handSelected = e.detail.type;
+        console.log("soy hand selected", handSelected);
+        (0, _state.state).setMove(handSelected);
+        if (h.getAttribute("type") !== handSelected) h.shadowRoot.querySelector(".hand").classList.add("transparent");
+        else if (h.getAttribute("type") !== handSelected) h.shadowRoot.querySelector(".hand").classList.add("normal");
     });
     div.appendChild(style);
     return div;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","url:../../img/piedra.png":"lzIoH","url:../../img/papel.png":"3UuT5","url:../../img/tijera.png":"3dltE"}],"lzIoH":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","url:../../img/piedra.png":"lzIoH","url:../../img/papel.png":"3UuT5","url:../../img/tijera.png":"3dltE","../../state":"d4y3Q"}],"lzIoH":[function(require,module,exports) {
 module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "piedra.09238fcc.png" + "?" + Date.now();
 
 },{"./helpers/bundle-url":"lgJ39"}],"lgJ39":[function(require,module,exports) {
@@ -907,41 +924,6 @@ module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "papel.
 },{"./helpers/bundle-url":"lgJ39"}],"3dltE":[function(require,module,exports) {
 module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "tijera.bcbc49ac.png" + "?" + Date.now();
 
-},{"./helpers/bundle-url":"lgJ39"}],"bQd14":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "resultsPage", ()=>resultsPage);
-var _state = require("../../state");
-const imageWinURL = require("url:../../img/ganaste.png");
-const imageLoseURL = require("url:../../img/perdiste.png");
-const imageTieURL = require("url:../../img/empate.png");
-function resultsPage(params) {
-    const div = document.createElement("div");
-    div.innerHTML = `
-    <img>
-    <div class="results">
-        <h1>Resultado</h1>
-        <div class="myPlay"> Vos: ${0, _state.state}</div>
-
-
-    </div>
-    
-    
-    
-    
-    `;
-    return div;
-}
-
-},{"url:../../img/ganaste.png":"etiOr","url:../../img/perdiste.png":"9ho5B","url:../../img/empate.png":"6aNTq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../../state":"d4y3Q"}],"etiOr":[function(require,module,exports) {
-module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "ganaste.1aab8f76.png" + "?" + Date.now();
-
-},{"./helpers/bundle-url":"lgJ39"}],"9ho5B":[function(require,module,exports) {
-module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "perdiste.90c6bbd7.png" + "?" + Date.now();
-
-},{"./helpers/bundle-url":"lgJ39"}],"6aNTq":[function(require,module,exports) {
-module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "empate.ef275105.png" + "?" + Date.now();
-
 },{"./helpers/bundle-url":"lgJ39"}],"d4y3Q":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
@@ -959,7 +941,7 @@ const state = {
     },
     listeners: [],
     initState () {
-        const localData = localStorage.getItem("saved-game");
+        const localData = localStorage.getItem("saved-state");
         if (localData !== null) this.setState(JSON.parse(localData));
     },
     getState () {
@@ -967,36 +949,27 @@ const state = {
     },
     setState (newState) {
         this.data = newState;
-        console.log("nuevoestado", newState);
         for (const cb of this.listeners)cb();
-        localStorage.setItem("saved-game", JSON.stringify(newState));
-    },
-    randomMove () {
-        const numbers = [
-            1,
-            2,
-            3
-        ];
-        const randomNumber = Math.floor(Math.random() * numbers.length);
-        return numbers[randomNumber];
+        localStorage.setItem("saved-state", JSON.stringify(newState));
     },
     setMove (move) {
+        const options = [
+            "piedra",
+            "papel",
+            "tijera"
+        ];
         const currentState = this.getState();
-        const myMove = currentState.currentGame.myPlay = move;
-        const computerMove = currentState.currentGame.computerPlay = this.randomMove();
-        this.setState(myMove, computerMove);
+        currentState.currentGame.myPlay = move;
+        currentState.currentGame.computerPlay = options[Math.floor(Math.random() * 3)];
+        this.historyPushState();
     },
     whoWins (myPlay, computerPlay) {
-        const currentState = this.getState();
         const ganeConTijeras = myPlay == "tijera" && computerPlay == "papel";
         const ganeConPiedra = myPlay == "piedra" && computerPlay == "tijera";
         const ganeConPapel = myPlay == "papel" && computerPlay == "piedra";
         const pcGanaTijeras = myPlay == "papel" && computerPlay == "tijera";
         const pcGanaPiedra = myPlay == "tijera" && computerPlay == "piedra";
         const pcGanaPapel = myPlay == "piedra" && computerPlay == "papel";
-        const empatePiedra = myPlay == "piedra" && computerPlay == "piedra";
-        const empatePapel = myPlay == "papel" && computerPlay == "papel";
-        const empateTijera = myPlay == "tijera" && computerPlay == "tijera";
         const win = [
             ganeConTijeras,
             ganeConPiedra,
@@ -1007,29 +980,132 @@ const state = {
             pcGanaPiedra,
             pcGanaTijeras
         ].includes(true);
-        const tie = [
-            empatePiedra,
-            empatePapel,
-            empateTijera
-        ].includes(true);
-        if (win == true) currentState.history.me++;
-        else if (lose == true) currentState.history.computer++;
-        else if (tie) return "tie";
+        if (win == true) return "win";
+        else if (lose == true) return "lose";
+        else return "tie";
+    },
+    historyPushState () {
+        const result = this.whoWins();
+        const currentState = this.getState();
+        if (result == "win") currentState.history.me++;
+        else if (result == "lose") currentState.history.computer++;
+        this.setState(currentState);
     },
     subscribe (cb) {
         this.listeners.push(cb);
     }
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"4iqCu":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"bQd14":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "resultsPage", ()=>resultsPage);
+const imageWinURL = require("url:../../img/ganaste.png");
+const imageLoseURL = require("url:../../img/perdiste.png");
+const imageTieURL = require("url:../../img/empate.png");
+function resultsPage(params) {
+    console.log("soy el params result", params);
+    ///////////////JUEGO////////////////
+    const div = document.createElement("div");
+    div.innerHTML = `
+  
+  <div class="results">
+      <img class="star" src=${imageWinURL}></img>
+      <div class="score">
+          <h1>Score</h1>
+          <div class="myPlay"> Vos:?</div>
+          <div class="computerPlay"> Máquina:?</div>
+      </div>
+
+      <button-comp class="home">Volver a jugar</button-comp>
+  </div>    
+  `;
+    const style = document.createElement("style");
+    style.innerHTML = `
+
+  .root {
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+
+  .star {
+      height: 254px;
+      margin-bottom: 20px;
+  }
+
+  .results {
+      text-align: center;
+      font-size: 55px;
+      display: flex;
+      flex-direction: column;
+      border: solid 10px black;
+      padding: 36px 0px;
+      /* padding left y right no funiona */
+  }
+
+  .score {
+      background-color: white;
+      display: flex;
+      flex-direction: column;
+      font-size: 45px;
+      border: solid 10px black;
+      border-radius: 10px;
+      width: 260px;
+      height: 250px;
+  }
+
+  .myPlay {
+      text-align: right;
+      margin-right: 10px;
+
+  }
+  .computerPlay {
+      text-align: right;
+      margin-right: 10px;
+  }
+
+
+  `;
+    /*   const buttonHome = document.querySelector(".home")
+  buttonHome.addEventListener("selected",(e:any)=>{  
+      console.log(e.detail.route)
+  params.goTo(e.detail.route);
+  });    */ div.appendChild(style);
+    return div;
+}
+
+},{"url:../../img/ganaste.png":"etiOr","url:../../img/perdiste.png":"9ho5B","url:../../img/empate.png":"6aNTq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"etiOr":[function(require,module,exports) {
+module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "ganaste.1aab8f76.png" + "?" + Date.now();
+
+},{"./helpers/bundle-url":"lgJ39"}],"9ho5B":[function(require,module,exports) {
+module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "perdiste.90c6bbd7.png" + "?" + Date.now();
+
+},{"./helpers/bundle-url":"lgJ39"}],"6aNTq":[function(require,module,exports) {
+module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "empate.ef275105.png" + "?" + Date.now();
+
+},{"./helpers/bundle-url":"lgJ39"}],"4iqCu":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "buttonComp", ()=>buttonComp);
-function buttonComp() {
+function buttonComp(params) {
     customElements.define("button-comp", class extends HTMLElement {
         constructor(){
             super();
             this.render();
+        }
+        connectedCallback() {
+            this.addCallbacks();
+            this.render();
+        }
+        addCallbacks() {
+            this.shadow.querySelector(".root").addEventListener("click", (e)=>{
+                const event = new CustomEvent("selected", {
+                    detail: {
+                        route: "/instructions"
+                    }
+                });
+                this.dispatchEvent(event);
+            });
         }
         render() {
             const shadow = this.attachShadow({
@@ -1041,20 +1117,24 @@ function buttonComp() {
             style.innerHTML = `
                 
                 .root {
+    
                   background-color: #006CFC;
                   font-size: 45px;
                   border: 10px solid #001997;
-                  width: 322px;
+                  border-radius: 10px;
+                  min-width: 300px;
                   height: 87px;
                   font-family: Odibee sans;
                   color: #D8FCFC;
-                 
-                 margin: 40px 0px 80px 0px;
+                  margin-top: 20px;
                 }
                 
                 `;
             button.textContent = this.textContent;
-            shadow.appendChild(button);
+            /*         if (button.textContent == "Volver a jugar"){
+                  params.goTo("./instructions")
+        }
+ */ shadow.appendChild(button);
             shadow.appendChild(style);
         }
     });
@@ -1064,7 +1144,6 @@ function buttonComp() {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "handsComp", ()=>handsComp);
-var _state = require("../../state");
 const imagePiedraURL = require("url:../../img/piedra.png");
 const imagePapelURL = require("url:../../img/papel.png");
 const imageTijeraURL = require("url:../../img/tijera.png");
@@ -1075,19 +1154,29 @@ function handsComp() {
             this.shadow = this.attachShadow({
                 mode: "open"
             });
-            this.type = this.getAttribute("type");
         }
         connectedCallback() {
+            this.addCallbacks();
             this.render();
+        }
+        addCallbacks() {
+            this.shadow.querySelector(".hand").addEventListener("click", (e)=>{
+                const event = new CustomEvent("handEvent", {
+                    detail: {
+                        type: this.getAttribute("type")
+                    }
+                });
+                this.dispatchEvent(event);
+            });
         }
         render() {
             const div = document.createElement("div");
             div.className = "hands-cont";
             div.innerHTML = `
   
-          <img class="piedra" src=${imagePiedraURL}>
-          <img class="papel" src=${imagePapelURL}>
-          <img class="tijera" src=${imageTijeraURL}>
+          <img type="piedra" class="piedra" src=${imagePiedraURL}>
+          <img type="papel" class="papel" src=${imagePapelURL}>
+          <img type="tijera" class="tijera" src=${imageTijeraURL}>
   
           `;
             const style = document.createElement("style");
@@ -1103,40 +1192,12 @@ function handsComp() {
 
             
         `;
-            const piedra = div.querySelector(".piedra");
-            piedra.addEventListener("click", (e)=>{
-                console.log("soy el targettttt", e.target);
-                style.innerHTML = `
-          .tijera, .papel {
-            opacity: 0.5;
-          }
-        `;
-                (0, _state.state).setMove("piedra");
-            });
-            const papel = div.querySelector(".papel");
-            papel.addEventListener("click", ()=>{
-                style.innerHTML = `
-          .tijera, .piedra {
-            opacity: 0.5;
-          }
-        `;
-                (0, _state.state).setMove("papel");
-            });
-            const tijera = div.querySelector(".tijera");
-            tijera.addEventListener("click", ()=>{
-                style.innerHTML = `
-          .piedra, .papel {
-            opacity: 0.5;
-          }
-        `;
-                (0, _state.state).setMove("tijera");
-            });
             this.shadow.appendChild(style);
             this.shadow.appendChild(div);
         }
     });
 }
 
-},{"url:../../img/piedra.png":"lzIoH","url:../../img/papel.png":"3UuT5","url:../../img/tijera.png":"3dltE","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../../state":"d4y3Q"}]},["em2cd","1jwFz"], "1jwFz", "parcelRequire4c92")
+},{"url:../../img/piedra.png":"lzIoH","url:../../img/papel.png":"3UuT5","url:../../img/tijera.png":"3dltE","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["em2cd","1jwFz"], "1jwFz", "parcelRequire4c92")
 
 //# sourceMappingURL=index.8e9bd240.js.map

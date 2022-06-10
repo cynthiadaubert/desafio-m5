@@ -7,15 +7,16 @@ const imageTijeraURL = require("url:../../img/tijera.png");
 export function playPage(params) {
 
   const div = document.createElement("div");
+  div.className = "container-play"
 
   div.innerHTML = `
  
     <div class=circle></div>
 
     <hands-container class="hands">
-        <img class="piedra" src=${imagePiedraURL}>
-       <img class="papel" src=${imagePapelURL}>
-        <img class="tijera" src=${imageTijeraURL}>
+        <img  class="hand" type="piedra" src=${imagePiedraURL}>
+        <img  class="hand" type="papel" src=${imagePapelURL}>
+        <img class="hand" type="tijera" src=${imageTijeraURL}>
     </hands-container>
   
   `;
@@ -29,7 +30,9 @@ export function playPage(params) {
     display: flex;
     flex-direction: column;
     align-items: center;
+    border: 5px solid #000;
     padding: 118px 0px 80px 0px;
+    width: 100%;
   }
 
   .circle {
@@ -49,17 +52,14 @@ export function playPage(params) {
   }
 
   .hands {
-    width: 375px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
     position: fixed;
+    border: solid black 10px;
+   
   }
-
-  .piedra {
-    padding-right: 30px;
-  }
-
-  .papel {
-    padding-right: 30px;
-  }
+  
 
   @keyframes loading {
 
@@ -92,6 +92,9 @@ export function playPage(params) {
       border-left: 24px solid white;
     }
 
+    .transparent {
+      opacity: 50%;
+    }
 
   }
 
@@ -114,8 +117,6 @@ const intervalId = setInterval(() => {
 }, 1000); 
 
 
-
-
 ////// TIMEOUT PARA PASAR A RESULTS //////
 
 const handsContainer = div.querySelector(".hands")
@@ -123,7 +124,7 @@ const imgPapel = div.querySelector(".papel")
 const imgPiedra = div.querySelector(".piedra")
 
 handsContainer.addEventListener("click", (event) => {
-  if(event.target == imgPapel){
+/*   if(event.target == imgPapel){
     style.innerHTML =`
     .tijera, .piedra {
       opacity: 0.5;
@@ -141,10 +142,30 @@ handsContainer.addEventListener("click", (event) => {
       opacity: 0.5;
     }
     `;
-  }
+  } */
 
   setTimeout(() => {  params.goTo("/results") }, 1500);
 });
+
+//////////JUEGO//////////////////
+
+/// EL STATE ESCUCHA LOS MOVIMIENTOS ////
+
+  const container = div.querySelector(".hands")
+  for (const h of container.children){
+    h.addEventListener("election",(e:any)=>{
+      let handSelected = e.detail.type;
+      console.log("soy hand selected",handSelected)
+      state.setMove(handSelected);
+
+      if (h.getAttribute("type") !== handSelected){
+        h.shadowRoot.querySelector(".hand").classList.add("transparent")
+      }else if (h.getAttribute("type") !== handSelected) {
+        h.shadowRoot.querySelector(".hand").classList.add("normal")
+      }
+    })
+  }
+
 
 
   div.appendChild(style)
