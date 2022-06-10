@@ -504,17 +504,18 @@ function hmrAcceptRun(bundle, id) {
 
 },{}],"1jwFz":[function(require,module,exports) {
 var _router = require("./router");
-var _button = require("./components/button");
-var _hands = require("./components/hands");
 var _state = require("./state");
+var _hands = require("./components/hands");
+var _button = require("./components/button");
 (function() {
-    (0, _button.buttonComp)();
-    (0, _hands.handsComp)();
+    (0, _button.buttonComp)({});
+    (0, _hands.handsComp)({});
     (0, _state.state).initState();
-    (0, _router.initRouter)(document.querySelector(".root"));
+    const root = document.querySelector(".root");
+    (0, _router.initRouter)(root);
 })();
 
-},{"./router":"eBUGN","./components/button":"4iqCu","./components/hands":"bPPIi","./state":"d4y3Q"}],"eBUGN":[function(require,module,exports) {
+},{"./router":"eBUGN","./state":"d4y3Q","./components/button":"4iqCu","./components/hands":"bPPIi"}],"eBUGN":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "initRouter", ()=>initRouter);
@@ -557,8 +558,7 @@ function initRouter(container) {
             const elem = r.component({
                 goTo: goTo
             });
-            console.log("soy el elem", elem);
-            if (container.firstChild) container.firstChild.remove();
+            /* console.log("soy el elem",elem) */ if (container.firstChild) container.firstChild.remove();
             container.appendChild(elem);
         }
     }
@@ -608,7 +608,7 @@ parcelHelpers.export(exports, "welcomePage", ()=>welcomePage) /* .
     ` */  /* usar position fixed o absolute para la ubicacion de las manos */ ;
 function welcomePage(params) {
     const div = document.createElement("div");
-    div.className = "container";
+    div.className = "box";
     div.innerHTML = `
  
   
@@ -624,7 +624,7 @@ function welcomePage(params) {
     style.innerHTML = `
 
   @media (min-width: 769px) {
-    .container {
+    .box {
       max-width: 500px;
       margin: 0 auto;
       padding-top: 80px;
@@ -654,6 +654,7 @@ function welcomePage(params) {
   `;
     const buttonElem = div.querySelector("button-comp");
     buttonElem.addEventListener("click", ()=>{
+        console.log(params.goTo);
         params.goTo("/instructions");
     });
     div.appendChild(style);
@@ -831,8 +832,8 @@ function playPage(params) {
     const intervalId = setInterval(()=>{
         countdownElem.innerHTML = `${counter}`;
         counter--;
-        if (counter < 0) clearInterval(intervalId) /* params.goTo("./instructions") */ ;
-    }, 2000);
+        if (counter < 0 && location.pathname.includes("play")) clearInterval(intervalId) /*  params.goTo("./instructions") */ ;
+    }, 1000);
     ////// TIMEOUT PARA PASAR A PAGE RESULTS //////
     const handsContainer = div.querySelector(".hands");
     handsContainer.addEventListener("click", ()=>{
@@ -855,7 +856,7 @@ const tijera = require("url:../../img/tijera.png");
 const imageWinURL = require("url:../../img/ganaste.png");
 const imageLoseURL = require("url:../../img/perdiste.png");
 const imageTieURL = require("url:../../img/empate.png");
-function resultsPage() {
+function resultsPage(params) {
     const currentState = (0, _state.state).getState();
     const div = document.createElement("div");
     const results = document.createElement("div");
@@ -948,7 +949,11 @@ function resultsPage() {
 
 
   `;
-    div.appendChild(results);
+    /*     score.children.addEventListener("click", ()=>{
+              if (this.textContent == "Volver a jugar"){
+      params.goTo("./instructions")
+    }
+  }) */ div.appendChild(results);
     div.appendChild(style);
     score.appendChild(style);
     return score;
@@ -1113,55 +1118,44 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "buttonComp", ()=>buttonComp);
 function buttonComp(params) {
-    customElements.define("button-comp", class extends HTMLElement {
-        /*       shadow: ShadowRoot; */ constructor(){
+    customElements.define("button-comp", class ButtonComp extends HTMLElement {
+        constructor(){
             super();
-            this.connectedCallback();
+            this.shadow = this.attachShadow({
+                mode: "open"
+            });
         }
         connectedCallback() {
             this.render();
         }
-        /*       addCallbacks() {
-        this.shadow.querySelector(".root").addEventListener("click", (e) => {
-          const event = new CustomEvent("selected", {
-            detail: {
-              route: "/instructions"
-            },
-          });
-          this.dispatchEvent(event);
-        });
-      } */ render() {
-            const shadow = this.attachShadow({
-                mode: "open"
-            });
-            const div = document.createElement("div");
+        render() {
             const button = document.createElement("button");
-            const style = document.createElement("style");
             button.className = "button";
+            const style = document.createElement("style");
             style.innerHTML = `
                 
-                .button {
+        .button {
     
-                  background-color: #006CFC;
-                  font-size: 45px;
-                  border: 10px solid #001997;
-                  border-radius: 10px;
-                  min-width: 300px;
-                  height: 87px;
-                  font-family: Odibee sans;
-                  color: #D8FCFC;
-                  margin-top: 20px;
-                }
+        background-color: #006CFC;
+        font-size: 45px;
+        border: 10px solid #001997;
+        border-radius: 10px;
+        min-width: 300px;
+        height: 87px;
+        font-family: Odibee sans;
+        color: #D8FCFC;
+        margin-top: 20px;
+        }
                 
-                `;
-            button.textContent = this.textContent;
-            this.textContent = this.getAttribute("text");
-            button.addEventListener("click", ()=>{
-                if (this.textContent == "Volver a jugar") params.goTo("./instructions");
-            });
-            shadow.appendChild(div);
-            shadow.appendChild(style);
-            div.appendChild(button);
+        `;
+            /*         this.textContent = this.getAttribute("text");
+          button.addEventListener("click", ()=>{
+                    if (this.textContent == "Volver a jugar"){
+            params.goTo("./instructions")
+          }
+        }) */ button.textContent = this.textContent;
+            this.shadow.appendChild(button);
+            this.shadow.appendChild(style);
         }
     });
 }
@@ -1175,28 +1169,19 @@ const imagePiedraURL = require("url:../../img/piedra.png");
 const imagePapelURL = require("url:../../img/papel.png");
 const imageTijeraURL = require("url:../../img/tijera.png");
 function handsComp(params) {
-    customElements.define("hands-comp", class extends HTMLElement {
+    customElements.define("hands-comp", class handsComp extends HTMLElement {
         constructor(){
             super();
-            this.connectedCallback();
+            this.shadow = this.attachShadow({
+                mode: "open"
+            });
         }
         connectedCallback() {
             this.render();
         }
-        /*          addCallbacks() {
-          this.shadow.querySelector(".hands").addEventListener("click", (e) => {
-            const event = new CustomEvent("handEvent", {
-              detail: {
-                type: this.getAttribute("type"),
-              },
-            });
-            this.dispatchEvent(event);
-          });
-        }  */ render() {
-            this.shadow = this.attachShadow({
-                mode: "open"
-            });
+        render() {
             const div = document.createElement("div");
+            const style = document.createElement("style");
             div.className = "hands";
             div.innerHTML = `
   
@@ -1204,35 +1189,34 @@ function handsComp(params) {
           <img type="papel" class="papel" src=${imagePapelURL}>
           <img type="tijera" class="tijera" src=${imageTijeraURL}>
   
-          `;
-            const style = document.createElement("style");
+        `;
             style.innerHTML = `
 
-        img {
-          width: 56px,
-          height: 126px;
-        }
-
-        @media (min-width:769px) {
-          img{
-            width: 80px;
-            height: 180px;
+          img {
+            width: 56px,
+            height: 126px;
           }
-        }
 
-        .piedra {
-          padding-right: 40px;
-        }
+          @media (min-width:769px) {
+            img{
+              width: 80px;
+              height: 180px;
+            }
+          }
 
-        .papel {
-          padding-right:40px;
-        }
+          .piedra {
+              padding-right: 40px;
+          }
 
-        .transparent {
-          opacity: 0.5;
-        }
+          .papel {
+              padding-right:40px;
+          }
+
+          .transparent {
+              opacity: 0.5;
+          }
             
-        `;
+          `;
             const piedra = div.querySelector(".piedra");
             const papel = div.querySelector(".papel");
             const tijera = div.querySelector(".tijera");

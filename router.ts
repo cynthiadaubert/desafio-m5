@@ -45,7 +45,7 @@ export function initRouter(container: Element) {
     for (const r of routes) {
       if (r.path.test(newRoute)) {
         const elem = r.component({ goTo: goTo });
-        console.log("soy el elem",elem)
+        /* console.log("soy el elem",elem) */
         if (container.firstChild) {
           container.firstChild.remove();
         }

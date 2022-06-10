@@ -6,82 +6,71 @@ const imageTijeraURL = require("url:../../img/tijera.png");
 
 
 export function handsComp(params) {
+  
   customElements.define(
     "hands-comp",
 
-    class extends HTMLElement {
+    class handsComp extends HTMLElement {
       shadow: ShadowRoot;
       type: string;
 
       constructor() {
         super();
-        this.connectedCallback()
-       }
-        connectedCallback(){
-         
-          this.render()
-        }
+        this.shadow = this.attachShadow({ mode: "open" });
+      }
 
-/*          addCallbacks() {
-          this.shadow.querySelector(".hands").addEventListener("click", (e) => {
-            const event = new CustomEvent("handEvent", {
-              detail: {
-                type: this.getAttribute("type"),
-              },
-            });
-            this.dispatchEvent(event);
-          });
-        }  */
+      connectedCallback(){
+        this.render()
+      }
+      
+      render() {
 
-        render() {
-          this.shadow = this.attachShadow({ mode: "open" });
-          const div = document.createElement("div")
-          div.className = "hands";
+        const div = document.createElement("div")
+        const style = document.createElement("style");
+        div.className = "hands";
   
-         div.innerHTML = `
+        div.innerHTML = `
   
           <img type="piedra" class="piedra" src=${imagePiedraURL}>
           <img type="papel" class="papel" src=${imagePapelURL}>
           <img type="tijera" class="tijera" src=${imageTijeraURL}>
   
-          `;
-
-        const style = document.createElement("style");
+        `;
 
         style.innerHTML = `
 
-        img {
-          width: 56px,
-          height: 126px;
-        }
-
-        @media (min-width:769px) {
-          img{
-            width: 80px;
-            height: 180px;
+          img {
+            width: 56px,
+            height: 126px;
           }
-        }
 
-        .piedra {
-          padding-right: 40px;
-        }
+          @media (min-width:769px) {
+            img{
+              width: 80px;
+              height: 180px;
+            }
+          }
 
-        .papel {
-          padding-right:40px;
-        }
+          .piedra {
+              padding-right: 40px;
+          }
 
-        .transparent {
-          opacity: 0.5;
-        }
+          .papel {
+              padding-right:40px;
+          }
+
+          .transparent {
+              opacity: 0.5;
+          }
             
-        `;
+          `;
 
-        const piedra: any = div.querySelector(".piedra")
-        const papel: any = div.querySelector(".papel")
-        const tijera: any = div.querySelector(".tijera")
+          const piedra: any = div.querySelector(".piedra")
+          const papel: any = div.querySelector(".papel")
+          const tijera: any = div.querySelector(".tijera")
 
-        if (this.getAttribute("variant")=="selected") {
-          piedra.addEventListener("click", ()=> {
+          if (this.getAttribute("variant")=="selected") {
+            piedra.addEventListener("click", ()=> {
             papel.classList.add("transparent")
             tijera.classList.add("transparent");
             setTimeout(()=>{
@@ -89,7 +78,7 @@ export function handsComp(params) {
               params.goTo("/results")
             }, 2000)
           })
-          papel.addEventListener("click", ()=> {
+            papel.addEventListener("click", ()=> {
             piedra.classList.add("transparent")
             tijera.classList.add("transparent");
             setTimeout(()=>{
@@ -97,21 +86,23 @@ export function handsComp(params) {
               params.goTo("/results")
             }, 2000)
           })
-          tijera.addEventListener("click", ()=> {
+            tijera.addEventListener("click", ()=> {
             papel.classList.add("transparent")
             piedra.classList.add("transparent");
             setTimeout(()=>{
               state.setMove("piedra");
               params.goTo("/results")
             }, 2000)
-          })
-        }
+            })
+          } 
 
-      this.shadow.appendChild(style)
-      this.shadow.appendChild(div)
+          this.shadow.appendChild(style)
+          this.shadow.appendChild(div)
       
-  }
-})
-}
+      }
+      
+    }
+  )
+};
    
 

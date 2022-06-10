@@ -1,6 +1,10 @@
+import { initRouter } from "../../router";
+
+
 export function welcomePage(params) {
+  
   const div = document.createElement("div");
-  div.className ="container"
+  div.className ="box"
 
   div.innerHTML = `
  
@@ -18,7 +22,7 @@ export function welcomePage(params) {
   style.innerHTML = `
 
   @media (min-width: 769px) {
-    .container {
+    .box {
       max-width: 500px;
       margin: 0 auto;
       padding-top: 80px;
@@ -47,9 +51,10 @@ export function welcomePage(params) {
 
   `
 
-   const buttonElem = div.querySelector("button-comp");
+  const buttonElem: any = div.querySelector("button-comp");
 
   buttonElem.addEventListener("click", () => {
+    console.log(params.goTo)
     params.goTo("/instructions");
   }); 
 

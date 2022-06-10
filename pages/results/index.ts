@@ -8,7 +8,7 @@ const imageWinURL = require("url:../../img/ganaste.png");
 const imageLoseURL = require("url:../../img/perdiste.png");
 const imageTieURL = require("url:../../img/empate.png");
 
-export function resultsPage() {
+export function resultsPage(params) {
 const currentState = state.getState()
 const div = document.createElement("div")
   const results = document.createElement("div")
@@ -125,6 +125,14 @@ const div = document.createElement("div")
 
 
   `
+
+
+ 
+/*     score.children.addEventListener("click", ()=>{
+              if (this.textContent == "Volver a jugar"){
+      params.goTo("./instructions")
+    }
+  }) */
 
     div.appendChild (results)
     div.appendChild(style)

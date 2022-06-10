@@ -1,11 +1,14 @@
 import { initRouter } from "./router";
-import {buttonComp} from "./components/button"
-import {handsComp} from "./components/hands"
 import { state } from "./state";
+import { handsComp } from "./components/hands";
+import { buttonComp } from "./components/button";
+
+
 
 (function () {
-  buttonComp()
-  handsComp()
+  buttonComp({})
+  handsComp({})
   state.initState()
-  initRouter(document.querySelector(".root"));
+  const root = document.querySelector(".root")
+  initRouter(root as Element);
 })();

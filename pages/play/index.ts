@@ -99,15 +99,16 @@ let counter = 3;
 
 const countdownElem = div.querySelector(".circle") as any;
 
+
 const intervalId = setInterval(() => {
   countdownElem.innerHTML= `${counter}`;
   counter--;
-  if (counter < 0) {
+  if (counter < 0 && location.pathname.includes("play")) {
     clearInterval(intervalId)
-      /* params.goTo("./instructions") */ ;
+   /*  params.goTo("./instructions") */;
   }
 
-}, 2000); 
+}, 1000); 
 
 
 ////// TIMEOUT PARA PASAR A PAGE RESULTS //////
