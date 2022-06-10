@@ -41,7 +41,7 @@ export function initRouter(container: Element) {
     console.log("soy el location pathname", location.pathname); */
 
     const newRoute = isGithubPages() ? route.replace(BASE_PATH, "") : route;
-    console.log("soy el new route", newRoute);
+/*     console.log("soy el new route", newRoute); */
     for (const r of routes) {
       if (r.path.test(newRoute)) {
         const elem = r.component({ goTo: goTo });
@@ -60,7 +60,7 @@ export function initRouter(container: Element) {
     handleRoute(location.pathname);
   }
 
-  ///ESCUCHA LOS CAMBIOS DE ESTADO DE LA PAGINA PARA NAVEGAR POR EL HISTORIAL///
+  ///ESCUCHA LOS CAMBIOS PARA PODER NAVEGAR POR EL HISTORIAL///
 
   window.onpopstate = function(){
     handleRoute(location.pathname)

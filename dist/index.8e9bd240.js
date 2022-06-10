@@ -553,8 +553,7 @@ function initRouter(container) {
     function handleRoute(route) {
         /*    console.log("El handleRoute recibió una nueva ruta", route);
     console.log("soy el location pathname", location.pathname); */ const newRoute = isGithubPages() ? route.replace(BASE_PATH, "") : route;
-        console.log("soy el new route", newRoute);
-        for (const r of routes)if (r.path.test(newRoute)) {
+        /*     console.log("soy el new route", newRoute); */ for (const r of routes)if (r.path.test(newRoute)) {
             const elem = r.component({
                 goTo: goTo
             });
@@ -565,7 +564,7 @@ function initRouter(container) {
     }
     if (location.pathname == "/") goTo("/welcome");
     else handleRoute(location.pathname);
-    ///ESCUCHA LOS CAMBIOS DE ESTADO DE LA PAGINA PARA NAVEGAR POR EL HISTORIAL///
+    ///ESCUCHA LOS CAMBIOS PARA PODER NAVEGAR POR EL HISTORIAL///
     window.onpopstate = function() {
         handleRoute(location.pathname);
     };
@@ -737,10 +736,6 @@ function instructionsPage(params) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "playPage", ()=>playPage);
-var _state = require("../../state");
-const imagePiedraURL = require("url:../../img/piedra.png");
-const imagePapelURL = require("url:../../img/papel.png");
-const imageTijeraURL = require("url:../../img/tijera.png");
 function playPage(params) {
     const div = document.createElement("div");
     div.className = "container-play";
@@ -749,9 +744,7 @@ function playPage(params) {
     <div class=circle></div>
 
     <hands-container class="hands">
-        <img  class="hand" type="piedra" src=${imagePiedraURL}>
-        <img  class="hand" type="papel" src=${imagePapelURL}>
-        <img class="hand" type="tijera" src=${imageTijeraURL}>
+      <hands-comp variant="selected"></hands-comp>
     </hands-container>
   
   `;
@@ -832,57 +825,137 @@ function playPage(params) {
   }
 
   `;
-    //////* CONTADOR */////
+    //////* CUENTA ATRÁS DEL CÍRCULO */////
     let counter = 3;
     const countdownElem = div.querySelector(".circle");
     const intervalId = setInterval(()=>{
         countdownElem.innerHTML = `${counter}`;
         counter--;
         if (counter < 0) clearInterval(intervalId) /* params.goTo("./instructions") */ ;
-    }, 1000);
-    ////// TIMEOUT PARA PASAR A RESULTS //////
+    }, 2000);
+    ////// TIMEOUT PARA PASAR A PAGE RESULTS //////
     const handsContainer = div.querySelector(".hands");
-    const imgPapel = div.querySelector(".papel");
-    const imgPiedra = div.querySelector(".piedra");
-    handsContainer.addEventListener("click", (event)=>{
-        /*   if(event.target == imgPapel){
-    style.innerHTML =`
-    .tijera, .piedra {
-      opacity: 0.5;
-    }
-  `;
-  }else if(event.target == imgPiedra){
-    style.innerHTML =`
-    .tijera, .papel {
-      opacity: 0.5;
-    }
-    `;
-  }else {
-    style.innerHTML =`
-    .piedra, .papel {
-      opacity: 0.5;
-    }
-    `;
-  } */ setTimeout(()=>{
+    handsContainer.addEventListener("click", ()=>{
+        setTimeout(()=>{
             params.goTo("/results");
         }, 1500);
-    });
-    //////////JUEGO//////////////////
-    /// EL STATE ESCUCHA LOS MOVIMIENTOS ////
-    const container = div.querySelector(".hands");
-    for (const h of container.children)h.addEventListener("election", (e)=>{
-        let handSelected = e.detail.type;
-        console.log("soy hand selected", handSelected);
-        (0, _state.state).setMove(handSelected);
-        if (h.getAttribute("type") !== handSelected) h.shadowRoot.querySelector(".hand").classList.add("transparent");
-        else if (h.getAttribute("type") !== handSelected) h.shadowRoot.querySelector(".hand").classList.add("normal");
     });
     div.appendChild(style);
     return div;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","url:../../img/piedra.png":"lzIoH","url:../../img/papel.png":"3UuT5","url:../../img/tijera.png":"3dltE","../../state":"d4y3Q"}],"lzIoH":[function(require,module,exports) {
-module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "piedra.09238fcc.png" + "?" + Date.now();
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"bQd14":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "resultsPage", ()=>resultsPage);
+var _state = require("../../state");
+const piedra = require("url:../../img/piedra.png");
+const papel = require("url:../../img/papel.png");
+const tijera = require("url:../../img/tijera.png");
+const imageWinURL = require("url:../../img/ganaste.png");
+const imageLoseURL = require("url:../../img/perdiste.png");
+const imageTieURL = require("url:../../img/empate.png");
+function resultsPage() {
+    const currentState = (0, _state.state).getState();
+    const div = document.createElement("div");
+    const results = document.createElement("div");
+    const score = document.createElement("div");
+    const myPlay = currentState.currentGame.myPlay == "piedra" ? piedra : currentState.currentGame.myPlay == "papel" ? papel : tijera;
+    const computerPlay = currentState.currentGame.computerPlay == "piedra" ? piedra : currentState.currentGame.computerPlay == "papel" ? papel : tijera;
+    results.innerHTML = ` 
+  <img class="computerHand" src=${piedra}>
+  <img class="myHand" src=${papel} >
+  
+  `;
+    /* src=${computerPlay} */ /* src=${myPlay} */ ////// MOSTRAR RESULTADO ESTRELLA //////
+    const myResult = (0, _state.state).data.history.me;
+    const pcResult = (0, _state.state).data.history.me;
+    console.log("mi result", myResult, pcResult);
+    const display = document.createElement("div");
+    setTimeout(()=>{
+        const result = (0, _state.state).whoWins();
+        if (result == "win") {
+            results.appendChild(display);
+            display.innerHTML = `<img class="star" src=${imageWinURL}></img>`;
+            display.style.backgroundColor = "#68FF33";
+        }
+        if (result == "lose") {
+            results.appendChild(display);
+            display.innerHTML = `<img class="star" src=${imageLoseURL}></img>`;
+            display.style.backgroundColor = "#FF4633";
+        }
+        if (result == "tie") {
+            results.appendChild(display);
+            display.innerHTML = `<img class="star" src=${imageTieURL}></img>`;
+            display.style.backgroundColor = "#6833FF";
+        }
+        score.innerHTML = `
+  
+    <div class="container">
+        <div class="score">
+            <h1>Score</h1>
+            <div class="myPlay"> Vos:${currentState.history.me}</div>
+            <div class="computerPlay"> Máquina:${currentState.history.computer}</div>
+        </div>
+  
+        <button-comp class="home">Volver a jugar</button-comp>
+    </div>    
+    `;
+    }, 2000);
+    const style = document.createElement("style");
+    style.innerHTML = `
+
+  .root {
+    margin: 0 auto;
+    box-sizing: border-box;
+  }
+
+  .star {
+      height: 254px;
+      margin-bottom: 20px;
+  }
+
+  .container {
+      text-align: center;
+      font-size: 55px;
+      display: flex;
+      flex-direction: column;
+      border: solid 10px black;
+      padding: 36px 0px;
+      /* padding left y right no funiona */
+  }
+
+  .score {
+      background-color: white;
+      display: flex;
+      flex-direction: column;
+      font-size: 45px;
+      border: solid 10px black;
+      border-radius: 10px;
+      width: 260px;
+      height: 250px;
+  }
+
+  .myPlay {
+      text-align: right;
+      margin-right: 10px;
+
+  }
+  .computerPlay {
+      text-align: right;
+      margin-right: 10px;
+  }
+
+
+  `;
+    div.appendChild(results);
+    div.appendChild(style);
+    score.appendChild(style);
+    return score;
+}
+
+},{"url:../../img/ganaste.png":"etiOr","url:../../img/perdiste.png":"9ho5B","url:../../img/empate.png":"6aNTq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../../state":"d4y3Q","url:../../img/piedra.png":"lzIoH","url:../../img/papel.png":"3UuT5","url:../../img/tijera.png":"3dltE"}],"etiOr":[function(require,module,exports) {
+module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "ganaste.1aab8f76.png" + "?" + Date.now();
 
 },{"./helpers/bundle-url":"lgJ39"}],"lgJ39":[function(require,module,exports) {
 "use strict";
@@ -918,11 +991,11 @@ exports.getBundleURL = getBundleURLCached;
 exports.getBaseURL = getBaseURL;
 exports.getOrigin = getOrigin;
 
-},{}],"3UuT5":[function(require,module,exports) {
-module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "papel.02ed7e33.png" + "?" + Date.now();
+},{}],"9ho5B":[function(require,module,exports) {
+module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "perdiste.90c6bbd7.png" + "?" + Date.now();
 
-},{"./helpers/bundle-url":"lgJ39"}],"3dltE":[function(require,module,exports) {
-module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "tijera.bcbc49ac.png" + "?" + Date.now();
+},{"./helpers/bundle-url":"lgJ39"}],"6aNTq":[function(require,module,exports) {
+module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "empate.ef275105.png" + "?" + Date.now();
 
 },{"./helpers/bundle-url":"lgJ39"}],"d4y3Q":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -935,8 +1008,8 @@ const state = {
             myPlay: ""
         },
         history: {
-            computer: "",
-            me: ""
+            computer: 0,
+            me: 0
         }
     },
     listeners: [],
@@ -949,9 +1022,9 @@ const state = {
     },
     setState (newState) {
         this.data = newState;
-        for (const cb of this.listeners)cb();
-        localStorage.setItem("saved-state", JSON.stringify(newState));
-    },
+    /*     for (const cb of this.listeners) {
+      cb();
+    } */ },
     setMove (move) {
         const options = [
             "piedra",
@@ -961,9 +1034,12 @@ const state = {
         const currentState = this.getState();
         currentState.currentGame.myPlay = move;
         currentState.currentGame.computerPlay = options[Math.floor(Math.random() * 3)];
-        this.historyPushState();
+        this.pushToHistory();
     },
-    whoWins (myPlay, computerPlay) {
+    whoWins () {
+        const currentGame = this.getState();
+        const myPlay = currentGame.myPlay;
+        const computerPlay = currentGame.computerPlay;
         const ganeConTijeras = myPlay == "tijera" && computerPlay == "papel";
         const ganeConPiedra = myPlay == "piedra" && computerPlay == "tijera";
         const ganeConPapel = myPlay == "papel" && computerPlay == "piedra";
@@ -980,108 +1056,57 @@ const state = {
             pcGanaPiedra,
             pcGanaTijeras
         ].includes(true);
-        if (win == true) return "win";
-        else if (lose == true) return "lose";
-        else return "tie";
+        let result;
+        if (win == true) result = "win";
+        else if (lose == true) result = "lose";
+        else result = "tie";
+        return result;
     },
-    historyPushState () {
+    pushToHistory () {
         const result = this.whoWins();
         const currentState = this.getState();
         if (result == "win") currentState.history.me++;
         else if (result == "lose") currentState.history.computer++;
-        this.setState(currentState);
+        localStorage.setItem("saved-state", JSON.stringify(state.getState()));
     },
-    subscribe (cb) {
+    /*      const currentState = this.getState();
+    const result = this.whoWins();
+    const myScore = currentState.history.me;
+    const computerScore = currentState.history.computer;
+
+    if (result == "win"){
+     this.setState({
+       ...currentState,
+       history: {
+         computer: computerScore + 1,
+         me: myScore,
+       },
+      })
+    }
+
+    if (result == "lose") {
+      this.setState({
+        ...currentState,
+        history: {
+        computer: computerScore,
+         me: myScore + 1,
+        }
+      })
+    }
+     localStorage.setItem("current-game", JSON.stringify(state.getState())) 
+   } */ subscribe (cb) {
         this.listeners.push(cb);
     }
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"bQd14":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "resultsPage", ()=>resultsPage);
-const imageWinURL = require("url:../../img/ganaste.png");
-const imageLoseURL = require("url:../../img/perdiste.png");
-const imageTieURL = require("url:../../img/empate.png");
-function resultsPage(params) {
-    console.log("soy el params result", params);
-    ///////////////JUEGO////////////////
-    const div = document.createElement("div");
-    div.innerHTML = `
-  
-  <div class="results">
-      <img class="star" src=${imageWinURL}></img>
-      <div class="score">
-          <h1>Score</h1>
-          <div class="myPlay"> Vos:?</div>
-          <div class="computerPlay"> Máquina:?</div>
-      </div>
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"lzIoH":[function(require,module,exports) {
+module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "piedra.09238fcc.png" + "?" + Date.now();
 
-      <button-comp class="home">Volver a jugar</button-comp>
-  </div>    
-  `;
-    const style = document.createElement("style");
-    style.innerHTML = `
+},{"./helpers/bundle-url":"lgJ39"}],"3UuT5":[function(require,module,exports) {
+module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "papel.02ed7e33.png" + "?" + Date.now();
 
-  .root {
-    margin: 0 auto;
-    box-sizing: border-box;
-  }
-
-  .star {
-      height: 254px;
-      margin-bottom: 20px;
-  }
-
-  .results {
-      text-align: center;
-      font-size: 55px;
-      display: flex;
-      flex-direction: column;
-      border: solid 10px black;
-      padding: 36px 0px;
-      /* padding left y right no funiona */
-  }
-
-  .score {
-      background-color: white;
-      display: flex;
-      flex-direction: column;
-      font-size: 45px;
-      border: solid 10px black;
-      border-radius: 10px;
-      width: 260px;
-      height: 250px;
-  }
-
-  .myPlay {
-      text-align: right;
-      margin-right: 10px;
-
-  }
-  .computerPlay {
-      text-align: right;
-      margin-right: 10px;
-  }
-
-
-  `;
-    /*   const buttonHome = document.querySelector(".home")
-  buttonHome.addEventListener("selected",(e:any)=>{  
-      console.log(e.detail.route)
-  params.goTo(e.detail.route);
-  });    */ div.appendChild(style);
-    return div;
-}
-
-},{"url:../../img/ganaste.png":"etiOr","url:../../img/perdiste.png":"9ho5B","url:../../img/empate.png":"6aNTq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"etiOr":[function(require,module,exports) {
-module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "ganaste.1aab8f76.png" + "?" + Date.now();
-
-},{"./helpers/bundle-url":"lgJ39"}],"9ho5B":[function(require,module,exports) {
-module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "perdiste.90c6bbd7.png" + "?" + Date.now();
-
-},{"./helpers/bundle-url":"lgJ39"}],"6aNTq":[function(require,module,exports) {
-module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "empate.ef275105.png" + "?" + Date.now();
+},{"./helpers/bundle-url":"lgJ39"}],"3dltE":[function(require,module,exports) {
+module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "tijera.bcbc49ac.png" + "?" + Date.now();
 
 },{"./helpers/bundle-url":"lgJ39"}],"4iqCu":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -1089,34 +1114,33 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "buttonComp", ()=>buttonComp);
 function buttonComp(params) {
     customElements.define("button-comp", class extends HTMLElement {
-        constructor(){
+        /*       shadow: ShadowRoot; */ constructor(){
             super();
-            this.render();
+            this.connectedCallback();
         }
         connectedCallback() {
-            this.addCallbacks();
             this.render();
         }
-        addCallbacks() {
-            this.shadow.querySelector(".root").addEventListener("click", (e)=>{
-                const event = new CustomEvent("selected", {
-                    detail: {
-                        route: "/instructions"
-                    }
-                });
-                this.dispatchEvent(event);
-            });
-        }
-        render() {
+        /*       addCallbacks() {
+        this.shadow.querySelector(".root").addEventListener("click", (e) => {
+          const event = new CustomEvent("selected", {
+            detail: {
+              route: "/instructions"
+            },
+          });
+          this.dispatchEvent(event);
+        });
+      } */ render() {
             const shadow = this.attachShadow({
                 mode: "open"
             });
+            const div = document.createElement("div");
             const button = document.createElement("button");
             const style = document.createElement("style");
-            button.className = "root";
+            button.className = "button";
             style.innerHTML = `
                 
-                .root {
+                .button {
     
                   background-color: #006CFC;
                   font-size: 45px;
@@ -1131,11 +1155,13 @@ function buttonComp(params) {
                 
                 `;
             button.textContent = this.textContent;
-            /*         if (button.textContent == "Volver a jugar"){
-                  params.goTo("./instructions")
-        }
- */ shadow.appendChild(button);
+            this.textContent = this.getAttribute("text");
+            button.addEventListener("click", ()=>{
+                if (this.textContent == "Volver a jugar") params.goTo("./instructions");
+            });
+            shadow.appendChild(div);
             shadow.appendChild(style);
+            div.appendChild(button);
         }
     });
 }
@@ -1144,34 +1170,34 @@ function buttonComp(params) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "handsComp", ()=>handsComp);
+var _state = require("../../state");
 const imagePiedraURL = require("url:../../img/piedra.png");
 const imagePapelURL = require("url:../../img/papel.png");
 const imageTijeraURL = require("url:../../img/tijera.png");
-function handsComp() {
+function handsComp(params) {
     customElements.define("hands-comp", class extends HTMLElement {
         constructor(){
             super();
+            this.connectedCallback();
+        }
+        connectedCallback() {
+            this.render();
+        }
+        /*          addCallbacks() {
+          this.shadow.querySelector(".hands").addEventListener("click", (e) => {
+            const event = new CustomEvent("handEvent", {
+              detail: {
+                type: this.getAttribute("type"),
+              },
+            });
+            this.dispatchEvent(event);
+          });
+        }  */ render() {
             this.shadow = this.attachShadow({
                 mode: "open"
             });
-        }
-        connectedCallback() {
-            this.addCallbacks();
-            this.render();
-        }
-        addCallbacks() {
-            this.shadow.querySelector(".hand").addEventListener("click", (e)=>{
-                const event = new CustomEvent("handEvent", {
-                    detail: {
-                        type: this.getAttribute("type")
-                    }
-                });
-                this.dispatchEvent(event);
-            });
-        }
-        render() {
             const div = document.createElement("div");
-            div.className = "hands-cont";
+            div.className = "hands";
             div.innerHTML = `
   
           <img type="piedra" class="piedra" src=${imagePiedraURL}>
@@ -1182,6 +1208,18 @@ function handsComp() {
             const style = document.createElement("style");
             style.innerHTML = `
 
+        img {
+          width: 56px,
+          height: 126px;
+        }
+
+        @media (min-width:769px) {
+          img{
+            width: 80px;
+            height: 180px;
+          }
+        }
+
         .piedra {
           padding-right: 40px;
         }
@@ -1190,14 +1228,46 @@ function handsComp() {
           padding-right:40px;
         }
 
+        .transparent {
+          opacity: 0.5;
+        }
             
         `;
+            const piedra = div.querySelector(".piedra");
+            const papel = div.querySelector(".papel");
+            const tijera = div.querySelector(".tijera");
+            if (this.getAttribute("variant") == "selected") {
+                piedra.addEventListener("click", ()=>{
+                    papel.classList.add("transparent");
+                    tijera.classList.add("transparent");
+                    setTimeout(()=>{
+                        (0, _state.state).setMove("piedra");
+                        params.goTo("/results");
+                    }, 2000);
+                });
+                papel.addEventListener("click", ()=>{
+                    piedra.classList.add("transparent");
+                    tijera.classList.add("transparent");
+                    setTimeout(()=>{
+                        (0, _state.state).setMove("piedra");
+                        params.goTo("/results");
+                    }, 2000);
+                });
+                tijera.addEventListener("click", ()=>{
+                    papel.classList.add("transparent");
+                    piedra.classList.add("transparent");
+                    setTimeout(()=>{
+                        (0, _state.state).setMove("piedra");
+                        params.goTo("/results");
+                    }, 2000);
+                });
+            }
             this.shadow.appendChild(style);
             this.shadow.appendChild(div);
         }
     });
 }
 
-},{"url:../../img/piedra.png":"lzIoH","url:../../img/papel.png":"3UuT5","url:../../img/tijera.png":"3dltE","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["em2cd","1jwFz"], "1jwFz", "parcelRequire4c92")
+},{"url:../../img/piedra.png":"lzIoH","url:../../img/papel.png":"3UuT5","url:../../img/tijera.png":"3dltE","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../../state":"d4y3Q"}]},["em2cd","1jwFz"], "1jwFz", "parcelRequire4c92")
 
 //# sourceMappingURL=index.8e9bd240.js.map

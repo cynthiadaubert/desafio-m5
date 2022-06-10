@@ -1,32 +1,82 @@
-import {initRouter} from "../../router"
 import { state } from "../../state"
+
+const piedra = require("url:../../img/piedra.png");
+const papel = require("url:../../img/papel.png");
+const tijera = require("url:../../img/tijera.png");
 
 const imageWinURL = require("url:../../img/ganaste.png");
 const imageLoseURL = require("url:../../img/perdiste.png");
 const imageTieURL = require("url:../../img/empate.png");
 
-export function resultsPage(params) {
-    console.log("soy el params result",params)
+export function resultsPage() {
+const currentState = state.getState()
+const div = document.createElement("div")
+  const results = document.createElement("div")
+  const score = document.createElement("div")
 
-///////////////JUEGO////////////////
+  const myPlay =
+        currentState.currentGame.myPlay == "piedra" ? piedra : currentState.currentGame.myPlay == "papel"
+          ? papel
+          : tijera;
 
+    const computerPlay =
+        currentState.currentGame.computerPlay == "piedra"
+          ? piedra
+          : currentState.currentGame.computerPlay == "papel"
+          ? papel
+          : tijera;
 
-
-  const div = document.createElement("div")
-
-  div.innerHTML = `
+  results.innerHTML = ` 
+  <img class="computerHand" src=${piedra}>
+  <img class="myHand" src=${papel} >
   
-  <div class="results">
-      <img class="star" src=${imageWinURL}></img>
-      <div class="score">
-          <h1>Score</h1>
-          <div class="myPlay"> Vos:?</div>
-          <div class="computerPlay"> Máquina:?</div>
-      </div>
-
-      <button-comp class="home">Volver a jugar</button-comp>
-  </div>    
   `;
+
+  /* src=${computerPlay} */
+
+  /* src=${myPlay} */ 
+  ////// MOSTRAR RESULTADO ESTRELLA //////
+  
+   const myResult = state.data.history.me;
+  const pcResult = state.data.history.me;
+
+  console.log("mi result",myResult, pcResult)
+
+
+  const display = document.createElement("div")
+  setTimeout(() => {
+    const result = state.whoWins()
+
+    if (result == "win") {
+        results.appendChild(display);
+        display.innerHTML = `<img class="star" src=${imageWinURL}></img>`
+        display.style.backgroundColor = "#68FF33";    
+    }
+    if (result == "lose") {
+        results.appendChild(display);
+        display.innerHTML = `<img class="star" src=${imageLoseURL}></img>`
+        display.style.backgroundColor = "#FF4633";    
+    }
+    if (result == "tie") {
+        results.appendChild(display);
+        display.innerHTML = `<img class="star" src=${imageTieURL}></img>`
+        display.style.backgroundColor = "#6833FF";    
+    }
+
+    score.innerHTML = `
+  
+    <div class="container">
+        <div class="score">
+            <h1>Score</h1>
+            <div class="myPlay"> Vos:${currentState.history.me}</div>
+            <div class="computerPlay"> Máquina:${currentState.history.computer}</div>
+        </div>
+  
+        <button-comp class="home">Volver a jugar</button-comp>
+    </div>    
+    `;
+    
+  }, 2000);
 
   const style = document.createElement("style")
 
@@ -42,7 +92,7 @@ export function resultsPage(params) {
       margin-bottom: 20px;
   }
 
-  .results {
+  .container {
       text-align: center;
       font-size: 55px;
       display: flex;
@@ -75,15 +125,10 @@ export function resultsPage(params) {
 
 
   `
-  
-/*   const buttonHome = document.querySelector(".home")
-  buttonHome.addEventListener("selected",(e:any)=>{  
-      console.log(e.detail.route)
-  params.goTo(e.detail.route);
-  });    */
- 
 
+    div.appendChild (results)
     div.appendChild(style)
-    return div
+    score.appendChild(style)
+    return score
     
 }

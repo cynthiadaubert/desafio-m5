@@ -5,7 +5,7 @@ const imagePapelURL = require("url:../../img/papel.png");
 const imageTijeraURL = require("url:../../img/tijera.png");
 
 
-export function handsComp() {
+export function handsComp(params) {
   customElements.define(
     "hands-comp",
 
@@ -15,16 +15,15 @@ export function handsComp() {
 
       constructor() {
         super();
-        this.shadow = this.attachShadow({ mode: "open" });
-       
+        this.connectedCallback()
        }
         connectedCallback(){
-          this.addCallbacks()
+         
           this.render()
         }
 
-        addCallbacks() {
-          this.shadow.querySelector(".hand").addEventListener("click", (e) => {
+/*          addCallbacks() {
+          this.shadow.querySelector(".hands").addEventListener("click", (e) => {
             const event = new CustomEvent("handEvent", {
               detail: {
                 type: this.getAttribute("type"),
@@ -32,11 +31,12 @@ export function handsComp() {
             });
             this.dispatchEvent(event);
           });
-        }
+        }  */
 
         render() {
+          this.shadow = this.attachShadow({ mode: "open" });
           const div = document.createElement("div")
-          div.className = "hands-cont";
+          div.className = "hands";
   
          div.innerHTML = `
   
@@ -50,6 +50,18 @@ export function handsComp() {
 
         style.innerHTML = `
 
+        img {
+          width: 56px,
+          height: 126px;
+        }
+
+        @media (min-width:769px) {
+          img{
+            width: 80px;
+            height: 180px;
+          }
+        }
+
         .piedra {
           padding-right: 40px;
         }
@@ -58,10 +70,42 @@ export function handsComp() {
           padding-right:40px;
         }
 
+        .transparent {
+          opacity: 0.5;
+        }
             
         `;
 
+        const piedra: any = div.querySelector(".piedra")
+        const papel: any = div.querySelector(".papel")
+        const tijera: any = div.querySelector(".tijera")
 
+        if (this.getAttribute("variant")=="selected") {
+          piedra.addEventListener("click", ()=> {
+            papel.classList.add("transparent")
+            tijera.classList.add("transparent");
+            setTimeout(()=>{
+              state.setMove("piedra");
+              params.goTo("/results")
+            }, 2000)
+          })
+          papel.addEventListener("click", ()=> {
+            piedra.classList.add("transparent")
+            tijera.classList.add("transparent");
+            setTimeout(()=>{
+              state.setMove("piedra");
+              params.goTo("/results")
+            }, 2000)
+          })
+          tijera.addEventListener("click", ()=> {
+            papel.classList.add("transparent")
+            piedra.classList.add("transparent");
+            setTimeout(()=>{
+              state.setMove("piedra");
+              params.goTo("/results")
+            }, 2000)
+          })
+        }
 
       this.shadow.appendChild(style)
       this.shadow.appendChild(div)

@@ -1,8 +1,3 @@
-import {state} from "../../state"
-
-const imagePiedraURL = require("url:../../img/piedra.png");
-const imagePapelURL = require("url:../../img/papel.png");
-const imageTijeraURL = require("url:../../img/tijera.png");
 
 export function playPage(params) {
 
@@ -14,9 +9,7 @@ export function playPage(params) {
     <div class=circle></div>
 
     <hands-container class="hands">
-        <img  class="hand" type="piedra" src=${imagePiedraURL}>
-        <img  class="hand" type="papel" src=${imagePapelURL}>
-        <img class="hand" type="tijera" src=${imageTijeraURL}>
+      <hands-comp variant="selected"></hands-comp>
     </hands-container>
   
   `;
@@ -100,7 +93,7 @@ export function playPage(params) {
 
   `
 
-//////* CONTADOR */////
+//////* CUENTA ATRÁS DEL CÍRCULO */////
   
 let counter = 3;
 
@@ -114,58 +107,16 @@ const intervalId = setInterval(() => {
       /* params.goTo("./instructions") */ ;
   }
 
-}, 1000); 
+}, 2000); 
 
 
-////// TIMEOUT PARA PASAR A RESULTS //////
+////// TIMEOUT PARA PASAR A PAGE RESULTS //////
 
-const handsContainer = div.querySelector(".hands")
-const imgPapel = div.querySelector(".papel")
-const imgPiedra = div.querySelector(".piedra")
+const handsContainer: any = div.querySelector(".hands")
 
-handsContainer.addEventListener("click", (event) => {
-/*   if(event.target == imgPapel){
-    style.innerHTML =`
-    .tijera, .piedra {
-      opacity: 0.5;
-    }
-  `;
-  }else if(event.target == imgPiedra){
-    style.innerHTML =`
-    .tijera, .papel {
-      opacity: 0.5;
-    }
-    `;
-  }else {
-    style.innerHTML =`
-    .piedra, .papel {
-      opacity: 0.5;
-    }
-    `;
-  } */
-
+handsContainer.addEventListener("click", () => {
   setTimeout(() => {  params.goTo("/results") }, 1500);
 });
-
-//////////JUEGO//////////////////
-
-/// EL STATE ESCUCHA LOS MOVIMIENTOS ////
-
-  const container = div.querySelector(".hands")
-  for (const h of container.children){
-    h.addEventListener("election",(e:any)=>{
-      let handSelected = e.detail.type;
-      console.log("soy hand selected",handSelected)
-      state.setMove(handSelected);
-
-      if (h.getAttribute("type") !== handSelected){
-        h.shadowRoot.querySelector(".hand").classList.add("transparent")
-      }else if (h.getAttribute("type") !== handSelected) {
-        h.shadowRoot.querySelector(".hand").classList.add("normal")
-      }
-    })
-  }
-
 
 
   div.appendChild(style)

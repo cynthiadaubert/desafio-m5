@@ -3,18 +3,17 @@ export function buttonComp(params) {
     "button-comp",
 
     class extends HTMLElement {
-      shadow: ShadowRoot;
+/*       shadow: ShadowRoot; */
       constructor() {
         super();
-        this.render();
+        this.connectedCallback();
       }
 
       connectedCallback(){
-        this.addCallbacks()
         this.render()
       }
 
-      addCallbacks() {
+/*       addCallbacks() {
         this.shadow.querySelector(".root").addEventListener("click", (e) => {
           const event = new CustomEvent("selected", {
             detail: {
@@ -23,17 +22,18 @@ export function buttonComp(params) {
           });
           this.dispatchEvent(event);
         });
-      }
+      } */
 
       render() {
         const shadow = this.attachShadow({ mode: "open" }); 
-        const button = document.createElement("button");
+        const div = document.createElement("div")
+        const button = document.createElement("button")
         const style = document.createElement("style");
-        button.className = "root";
+        button.className = "button";
 
         style.innerHTML = `
                 
-                .root {
+                .button {
     
                   background-color: #006CFC;
                   font-size: 45px;
@@ -48,15 +48,20 @@ export function buttonComp(params) {
                 
                 `;
 
-        button.textContent = this.textContent
+        
+                button.textContent = this.textContent
+        this.textContent = this.getAttribute("text");
+          button.addEventListener("click", ()=>{
+                    if (this.textContent == "Volver a jugar"){
+            params.goTo("./instructions")
+          }
+        })
 
-/*         if (button.textContent == "Volver a jugar"){
-                  params.goTo("./instructions")
-        }
- */
 
-        shadow.appendChild(button); 
+       
+        shadow.appendChild(div)
         shadow.appendChild(style);
+        div.appendChild(button); 
 
         
       }
