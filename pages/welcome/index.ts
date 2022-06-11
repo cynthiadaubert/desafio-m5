@@ -21,12 +21,28 @@ export function welcomePage(params) {
   const style = document.createElement("style");
   style.innerHTML = `
 
+  body {
+    box-sizing: border-box;
+    margin: 0 auto;
+  
+  }
+
+  .box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+   
+  }
+
   @media (min-width: 769px) {
     .box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
       max-width: 500px;
       margin: 0 auto;
-      padding-top: 80px;
-      border: solid 10px black;
+      padding: 0px;
     }
   }
 
@@ -37,18 +53,32 @@ export function welcomePage(params) {
     height 204px;
     font-style: bold;
     color: #009048;
-    margin: 0;
+    margin: 100px 0px 50px ;
     padding; 0;
     
   }
 
   @media (min-width: 769px) {
-    .hands {
-      
+    .title {
+      font-size: 100px;
+      width: 100%;
+      height 100%;
     }
   }
   
+  .hands {
+    margin-top: 86px;
+    padding: 0;
+    bottom: 0,
+  }
 
+
+  @media (min-width: 769px) {
+    .hands {
+     margin-right: 300px;
+    }
+  }
+  
   `
 
   const buttonElem: any = div.querySelector("button-comp");

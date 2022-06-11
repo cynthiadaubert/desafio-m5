@@ -1,6 +1,6 @@
 export function buttonComp(params) {
   customElements.define(
-    "button-comp",
+    "button-comp" as any,
 
     class ButtonComp extends HTMLElement {
       shadow: ShadowRoot; 
@@ -34,24 +34,28 @@ export function buttonComp(params) {
         color: #D8FCFC;
         margin-top: 20px;
         }
+
+        @media (min-width: 769px) {
+          .button {
+            min-width: 600px;
+            margin-top: 60px;
+          }
+        }
                 
         `;
 
+
         
-        
-/*         this.textContent = this.getAttribute("text");
-          button.addEventListener("click", ()=>{
-                    if (this.textContent == "Volver a jugar"){
-            params.goTo("./instructions")
-          }
-        }) */
+
+
 
 
         button.textContent = this.textContent
         this.shadow.appendChild(button)
         this.shadow.appendChild(style);
-         
       }
+
+    
     }
   )
 };

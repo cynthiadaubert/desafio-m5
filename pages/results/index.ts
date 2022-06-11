@@ -1,3 +1,4 @@
+import { stat } from "fs";
 import { state } from "../../state"
 
 const piedra = require("url:../../img/piedra.png");
@@ -8,43 +9,149 @@ const imageWinURL = require("url:../../img/ganaste.png");
 const imageLoseURL = require("url:../../img/perdiste.png");
 const imageTieURL = require("url:../../img/empate.png");
 
-export function resultsPage(params) {
+
 const currentState = state.getState()
-const div = document.createElement("div")
+
+export function resultsPage() {
+
+  const div = document.createElement("div")
   const results = document.createElement("div")
-  const score = document.createElement("div")
+  const box = document.createElement("div")
+  const style = document.createElement("style")
 
-  const myPlay =
-        currentState.currentGame.myPlay == "piedra" ? piedra : currentState.currentGame.myPlay == "papel"
-          ? papel
-          : tijera;
+  box.innerHTML = `
 
-    const computerPlay =
-        currentState.currentGame.computerPlay == "piedra"
-          ? piedra
-          : currentState.currentGame.computerPlay == "papel"
-          ? papel
-          : tijera;
+    <div class="container">
+      <div class="star"></div>
+      <div class="score">
+        <h1 class="title">Score</h1>
+        <div class="myPlay"> Vos:${currentState.currentGame.myPlay}</div>
+        <div class="computerPlay"> Máquina:${currentState.currentGame.myPlay}</div>
+      </div>
 
-  results.innerHTML = ` 
-  <img class="computerHand" src=${piedra}>
-  <img class="myHand" src=${papel} >
-  
+      <button-comp class="home">Volver a jugar</button-comp>
+    </div>    
   `;
 
-  /* src=${computerPlay} */
+  style.innerHTML = `
 
-  /* src=${myPlay} */ 
-  ////// MOSTRAR RESULTADO ESTRELLA //////
-  
-   const myResult = state.data.history.me;
-  const pcResult = state.data.history.me;
+  .root {
+    box-sizing: border-box;
+    font-family: odibee sans;
+    margin: 0 auto;
+    height: 100%;
+    padding: 35px 0px 35px 0px;
+  }
 
-  console.log("mi result",myResult, pcResult)
+  .star {
+      height: 254px;
+      width: 254px;
+      margin-bottom: 20px;
+      background-color: red;
+    }
+
+  .container {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+  }
 
 
-  const display = document.createElement("div")
-  setTimeout(() => {
+  @media (min-width: 769px) {
+    .container {
+      height: 800px; 
+    }
+  }
+
+  .title {
+    font-size: 55px;
+    margin: 0;
+    padding: 0;
+  }
+
+  @media (min-width: 769px) {
+    .title {
+      font-size: 80px;
+    }
+  }
+
+  .score {
+      background-color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      font-size: 45px;
+      border: solid 10px black;
+      border-radius: 10px;
+      width: 260px;
+      height: 217px;
+  }
+
+  @media (min-width: 769px) {
+    .score {
+      width: 400px;
+      height: 380px;
+    }
+  }
+
+  .myPlay {
+      text-align: right;
+      margin-right: 10px;
+
+  }
+  .computerPlay {
+      text-align: right;
+      margin-right: 10px;
+  }
+
+
+  `;
+
+
+
+/*   if ((state.data.currentGame.myPlay) == "piedra") {
+    const style = document.createElement("style")
+    box.innerHTML = `
+    
+    <div class="playerone"></div>
+    
+    `;
+
+    style.innerHTML = `
+    
+    .playerone {
+      background-color: red;
+      height: 500px;
+      width: 200px;
+    }
+    
+    `
+  }
+ */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    const display = document.createElement("div")
+    setTimeout(() => {
     const result = state.whoWins()
 
     if (result == "win") {
@@ -63,80 +170,29 @@ const div = document.createElement("div")
         display.style.backgroundColor = "#6833FF";    
     }
 
-    score.innerHTML = `
-  
-    <div class="container">
-        <div class="score">
-            <h1>Score</h1>
-            <div class="myPlay"> Vos:${currentState.history.me}</div>
-            <div class="computerPlay"> Máquina:${currentState.history.computer}</div>
-        </div>
-  
-        <button-comp class="home">Volver a jugar</button-comp>
-    </div>    
-    `;
     
-  }, 2000);
+    
+    }, 1000); 
 
-  const style = document.createElement("style")
-
-  style.innerHTML =`
-
-  .root {
-    margin: 0 auto;
-    box-sizing: border-box;
-  }
-
-  .star {
-      height: 254px;
-      margin-bottom: 20px;
-  }
-
-  .container {
-      text-align: center;
-      font-size: 55px;
-      display: flex;
-      flex-direction: column;
-      border: solid 10px black;
-      padding: 36px 0px;
-      /* padding left y right no funiona */
-  }
-
-  .score {
-      background-color: white;
-      display: flex;
-      flex-direction: column;
-      font-size: 45px;
-      border: solid 10px black;
-      border-radius: 10px;
-      width: 260px;
-      height: 250px;
-  }
-
-  .myPlay {
-      text-align: right;
-      margin-right: 10px;
-
-  }
-  .computerPlay {
-      text-align: right;
-      margin-right: 10px;
-  }
-
-
-  `
-
+  //////////// ESTILOS ////////////
 
  
-/*     score.children.addEventListener("click", ()=>{
-              if (this.textContent == "Volver a jugar"){
-      params.goTo("./instructions")
-    }
-  }) */
+  
 
-    div.appendChild (results)
-    div.appendChild(style)
-    score.appendChild(style)
-    return score
+ 
+
+
+  const buttonElem: any = document.querySelector(".home");
+  console.log("soy button",buttonElem)
+  
+/*   buttonElem.addEventListener("click", () => {
+    params.goTo("/play");
+  });  */ 
+
+
+  box.appendChild(style)
+  return box;
+    
+    
     
 }

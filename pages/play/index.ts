@@ -9,7 +9,7 @@ export function playPage(params) {
     <div class=circle></div>
 
     <hands-container class="hands">
-      <hands-comp variant="selected"></hands-comp>
+      <hands-comp class="hands-comp" variant="selected"></hands-comp>
     </hands-container>
   
   `;
@@ -20,15 +20,26 @@ export function playPage(params) {
   style.innerHTML = `
 
   .root {
+    background-image: url(./img/bg.png);
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: 5px solid #000;
     padding: 118px 0px 80px 0px;
     width: 100%;
   }
 
+  @media (min-width:769px) {
+    .root {
+      height: 100vh;
+      width: 100%;
+    }
+  }
+
+
   .circle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border-radius: 50%;
     width: 243px;
     height: 243px;
@@ -45,14 +56,20 @@ export function playPage(params) {
   }
 
   .hands {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
+    margin-left: 10px;
     position: fixed;
-    border: solid black 10px;
-   
+    bottom: 0;
   }
-  
+
+  @media (min-width:769px) {
+    .hands {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      position: fixed;
+    }
+  }
+
 
   @keyframes loading {
 

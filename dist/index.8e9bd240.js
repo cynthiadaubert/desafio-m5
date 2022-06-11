@@ -623,12 +623,28 @@ function welcomePage(params) {
     const style = document.createElement("style");
     style.innerHTML = `
 
+  body {
+    box-sizing: border-box;
+    margin: 0 auto;
+  
+  }
+
+  .box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+   
+  }
+
   @media (min-width: 769px) {
     .box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100%;
       max-width: 500px;
       margin: 0 auto;
-      padding-top: 80px;
-      border: solid 10px black;
+      padding: 0px;
     }
   }
 
@@ -639,18 +655,32 @@ function welcomePage(params) {
     height 204px;
     font-style: bold;
     color: #009048;
-    margin: 0;
+    margin: 100px 0px 50px ;
     padding; 0;
     
   }
 
   @media (min-width: 769px) {
-    .hands {
-      
+    .title {
+      font-size: 100px;
+      width: 100%;
+      height 100%;
     }
   }
   
+  .hands {
+    margin-top: 86px;
+    padding: 0;
+    bottom: 0,
+  }
 
+
+  @media (min-width: 769px) {
+    .hands {
+     margin-right: 300px;
+    }
+  }
+  
   `;
     const buttonElem = div.querySelector("button-comp");
     buttonElem.addEventListener("click", ()=>{
@@ -697,21 +727,60 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "instructionsPage", ()=>instructionsPage);
 function instructionsPage(params) {
     const div = document.createElement("div");
-    div.className = "container";
+    div.className = "box";
     div.innerHTML = `
    
     
       <h1 class="text">Presioná jugar
       y elegí: piedra, papel o tijera antes de que pasen los 3 segundos.</h1>
       
-      <button-comp>¡Jugar!</button-comp>
+      <button-comp class=button">¡Jugar!</button-comp>
     
-      <hands-comp></handscomp>
+      <hands-comp class="hands"></handscomp>
      
     
     `;
     const style = document.createElement("style");
     style.innerHTML = `
+
+    body {
+      box-sizing: border-box;
+      margin: 0 auto;
+    }
+  
+    .box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      height: 100vh;
+    }
+  
+    @media (min-width: 769px) {
+      .box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        height: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+        padding-top: 0px;
+      }
+    }
+  
+  
+    .hands {
+      margin-top: 86px;
+      padding: 0;
+      bottom: 0,
+    }
+  
+  
+    @media (min-width: 769px) {
+      .hands {
+       margin-right: 300px;
+      }
+    }
+    
 
    .text {
     background-image: none;
@@ -720,10 +789,18 @@ function instructionsPage(params) {
       width: 316px;
       height 240px;
       text-align: center;
-      margin: 0;
+      margin: 100px 0px 50px 0px;
       padding: 0;
     }
   
+    @media (min-width: 769px) {
+      .text {
+        font-size: 50px;
+        width: 100%;
+        height 100%;
+      }
+    }
+
     `;
     const buttonElem = div.querySelector("button-comp");
     buttonElem.addEventListener("click", ()=>{
@@ -745,7 +822,7 @@ function playPage(params) {
     <div class=circle></div>
 
     <hands-container class="hands">
-      <hands-comp variant="selected"></hands-comp>
+      <hands-comp class="hands-comp" variant="selected"></hands-comp>
     </hands-container>
   
   `;
@@ -754,15 +831,26 @@ function playPage(params) {
     style.innerHTML = `
 
   .root {
+    background-image: url(./img/bg.png);
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: 5px solid #000;
     padding: 118px 0px 80px 0px;
     width: 100%;
   }
 
+  @media (min-width:769px) {
+    .root {
+      height: 100vh;
+      width: 100%;
+    }
+  }
+
+
   .circle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     border-radius: 50%;
     width: 243px;
     height: 243px;
@@ -779,14 +867,20 @@ function playPage(params) {
   }
 
   .hands {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
+    margin-left: 10px;
     position: fixed;
-    border: solid black 10px;
-   
+    bottom: 0;
   }
-  
+
+  @media (min-width:769px) {
+    .hands {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      position: fixed;
+    }
+  }
+
 
   @keyframes loading {
 
@@ -856,23 +950,119 @@ const tijera = require("url:../../img/tijera.png");
 const imageWinURL = require("url:../../img/ganaste.png");
 const imageLoseURL = require("url:../../img/perdiste.png");
 const imageTieURL = require("url:../../img/empate.png");
-function resultsPage(params) {
-    const currentState = (0, _state.state).getState();
+const currentState = (0, _state.state).getState();
+function resultsPage() {
     const div = document.createElement("div");
     const results = document.createElement("div");
-    const score = document.createElement("div");
-    const myPlay = currentState.currentGame.myPlay == "piedra" ? piedra : currentState.currentGame.myPlay == "papel" ? papel : tijera;
-    const computerPlay = currentState.currentGame.computerPlay == "piedra" ? piedra : currentState.currentGame.computerPlay == "papel" ? papel : tijera;
-    results.innerHTML = ` 
-  <img class="computerHand" src=${piedra}>
-  <img class="myHand" src=${papel} >
-  
+    const box = document.createElement("div");
+    const style = document.createElement("style");
+    box.innerHTML = `
+
+    <div class="container">
+      <div class="star"></div>
+      <div class="score">
+        <h1 class="title">Score</h1>
+        <div class="myPlay"> Vos:${currentState.currentGame.myPlay}</div>
+        <div class="computerPlay"> Máquina:${currentState.currentGame.myPlay}</div>
+      </div>
+
+      <button-comp class="home">Volver a jugar</button-comp>
+    </div>    
   `;
-    /* src=${computerPlay} */ /* src=${myPlay} */ ////// MOSTRAR RESULTADO ESTRELLA //////
-    const myResult = (0, _state.state).data.history.me;
-    const pcResult = (0, _state.state).data.history.me;
-    console.log("mi result", myResult, pcResult);
-    const display = document.createElement("div");
+    style.innerHTML = `
+
+  .root {
+    box-sizing: border-box;
+    font-family: odibee sans;
+    margin: 0 auto;
+    height: 100%;
+    padding: 35px 0px 35px 0px;
+  }
+
+  .star {
+      height: 254px;
+      width: 254px;
+      margin-bottom: 20px;
+      background-color: red;
+    }
+
+  .container {
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+  }
+
+
+  @media (min-width: 769px) {
+    .container {
+      height: 800px; 
+    }
+  }
+
+  .title {
+    font-size: 55px;
+    margin: 0;
+    padding: 0;
+  }
+
+  @media (min-width: 769px) {
+    .title {
+      font-size: 80px;
+    }
+  }
+
+  .score {
+      background-color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      font-size: 45px;
+      border: solid 10px black;
+      border-radius: 10px;
+      width: 260px;
+      height: 217px;
+  }
+
+  @media (min-width: 769px) {
+    .score {
+      width: 400px;
+      height: 380px;
+    }
+  }
+
+  .myPlay {
+      text-align: right;
+      margin-right: 10px;
+
+  }
+  .computerPlay {
+      text-align: right;
+      margin-right: 10px;
+  }
+
+
+  `;
+    /*   if ((state.data.currentGame.myPlay) == "piedra") {
+    const style = document.createElement("style")
+    box.innerHTML = `
+    
+    <div class="playerone"></div>
+    
+    `;
+
+    style.innerHTML = `
+    
+    .playerone {
+      background-color: red;
+      height: 500px;
+      width: 200px;
+    }
+    
+    `
+  }
+ */ const display = document.createElement("div");
     setTimeout(()=>{
         const result = (0, _state.state).whoWins();
         if (result == "win") {
@@ -890,76 +1080,17 @@ function resultsPage(params) {
             display.innerHTML = `<img class="star" src=${imageTieURL}></img>`;
             display.style.backgroundColor = "#6833FF";
         }
-        score.innerHTML = `
-  
-    <div class="container">
-        <div class="score">
-            <h1>Score</h1>
-            <div class="myPlay"> Vos:${currentState.history.me}</div>
-            <div class="computerPlay"> Máquina:${currentState.history.computer}</div>
-        </div>
-  
-        <button-comp class="home">Volver a jugar</button-comp>
-    </div>    
-    `;
-    }, 2000);
-    const style = document.createElement("style");
-    style.innerHTML = `
-
-  .root {
-    margin: 0 auto;
-    box-sizing: border-box;
-  }
-
-  .star {
-      height: 254px;
-      margin-bottom: 20px;
-  }
-
-  .container {
-      text-align: center;
-      font-size: 55px;
-      display: flex;
-      flex-direction: column;
-      border: solid 10px black;
-      padding: 36px 0px;
-      /* padding left y right no funiona */
-  }
-
-  .score {
-      background-color: white;
-      display: flex;
-      flex-direction: column;
-      font-size: 45px;
-      border: solid 10px black;
-      border-radius: 10px;
-      width: 260px;
-      height: 250px;
-  }
-
-  .myPlay {
-      text-align: right;
-      margin-right: 10px;
-
-  }
-  .computerPlay {
-      text-align: right;
-      margin-right: 10px;
-  }
-
-
-  `;
-    /*     score.children.addEventListener("click", ()=>{
-              if (this.textContent == "Volver a jugar"){
-      params.goTo("./instructions")
-    }
-  }) */ div.appendChild(results);
-    div.appendChild(style);
-    score.appendChild(style);
-    return score;
+    }, 1000);
+    //////////// ESTILOS ////////////
+    const buttonElem = document.querySelector(".home");
+    console.log("soy button", buttonElem);
+    /*   buttonElem.addEventListener("click", () => {
+    params.goTo("/play");
+  });  */ box.appendChild(style);
+    return box;
 }
 
-},{"url:../../img/ganaste.png":"etiOr","url:../../img/perdiste.png":"9ho5B","url:../../img/empate.png":"6aNTq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../../state":"d4y3Q","url:../../img/piedra.png":"lzIoH","url:../../img/papel.png":"3UuT5","url:../../img/tijera.png":"3dltE"}],"etiOr":[function(require,module,exports) {
+},{"url:../../img/ganaste.png":"etiOr","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../../state":"d4y3Q","url:../../img/piedra.png":"lzIoH","url:../../img/papel.png":"3UuT5","url:../../img/tijera.png":"3dltE","url:../../img/empate.png":"6aNTq","url:../../img/perdiste.png":"9ho5B"}],"etiOr":[function(require,module,exports) {
 module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "ganaste.1aab8f76.png" + "?" + Date.now();
 
 },{"./helpers/bundle-url":"lgJ39"}],"lgJ39":[function(require,module,exports) {
@@ -996,13 +1127,7 @@ exports.getBundleURL = getBundleURLCached;
 exports.getBaseURL = getBaseURL;
 exports.getOrigin = getOrigin;
 
-},{}],"9ho5B":[function(require,module,exports) {
-module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "perdiste.90c6bbd7.png" + "?" + Date.now();
-
-},{"./helpers/bundle-url":"lgJ39"}],"6aNTq":[function(require,module,exports) {
-module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "empate.ef275105.png" + "?" + Date.now();
-
-},{"./helpers/bundle-url":"lgJ39"}],"d4y3Q":[function(require,module,exports) {
+},{}],"d4y3Q":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "state", ()=>state);
@@ -1038,7 +1163,9 @@ const state = {
         ];
         const currentState = this.getState();
         currentState.currentGame.myPlay = move;
-        currentState.currentGame.computerPlay = options[Math.floor(Math.random() * 3)];
+        console.log("soy mi move", move);
+        const pcMove = currentState.currentGame.computerPlay = options[Math.floor(Math.random() * 3)];
+        console.log("soy el pc move", pcMove);
         this.pushToHistory();
     },
     whoWins () {
@@ -1062,9 +1189,10 @@ const state = {
             pcGanaTijeras
         ].includes(true);
         let result;
-        if (win == true) result = "win";
-        else if (lose == true) result = "lose";
+        if (win) result = "win";
+        else if (lose) result = "lose";
         else result = "tie";
+        console.log("soy el result", result);
         return result;
     },
     pushToHistory () {
@@ -1074,32 +1202,7 @@ const state = {
         else if (result == "lose") currentState.history.computer++;
         localStorage.setItem("saved-state", JSON.stringify(state.getState()));
     },
-    /*      const currentState = this.getState();
-    const result = this.whoWins();
-    const myScore = currentState.history.me;
-    const computerScore = currentState.history.computer;
-
-    if (result == "win"){
-     this.setState({
-       ...currentState,
-       history: {
-         computer: computerScore + 1,
-         me: myScore,
-       },
-      })
-    }
-
-    if (result == "lose") {
-      this.setState({
-        ...currentState,
-        history: {
-        computer: computerScore,
-         me: myScore + 1,
-        }
-      })
-    }
-     localStorage.setItem("current-game", JSON.stringify(state.getState())) 
-   } */ subscribe (cb) {
+    subscribe (cb) {
         this.listeners.push(cb);
     }
 };
@@ -1112,6 +1215,12 @@ module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "papel.
 
 },{"./helpers/bundle-url":"lgJ39"}],"3dltE":[function(require,module,exports) {
 module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "tijera.bcbc49ac.png" + "?" + Date.now();
+
+},{"./helpers/bundle-url":"lgJ39"}],"6aNTq":[function(require,module,exports) {
+module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "empate.ef275105.png" + "?" + Date.now();
+
+},{"./helpers/bundle-url":"lgJ39"}],"9ho5B":[function(require,module,exports) {
+module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "perdiste.90c6bbd7.png" + "?" + Date.now();
 
 },{"./helpers/bundle-url":"lgJ39"}],"4iqCu":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -1146,14 +1255,16 @@ function buttonComp(params) {
         color: #D8FCFC;
         margin-top: 20px;
         }
+
+        @media (min-width: 769px) {
+          .button {
+            min-width: 600px;
+            margin-top: 60px;
+          }
+        }
                 
         `;
-            /*         this.textContent = this.getAttribute("text");
-          button.addEventListener("click", ()=>{
-                    if (this.textContent == "Volver a jugar"){
-            params.goTo("./instructions")
-          }
-        }) */ button.textContent = this.textContent;
+            button.textContent = this.textContent;
             this.shadow.appendChild(button);
             this.shadow.appendChild(style);
         }
@@ -1185,9 +1296,9 @@ function handsComp(params) {
             div.className = "hands";
             div.innerHTML = `
   
-          <img type="piedra" class="piedra" src=${imagePiedraURL}>
-          <img type="papel" class="papel" src=${imagePapelURL}>
-          <img type="tijera" class="tijera" src=${imageTijeraURL}>
+          <img variant="selected" class="piedra" src=${imagePiedraURL}>
+          <img variant="selected" class="papel" src=${imagePapelURL}>
+          <img variant="selected" class="tijera" src=${imageTijeraURL}>
   
         `;
             style.innerHTML = `
@@ -1212,6 +1323,14 @@ function handsComp(params) {
               padding-right:40px;
           }
 
+          @media (min-width:769px){
+            .hands {
+              width: 500px;
+              position: fixed;
+              bottom: 0;
+            }
+          }
+
           .transparent {
               opacity: 0.5;
           }
@@ -1226,6 +1345,7 @@ function handsComp(params) {
                     tijera.classList.add("transparent");
                     setTimeout(()=>{
                         (0, _state.state).setMove("piedra");
+                        console.log((0, _state.state).getState());
                         params.goTo("/results");
                     }, 2000);
                 });
@@ -1233,7 +1353,8 @@ function handsComp(params) {
                     piedra.classList.add("transparent");
                     tijera.classList.add("transparent");
                     setTimeout(()=>{
-                        (0, _state.state).setMove("piedra");
+                        (0, _state.state).setMove("papel");
+                        console.log((0, _state.state).getState());
                         params.goTo("/results");
                     }, 2000);
                 });
@@ -1241,7 +1362,8 @@ function handsComp(params) {
                     papel.classList.add("transparent");
                     piedra.classList.add("transparent");
                     setTimeout(()=>{
-                        (0, _state.state).setMove("piedra");
+                        (0, _state.state).setMove("tijera");
+                        console.log((0, _state.state).getState());
                         params.goTo("/results");
                     }, 2000);
                 });

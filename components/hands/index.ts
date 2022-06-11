@@ -5,7 +5,7 @@ const imagePapelURL = require("url:../../img/papel.png");
 const imageTijeraURL = require("url:../../img/tijera.png");
 
 
-export function handsComp(params) {
+export function handsComp(params:{goTo}) {
   
   customElements.define(
     "hands-comp",
@@ -31,9 +31,9 @@ export function handsComp(params) {
   
         div.innerHTML = `
   
-          <img type="piedra" class="piedra" src=${imagePiedraURL}>
-          <img type="papel" class="papel" src=${imagePapelURL}>
-          <img type="tijera" class="tijera" src=${imageTijeraURL}>
+          <img variant="selected" class="piedra" src=${imagePiedraURL}>
+          <img variant="selected" class="papel" src=${imagePapelURL}>
+          <img variant="selected" class="tijera" src=${imageTijeraURL}>
   
         `;
 
@@ -59,6 +59,14 @@ export function handsComp(params) {
               padding-right:40px;
           }
 
+          @media (min-width:769px){
+            .hands {
+              width: 500px;
+              position: fixed;
+              bottom: 0;
+            }
+          }
+
           .transparent {
               opacity: 0.5;
           }
@@ -75,6 +83,7 @@ export function handsComp(params) {
             tijera.classList.add("transparent");
             setTimeout(()=>{
               state.setMove("piedra");
+              console.log(state.getState())
               params.goTo("/results")
             }, 2000)
           })
@@ -82,7 +91,8 @@ export function handsComp(params) {
             piedra.classList.add("transparent")
             tijera.classList.add("transparent");
             setTimeout(()=>{
-              state.setMove("piedra");
+              state.setMove("papel");
+              console.log(state.getState())
               params.goTo("/results")
             }, 2000)
           })
@@ -90,7 +100,8 @@ export function handsComp(params) {
             papel.classList.add("transparent")
             piedra.classList.add("transparent");
             setTimeout(()=>{
-              state.setMove("piedra");
+              state.setMove("tijera");
+              console.log(state.getState())
               params.goTo("/results")
             }, 2000)
             })
