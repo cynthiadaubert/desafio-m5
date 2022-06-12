@@ -128,11 +128,11 @@ const intervalId = setInterval(() => {
 
 ////// TIMEOUT PARA PASAR A PAGE RESULTS //////
 
-const handsContainer: any = div.querySelector(".hands")
+/* const handsContainer: any = div.querySelector(".hands")
 
 handsContainer.addEventListener("click", () => {
   setTimeout(() => {  params.goTo("/results") }, 1500);
-});
+}); */
 
 
   div.appendChild(style)

@@ -77,35 +77,45 @@ export function handsComp(params:{goTo}) {
           const papel: any = div.querySelector(".papel")
           const tijera: any = div.querySelector(".tijera")
 
-          if (this.getAttribute("variant")=="selected") {
+    
+
+
+
+
+
+          
+         if (this.getAttribute("variant")=="selected") {
             piedra.addEventListener("click", ()=> {
             papel.classList.add("transparent")
             tijera.classList.add("transparent");
+            state.setMove("piedra");
             setTimeout(()=>{
-              state.setMove("piedra");
-              console.log(state.getState())
+              
+              console.log("soy getstate",state.getState())
               params.goTo("/results")
             }, 2000)
           })
             papel.addEventListener("click", ()=> {
             piedra.classList.add("transparent")
             tijera.classList.add("transparent");
+            state.setMove("papel");
             setTimeout(()=>{
-              state.setMove("papel");
-              console.log(state.getState())
+              
+              console.log("soy getstate",state.getState())
               params.goTo("/results")
             }, 2000)
           })
             tijera.addEventListener("click", ()=> {
             papel.classList.add("transparent")
             piedra.classList.add("transparent");
+            state.setMove("tijera");
             setTimeout(()=>{
-              state.setMove("tijera");
-              console.log(state.getState())
+              
+              console.log("soy getstate",state.getState())
               params.goTo("/results")
             }, 2000)
             })
-          } 
+          }  
 
           this.shadow.appendChild(style)
           this.shadow.appendChild(div)

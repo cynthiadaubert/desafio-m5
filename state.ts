@@ -14,7 +14,7 @@ data: {
     },
 },
 
- listeners: [], 
+/*  listeners: [], */ 
 
 initState(){
     const localData = localStorage.getItem("saved-state")
@@ -48,9 +48,13 @@ setMove(move: Jugada) {
 whoWins() {
 
   const currentGame = this.getState();
+  console.log("soy el currentgame",currentGame)
+  console.log("en who wins")
+  console.log("my play", currentGame.myPlay)
+  console.log("pc play", currentGame.computerPlay)
 
-  const myPlay = currentGame.myPlay
-  const computerPlay = currentGame.computerPlay
+  const myPlay = currentGame.myPlay;
+  const computerPlay = currentGame.computerPlay; 
 
   const ganeConTijeras = myPlay == "tijera" && computerPlay == "papel";
   const ganeConPiedra = myPlay == "piedra" && computerPlay == "tijera";
@@ -65,9 +69,9 @@ whoWins() {
 
   let result
   
-  if (win) {
+  if (win == true) {
       result = "win";
-  } else if (lose){
+  } else if (lose == true){
       result = "lose"
   }else {
       result = "tie";
@@ -79,20 +83,35 @@ whoWins() {
 
 
 pushToHistory() {
-  const result = this.whoWins()
-  const currentState = this.getState();
+const result = this.whoWins()
+const currentState = this.getState();
+const myScore = currentState.currentGame.history.me;
+const computerScore = currentState.currentGame.history.computer;
 
-  if(result == "win"){
-    currentState.history.me++;
-  }else if(result == "lose"){
-    currentState.history.computer++
+  if (result == "win") {
+    this.setState({
+      ...currentState,
+      history: {
+        computer: computerScore,
+        me: myScore + 1, 
+      },
+    });
+  }
+  if (result == "lose") {
+    this.setState({
+      ...currentState,
+      history: {
+        computer: computerScore + 1,
+        me: myScore,
+      },
+    });
   }
   localStorage.setItem("saved-state", JSON.stringify(state.getState()))
 },
 
-  subscribe(cb: (any)=> any) {
+/*   subscribe(cb: (any)=> any) {
     this.listeners.push(cb)
-  },
+  }, */
 }
 
 export {state}

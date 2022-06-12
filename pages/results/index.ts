@@ -1,4 +1,3 @@
-import { stat } from "fs";
 import { state } from "../../state"
 
 const piedra = require("url:../../img/piedra.png");
@@ -8,21 +7,21 @@ const tijera = require("url:../../img/tijera.png");
 const imageWinURL = require("url:../../img/ganaste.png");
 const imageLoseURL = require("url:../../img/perdiste.png");
 const imageTieURL = require("url:../../img/empate.png");
-
+/* ${imageTieURL} */
 
 const currentState = state.getState()
 
 export function resultsPage(params) {
 
   const div = document.createElement("div")
-  const results = document.createElement("div")
   const box = document.createElement("div")
   const style = document.createElement("style")
+  const results = document.createElement("div")
 
   box.innerHTML = `
 
     <div class="container">
-      <div class="star"></div>
+      <img class="star">${imageTieURL}</img>
       <div class="score">
         <h1 class="title">Score</h1>
         <div class="myPlay"> Vos:${currentState.currentGame.myPlay}</div>
@@ -108,43 +107,6 @@ export function resultsPage(params) {
 
 
   `;
-
-
-
-/*   if ((state.data.currentGame.myPlay) == "piedra") {
-    const style = document.createElement("style")
-    box.innerHTML = `
-    
-    <div class="playerone"></div>
-    
-    `;
-
-    style.innerHTML = `
-    
-    .playerone {
-      background-color: red;
-      height: 500px;
-      width: 200px;
-    }
-    
-    `
-  }
- */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

@@ -933,13 +933,11 @@ function playPage(params) {
         if (counter < 0 && location.pathname.includes("play")) clearInterval(intervalId) /*  params.goTo("./instructions") */ ;
     }, 1000);
     ////// TIMEOUT PARA PASAR A PAGE RESULTS //////
-    const handsContainer = div.querySelector(".hands");
-    handsContainer.addEventListener("click", ()=>{
-        setTimeout(()=>{
-            params.goTo("/results");
-        }, 1500);
-    });
-    div.appendChild(style);
+    /* const handsContainer: any = div.querySelector(".hands")
+
+handsContainer.addEventListener("click", () => {
+  setTimeout(() => {  params.goTo("/results") }, 1500);
+}); */ div.appendChild(style);
     return div;
 }
 
@@ -954,16 +952,16 @@ const tijera = require("url:../../img/tijera.png");
 const imageWinURL = require("url:../../img/ganaste.png");
 const imageLoseURL = require("url:../../img/perdiste.png");
 const imageTieURL = require("url:../../img/empate.png");
-const currentState = (0, _state.state).getState();
+/* ${imageTieURL} */ const currentState = (0, _state.state).getState();
 function resultsPage(params) {
     const div = document.createElement("div");
-    const results = document.createElement("div");
     const box = document.createElement("div");
     const style = document.createElement("style");
+    const results = document.createElement("div");
     box.innerHTML = `
 
     <div class="container">
-      <div class="star"></div>
+      <img class="star">${imageTieURL}</img>
       <div class="score">
         <h1 class="title">Score</h1>
         <div class="myPlay"> Vos:${currentState.currentGame.myPlay}</div>
@@ -1048,25 +1046,7 @@ function resultsPage(params) {
 
 
   `;
-    /*   if ((state.data.currentGame.myPlay) == "piedra") {
-    const style = document.createElement("style")
-    box.innerHTML = `
-    
-    <div class="playerone"></div>
-    
-    `;
-
-    style.innerHTML = `
-    
-    .playerone {
-      background-color: red;
-      height: 500px;
-      width: 200px;
-    }
-    
-    `
-  }
- */ /*     const display = document.createElement("div")
+    /*     const display = document.createElement("div")
     setTimeout(() => {
     const result = state.whoWins()
 
@@ -1097,7 +1077,7 @@ function resultsPage(params) {
     return box;
 }
 
-},{"../../state":"d4y3Q","url:../../img/piedra.png":"lzIoH","url:../../img/papel.png":"3UuT5","url:../../img/tijera.png":"3dltE","url:../../img/ganaste.png":"etiOr","url:../../img/perdiste.png":"9ho5B","url:../../img/empate.png":"6aNTq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"d4y3Q":[function(require,module,exports) {
+},{"../../state":"d4y3Q","url:../../img/piedra.png":"lzIoH","url:../../img/papel.png":"3UuT5","url:../../img/tijera.png":"3dltE","url:../../img/perdiste.png":"9ho5B","url:../../img/empate.png":"6aNTq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","url:../../img/ganaste.png":"etiOr"}],"d4y3Q":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "state", ()=>state);
@@ -1112,8 +1092,7 @@ const state = {
             me: 0
         }
     },
-    listeners: [],
-    initState () {
+    /*  listeners: [], */ initState () {
         const localData = localStorage.getItem("saved-state");
         if (localData !== null) this.setState(JSON.parse(localData));
     },
@@ -1140,6 +1119,10 @@ const state = {
     },
     whoWins () {
         const currentGame = this.getState();
+        console.log("soy el currentgame", currentGame);
+        console.log("en who wins");
+        console.log("my play", currentGame.myPlay);
+        console.log("pc play", currentGame.computerPlay);
         const myPlay = currentGame.myPlay;
         const computerPlay = currentGame.computerPlay;
         const ganeConTijeras = myPlay == "tijera" && computerPlay == "papel";
@@ -1159,8 +1142,8 @@ const state = {
             pcGanaTijeras
         ].includes(true);
         let result;
-        if (win) result = "win";
-        else if (lose) result = "lose";
+        if (win == true) result = "win";
+        else if (lose == true) result = "lose";
         else result = "tie";
         console.log("soy el result", result);
         return result;
@@ -1168,12 +1151,23 @@ const state = {
     pushToHistory () {
         const result = this.whoWins();
         const currentState = this.getState();
-        if (result == "win") currentState.history.me++;
-        else if (result == "lose") currentState.history.computer++;
+        const myScore = currentState.currentGame.history.me;
+        const computerScore = currentState.currentGame.history.computer;
+        if (result == "win") this.setState({
+            ...currentState,
+            history: {
+                computer: computerScore,
+                me: myScore + 1
+            }
+        });
+        if (result == "lose") this.setState({
+            ...currentState,
+            history: {
+                computer: computerScore + 1,
+                me: myScore
+            }
+        });
         localStorage.setItem("saved-state", JSON.stringify(state.getState()));
-    },
-    subscribe (cb) {
-        this.listeners.push(cb);
     }
 };
 
@@ -1220,14 +1214,14 @@ module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "papel.
 },{"./helpers/bundle-url":"lgJ39"}],"3dltE":[function(require,module,exports) {
 module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "tijera.bcbc49ac.png" + "?" + Date.now();
 
-},{"./helpers/bundle-url":"lgJ39"}],"etiOr":[function(require,module,exports) {
-module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "ganaste.1aab8f76.png" + "?" + Date.now();
-
 },{"./helpers/bundle-url":"lgJ39"}],"9ho5B":[function(require,module,exports) {
 module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "perdiste.90c6bbd7.png" + "?" + Date.now();
 
 },{"./helpers/bundle-url":"lgJ39"}],"6aNTq":[function(require,module,exports) {
 module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "empate.ef275105.png" + "?" + Date.now();
+
+},{"./helpers/bundle-url":"lgJ39"}],"etiOr":[function(require,module,exports) {
+module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "ganaste.1aab8f76.png" + "?" + Date.now();
 
 },{"./helpers/bundle-url":"lgJ39"}],"bPPIi":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -1301,27 +1295,27 @@ function handsComp(params) {
                 piedra.addEventListener("click", ()=>{
                     papel.classList.add("transparent");
                     tijera.classList.add("transparent");
+                    (0, _state.state).setMove("piedra");
                     setTimeout(()=>{
-                        (0, _state.state).setMove("piedra");
-                        console.log((0, _state.state).getState());
+                        console.log("soy getstate", (0, _state.state).getState());
                         params.goTo("/results");
                     }, 2000);
                 });
                 papel.addEventListener("click", ()=>{
                     piedra.classList.add("transparent");
                     tijera.classList.add("transparent");
+                    (0, _state.state).setMove("papel");
                     setTimeout(()=>{
-                        (0, _state.state).setMove("papel");
-                        console.log((0, _state.state).getState());
+                        console.log("soy getstate", (0, _state.state).getState());
                         params.goTo("/results");
                     }, 2000);
                 });
                 tijera.addEventListener("click", ()=>{
                     papel.classList.add("transparent");
                     piedra.classList.add("transparent");
+                    (0, _state.state).setMove("tijera");
                     setTimeout(()=>{
-                        (0, _state.state).setMove("tijera");
-                        console.log((0, _state.state).getState());
+                        console.log("soy getstate", (0, _state.state).getState());
                         params.goTo("/results");
                     }, 2000);
                 });
