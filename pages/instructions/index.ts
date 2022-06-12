@@ -52,7 +52,7 @@ export function instructionsPage(params) {
   
     @media (min-width: 769px) {
       .hands {
-       margin-right: 300px;
+       margin-right: 355px;
       }
     }
     
@@ -73,6 +73,7 @@ export function instructionsPage(params) {
         font-size: 50px;
         width: 100%;
         height 100%;
+        margin-left: 60px;
       }
     }
 

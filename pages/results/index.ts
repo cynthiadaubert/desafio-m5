@@ -12,7 +12,7 @@ const imageTieURL = require("url:../../img/empate.png");
 
 const currentState = state.getState()
 
-export function resultsPage() {
+export function resultsPage(params) {
 
   const div = document.createElement("div")
   const results = document.createElement("div")
@@ -150,7 +150,7 @@ export function resultsPage() {
 
 
 
-    const display = document.createElement("div")
+/*     const display = document.createElement("div")
     setTimeout(() => {
     const result = state.whoWins()
 
@@ -172,7 +172,7 @@ export function resultsPage() {
 
     
     
-    }, 1000); 
+    }, 1000);  */
 
   //////////// ESTILOS ////////////
 
@@ -182,12 +182,10 @@ export function resultsPage() {
  
 
 
-  const buttonElem: any = document.querySelector(".home");
-  console.log("soy button",buttonElem)
-  
-/*   buttonElem.addEventListener("click", () => {
+  const buttonElem: any = box.querySelector(".home");
+  buttonElem.addEventListener("click", () => {
     params.goTo("/play");
-  });  */ 
+  }); 
 
 
   box.appendChild(style)

@@ -20,7 +20,7 @@ export function playPage(params) {
   style.innerHTML = `
 
   .root {
-    background-image: url(./img/bg.png);
+    
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -56,7 +56,7 @@ export function playPage(params) {
   }
 
   .hands {
-    margin-left: 10px;
+    margin-left: 0px;
     position: fixed;
     bottom: 0;
   }
@@ -64,8 +64,6 @@ export function playPage(params) {
   @media (min-width:769px) {
     .hands {
       width: 100%;
-      display: flex;
-      flex-direction: row;
       position: fixed;
     }
   }

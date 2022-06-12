@@ -515,7 +515,7 @@ var _button = require("./components/button");
     (0, _router.initRouter)(root);
 })();
 
-},{"./router":"eBUGN","./state":"d4y3Q","./components/button":"4iqCu","./components/hands":"bPPIi"}],"eBUGN":[function(require,module,exports) {
+},{"./router":"eBUGN","./state":"d4y3Q","./components/hands":"bPPIi","./components/button":"4iqCu"}],"eBUGN":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "initRouter", ()=>initRouter);
@@ -570,7 +570,7 @@ function initRouter(container) {
     };
 }
 
-},{"./pages/welcome":"9DGFD","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./pages/instructions":"8vgGD","./pages/play":"jlIcx","./pages/results":"bQd14"}],"9DGFD":[function(require,module,exports) {
+},{"./pages/welcome":"9DGFD","./pages/instructions":"8vgGD","./pages/play":"jlIcx","./pages/results":"bQd14","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"9DGFD":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "welcomePage", ()=>welcomePage) /* .
@@ -629,11 +629,10 @@ function welcomePage(params) {
   
   }
 
-  .box {
+  .root {
     display: flex;
     flex-direction: column;
     align-items: center;
-   
   }
 
   @media (min-width: 769px) {
@@ -642,7 +641,7 @@ function welcomePage(params) {
       flex-direction: column;
       align-items: center;
       height: 100%;
-      max-width: 500px;
+      max-width: 800px;
       margin: 0 auto;
       padding: 0px;
     }
@@ -651,6 +650,7 @@ function welcomePage(params) {
  .title {
     font-size: 80px;
     font-family: courier new;
+    text-align: center;
     width: 284px;
     height 204px;
     font-style: bold;
@@ -663,8 +663,9 @@ function welcomePage(params) {
   @media (min-width: 769px) {
     .title {
       font-size: 100px;
-      width: 100%;
-      height 100%;
+      width: 80%;
+      height 80%;
+     
     }
   }
   
@@ -677,7 +678,11 @@ function welcomePage(params) {
 
   @media (min-width: 769px) {
     .hands {
-     margin-right: 300px;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      position: fixed;
+      margin-left: 176px;
     }
   }
   
@@ -777,7 +782,7 @@ function instructionsPage(params) {
   
     @media (min-width: 769px) {
       .hands {
-       margin-right: 300px;
+       margin-right: 355px;
       }
     }
     
@@ -798,6 +803,7 @@ function instructionsPage(params) {
         font-size: 50px;
         width: 100%;
         height 100%;
+        margin-left: 60px;
       }
     }
 
@@ -831,7 +837,7 @@ function playPage(params) {
     style.innerHTML = `
 
   .root {
-    background-image: url(./img/bg.png);
+    
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -867,7 +873,7 @@ function playPage(params) {
   }
 
   .hands {
-    margin-left: 10px;
+    margin-left: 0px;
     position: fixed;
     bottom: 0;
   }
@@ -875,8 +881,6 @@ function playPage(params) {
   @media (min-width:769px) {
     .hands {
       width: 100%;
-      display: flex;
-      flex-direction: row;
       position: fixed;
     }
   }
@@ -951,7 +955,7 @@ const imageWinURL = require("url:../../img/ganaste.png");
 const imageLoseURL = require("url:../../img/perdiste.png");
 const imageTieURL = require("url:../../img/empate.png");
 const currentState = (0, _state.state).getState();
-function resultsPage() {
+function resultsPage(params) {
     const div = document.createElement("div");
     const results = document.createElement("div");
     const box = document.createElement("div");
@@ -1062,72 +1066,38 @@ function resultsPage() {
     
     `
   }
- */ const display = document.createElement("div");
-    setTimeout(()=>{
-        const result = (0, _state.state).whoWins();
-        if (result == "win") {
-            results.appendChild(display);
-            display.innerHTML = `<img class="star" src=${imageWinURL}></img>`;
-            display.style.backgroundColor = "#68FF33";
-        }
-        if (result == "lose") {
-            results.appendChild(display);
-            display.innerHTML = `<img class="star" src=${imageLoseURL}></img>`;
-            display.style.backgroundColor = "#FF4633";
-        }
-        if (result == "tie") {
-            results.appendChild(display);
-            display.innerHTML = `<img class="star" src=${imageTieURL}></img>`;
-            display.style.backgroundColor = "#6833FF";
-        }
-    }, 1000);
-    //////////// ESTILOS ////////////
-    const buttonElem = document.querySelector(".home");
-    console.log("soy button", buttonElem);
-    /*   buttonElem.addEventListener("click", () => {
-    params.goTo("/play");
-  });  */ box.appendChild(style);
+ */ /*     const display = document.createElement("div")
+    setTimeout(() => {
+    const result = state.whoWins()
+
+    if (result == "win") {
+        results.appendChild(display);
+        display.innerHTML = `<img class="star" src=${imageWinURL}></img>`
+        display.style.backgroundColor = "#68FF33";    
+    }
+    if (result == "lose") {
+        results.appendChild(display);
+        display.innerHTML = `<img class="star" src=${imageLoseURL}></img>`
+        display.style.backgroundColor = "#FF4633";    
+    }
+    if (result == "tie") {
+        results.appendChild(display);
+        display.innerHTML = `<img class="star" src=${imageTieURL}></img>`
+        display.style.backgroundColor = "#6833FF";    
+    }
+
+    
+    
+    }, 1000);  */ //////////// ESTILOS ////////////
+    const buttonElem = box.querySelector(".home");
+    buttonElem.addEventListener("click", ()=>{
+        params.goTo("/play");
+    });
+    box.appendChild(style);
     return box;
 }
 
-},{"url:../../img/ganaste.png":"etiOr","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../../state":"d4y3Q","url:../../img/piedra.png":"lzIoH","url:../../img/papel.png":"3UuT5","url:../../img/tijera.png":"3dltE","url:../../img/empate.png":"6aNTq","url:../../img/perdiste.png":"9ho5B"}],"etiOr":[function(require,module,exports) {
-module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "ganaste.1aab8f76.png" + "?" + Date.now();
-
-},{"./helpers/bundle-url":"lgJ39"}],"lgJ39":[function(require,module,exports) {
-"use strict";
-var bundleURL = {};
-function getBundleURLCached(id) {
-    var value = bundleURL[id];
-    if (!value) {
-        value = getBundleURL();
-        bundleURL[id] = value;
-    }
-    return value;
-}
-function getBundleURL() {
-    try {
-        throw new Error();
-    } catch (err) {
-        var matches = ("" + err.stack).match(/(https?|file|ftp|(chrome|moz)-extension):\/\/[^)\n]+/g);
-        if (matches) // The first two stack frames will be this function and getBundleURLCached.
-        // Use the 3rd one, which will be a runtime in the original bundle.
-        return getBaseURL(matches[2]);
-    }
-    return "/";
-}
-function getBaseURL(url) {
-    return ("" + url).replace(/^((?:https?|file|ftp|(chrome|moz)-extension):\/\/.+)\/[^/]+$/, "$1") + "/";
-} // TODO: Replace uses with `new URL(url).origin` when ie11 is no longer supported.
-function getOrigin(url) {
-    var matches = ("" + url).match(/(https?|file|ftp|(chrome|moz)-extension):\/\/[^/]+/);
-    if (!matches) throw new Error("Origin not found");
-    return matches[0];
-}
-exports.getBundleURL = getBundleURLCached;
-exports.getBaseURL = getBaseURL;
-exports.getOrigin = getOrigin;
-
-},{}],"d4y3Q":[function(require,module,exports) {
+},{"../../state":"d4y3Q","url:../../img/piedra.png":"lzIoH","url:../../img/papel.png":"3UuT5","url:../../img/tijera.png":"3dltE","url:../../img/ganaste.png":"etiOr","url:../../img/perdiste.png":"9ho5B","url:../../img/empate.png":"6aNTq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"d4y3Q":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "state", ()=>state);
@@ -1210,68 +1180,56 @@ const state = {
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"lzIoH":[function(require,module,exports) {
 module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "piedra.09238fcc.png" + "?" + Date.now();
 
-},{"./helpers/bundle-url":"lgJ39"}],"3UuT5":[function(require,module,exports) {
+},{"./helpers/bundle-url":"lgJ39"}],"lgJ39":[function(require,module,exports) {
+"use strict";
+var bundleURL = {};
+function getBundleURLCached(id) {
+    var value = bundleURL[id];
+    if (!value) {
+        value = getBundleURL();
+        bundleURL[id] = value;
+    }
+    return value;
+}
+function getBundleURL() {
+    try {
+        throw new Error();
+    } catch (err) {
+        var matches = ("" + err.stack).match(/(https?|file|ftp|(chrome|moz)-extension):\/\/[^)\n]+/g);
+        if (matches) // The first two stack frames will be this function and getBundleURLCached.
+        // Use the 3rd one, which will be a runtime in the original bundle.
+        return getBaseURL(matches[2]);
+    }
+    return "/";
+}
+function getBaseURL(url) {
+    return ("" + url).replace(/^((?:https?|file|ftp|(chrome|moz)-extension):\/\/.+)\/[^/]+$/, "$1") + "/";
+} // TODO: Replace uses with `new URL(url).origin` when ie11 is no longer supported.
+function getOrigin(url) {
+    var matches = ("" + url).match(/(https?|file|ftp|(chrome|moz)-extension):\/\/[^/]+/);
+    if (!matches) throw new Error("Origin not found");
+    return matches[0];
+}
+exports.getBundleURL = getBundleURLCached;
+exports.getBaseURL = getBaseURL;
+exports.getOrigin = getOrigin;
+
+},{}],"3UuT5":[function(require,module,exports) {
 module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "papel.02ed7e33.png" + "?" + Date.now();
 
 },{"./helpers/bundle-url":"lgJ39"}],"3dltE":[function(require,module,exports) {
 module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "tijera.bcbc49ac.png" + "?" + Date.now();
 
-},{"./helpers/bundle-url":"lgJ39"}],"6aNTq":[function(require,module,exports) {
-module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "empate.ef275105.png" + "?" + Date.now();
+},{"./helpers/bundle-url":"lgJ39"}],"etiOr":[function(require,module,exports) {
+module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "ganaste.1aab8f76.png" + "?" + Date.now();
 
 },{"./helpers/bundle-url":"lgJ39"}],"9ho5B":[function(require,module,exports) {
 module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "perdiste.90c6bbd7.png" + "?" + Date.now();
 
-},{"./helpers/bundle-url":"lgJ39"}],"4iqCu":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "buttonComp", ()=>buttonComp);
-function buttonComp(params) {
-    customElements.define("button-comp", class ButtonComp extends HTMLElement {
-        constructor(){
-            super();
-            this.shadow = this.attachShadow({
-                mode: "open"
-            });
-        }
-        connectedCallback() {
-            this.render();
-        }
-        render() {
-            const button = document.createElement("button");
-            button.className = "button";
-            const style = document.createElement("style");
-            style.innerHTML = `
-                
-        .button {
-    
-        background-color: #006CFC;
-        font-size: 45px;
-        border: 10px solid #001997;
-        border-radius: 10px;
-        min-width: 300px;
-        height: 87px;
-        font-family: Odibee sans;
-        color: #D8FCFC;
-        margin-top: 20px;
-        }
+},{"./helpers/bundle-url":"lgJ39"}],"6aNTq":[function(require,module,exports) {
+module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "empate.ef275105.png" + "?" + Date.now();
 
-        @media (min-width: 769px) {
-          .button {
-            min-width: 600px;
-            margin-top: 60px;
-          }
-        }
-                
-        `;
-            button.textContent = this.textContent;
-            this.shadow.appendChild(button);
-            this.shadow.appendChild(style);
-        }
-    });
-}
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"bPPIi":[function(require,module,exports) {
+},{"./helpers/bundle-url":"lgJ39"}],"bPPIi":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "handsComp", ()=>handsComp);
@@ -1374,6 +1332,55 @@ function handsComp(params) {
     });
 }
 
-},{"url:../../img/piedra.png":"lzIoH","url:../../img/papel.png":"3UuT5","url:../../img/tijera.png":"3dltE","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../../state":"d4y3Q"}]},["em2cd","1jwFz"], "1jwFz", "parcelRequire4c92")
+},{"../../state":"d4y3Q","url:../../img/piedra.png":"lzIoH","url:../../img/papel.png":"3UuT5","url:../../img/tijera.png":"3dltE","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"4iqCu":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "buttonComp", ()=>buttonComp);
+function buttonComp(params) {
+    customElements.define("button-comp", class ButtonComp extends HTMLElement {
+        constructor(){
+            super();
+            this.shadow = this.attachShadow({
+                mode: "open"
+            });
+        }
+        connectedCallback() {
+            this.render();
+        }
+        render() {
+            const button = document.createElement("button");
+            button.className = "button";
+            const style = document.createElement("style");
+            style.innerHTML = `
+                
+        .button {
+    
+        background-color: #006CFC;
+        font-size: 45px;
+        border: 10px solid #001997;
+        border-radius: 10px;
+        min-width: 300px;
+        height: 87px;
+        font-family: Odibee sans;
+        color: #D8FCFC;
+        margin-top: 20px;
+        }
+
+        @media (min-width: 769px) {
+          .button {
+            min-width: 600px;
+            margin-top: 60px;
+          }
+        }
+                
+        `;
+            button.textContent = this.textContent;
+            this.shadow.appendChild(button);
+            this.shadow.appendChild(style);
+        }
+    });
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["em2cd","1jwFz"], "1jwFz", "parcelRequire4c92")
 
 //# sourceMappingURL=index.8e9bd240.js.map

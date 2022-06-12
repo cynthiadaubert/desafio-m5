@@ -27,11 +27,10 @@ export function welcomePage(params) {
   
   }
 
-  .box {
+  .root {
     display: flex;
     flex-direction: column;
     align-items: center;
-   
   }
 
   @media (min-width: 769px) {
@@ -40,7 +39,7 @@ export function welcomePage(params) {
       flex-direction: column;
       align-items: center;
       height: 100%;
-      max-width: 500px;
+      max-width: 800px;
       margin: 0 auto;
       padding: 0px;
     }
@@ -49,6 +48,7 @@ export function welcomePage(params) {
  .title {
     font-size: 80px;
     font-family: courier new;
+    text-align: center;
     width: 284px;
     height 204px;
     font-style: bold;
@@ -61,8 +61,9 @@ export function welcomePage(params) {
   @media (min-width: 769px) {
     .title {
       font-size: 100px;
-      width: 100%;
-      height 100%;
+      width: 80%;
+      height 80%;
+     
     }
   }
   
@@ -75,7 +76,11 @@ export function welcomePage(params) {
 
   @media (min-width: 769px) {
     .hands {
-     margin-right: 300px;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      position: fixed;
+      margin-left: 176px;
     }
   }
   
