@@ -509,13 +509,13 @@ var _hands = require("./components/hands");
 var _button = require("./components/button");
 (function() {
     (0, _button.buttonComp)({});
-    (0, _hands.handsComp)({});
+    (0, _hands.handsComp)();
     (0, _state.state).initState();
     const root = document.querySelector(".root");
     (0, _router.initRouter)(root);
 })();
 
-},{"./router":"eBUGN","./state":"d4y3Q","./components/hands":"bPPIi","./components/button":"4iqCu"}],"eBUGN":[function(require,module,exports) {
+},{"./router":"eBUGN","./state":"d4y3Q","./components/button":"4iqCu","./components/hands":"bPPIi"}],"eBUGN":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "initRouter", ()=>initRouter);
@@ -689,8 +689,7 @@ function welcomePage(params) {
   `;
     const buttonElem = div.querySelector("button-comp");
     buttonElem.addEventListener("click", ()=>{
-        console.log(params.goTo);
-        params.goTo("/instructions");
+        /* console.log(params.goTo) */ params.goTo("/instructions");
     });
     div.appendChild(style);
     return div;
@@ -768,6 +767,7 @@ function instructionsPage(params) {
         height: 100%;
         max-width: 500px;
         margin: 0 auto;
+        margin-right: 756px;
         padding-top: 0px;
       }
     }
@@ -930,7 +930,7 @@ function playPage(params) {
     const intervalId = setInterval(()=>{
         countdownElem.innerHTML = `${counter}`;
         counter--;
-        if (counter < 0 && location.pathname.includes("play")) clearInterval(intervalId) /*  params.goTo("./instructions") */ ;
+        if (counter < 0) clearInterval(intervalId) /*  params.goTo("./instructions") */ ;
     }, 1000);
     ////// TIMEOUT PARA PASAR A PAGE RESULTS //////
     /* const handsContainer: any = div.querySelector(".hands")
@@ -1094,6 +1094,7 @@ const state = {
     },
     /*  listeners: [], */ initState () {
         const localData = localStorage.getItem("saved-state");
+        console.log("soy los datos locales", localData);
         if (localData !== null) this.setState(JSON.parse(localData));
     },
     getState () {
@@ -1105,26 +1106,26 @@ const state = {
       cb();
     } */ },
     setMove (move) {
+        const currentState = this.getState();
         const options = [
             "piedra",
             "papel",
             "tijera"
         ];
-        const currentState = this.getState();
-        currentState.currentGame.myPlay = move;
-        console.log("soy mi move", move);
         const pcMove = currentState.currentGame.computerPlay = options[Math.floor(Math.random() * 3)];
+        currentState.currentGame.myPlay = move;
         console.log("soy el pc move", pcMove);
+        console.log("soy mi move", move);
         this.pushToHistory();
     },
     whoWins () {
-        const currentGame = this.getState();
-        console.log("soy el currentgame", currentGame);
+        const currentState = this.getState();
+        console.log("soy el currentgame", currentState);
+        const myPlay = currentState.currentGame.myPlay;
+        const computerPlay = currentState.currentGame.computerPlay;
         console.log("en who wins");
-        console.log("my play", currentGame.myPlay);
-        console.log("pc play", currentGame.computerPlay);
-        const myPlay = currentGame.myPlay;
-        const computerPlay = currentGame.computerPlay;
+        console.log("my play", myPlay);
+        console.log("pc play", computerPlay);
         const ganeConTijeras = myPlay == "tijera" && computerPlay == "papel";
         const ganeConPiedra = myPlay == "piedra" && computerPlay == "tijera";
         const ganeConPapel = myPlay == "papel" && computerPlay == "piedra";
@@ -1132,14 +1133,10 @@ const state = {
         const pcGanaPiedra = myPlay == "tijera" && computerPlay == "piedra";
         const pcGanaPapel = myPlay == "piedra" && computerPlay == "papel";
         const win = [
-            ganeConTijeras,
-            ganeConPiedra,
-            ganeConPapel
+            ganeConTijeras || ganeConPiedra || ganeConPapel
         ].includes(true);
         const lose = [
-            pcGanaPapel,
-            pcGanaPiedra,
-            pcGanaTijeras
+            pcGanaPapel || pcGanaPiedra || pcGanaTijeras
         ].includes(true);
         let result;
         if (win == true) result = "win";
@@ -1151,12 +1148,16 @@ const state = {
     pushToHistory () {
         const result = this.whoWins();
         const currentState = this.getState();
-        const myScore = currentState.currentGame.history.me;
+        console.log("soy el estado de push to history", currentState);
         const computerScore = currentState.currentGame.history.computer;
+        console.log("pc play", computerScore);
+        const myScore = currentState.currentGame.history.me;
+        console.log("my play", myScore);
+        console.log("en push to history");
         if (result == "win") this.setState({
             ...currentState,
             history: {
-                computer: computerScore,
+                computer: computerScore + 0,
                 me: myScore + 1
             }
         });
@@ -1164,7 +1165,7 @@ const state = {
             ...currentState,
             history: {
                 computer: computerScore + 1,
-                me: myScore
+                me: myScore + 0
             }
         });
         localStorage.setItem("saved-state", JSON.stringify(state.getState()));
@@ -1223,7 +1224,56 @@ module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "empate
 },{"./helpers/bundle-url":"lgJ39"}],"etiOr":[function(require,module,exports) {
 module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "ganaste.1aab8f76.png" + "?" + Date.now();
 
-},{"./helpers/bundle-url":"lgJ39"}],"bPPIi":[function(require,module,exports) {
+},{"./helpers/bundle-url":"lgJ39"}],"4iqCu":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "buttonComp", ()=>buttonComp);
+function buttonComp(params) {
+    customElements.define("button-comp", class ButtonComp extends HTMLElement {
+        constructor(){
+            super();
+            this.shadow = this.attachShadow({
+                mode: "open"
+            });
+        }
+        connectedCallback() {
+            this.render();
+        }
+        render() {
+            const button = document.createElement("button");
+            button.className = "button";
+            const style = document.createElement("style");
+            style.innerHTML = `
+                
+        .button {
+    
+        background-color: #006CFC;
+        font-size: 45px;
+        border: 10px solid #001997;
+        border-radius: 10px;
+        min-width: 300px;
+        height: 87px;
+        font-family: Odibee sans;
+        color: #D8FCFC;
+        margin-top: 20px;
+        }
+
+        @media (min-width: 769px) {
+          .button {
+            min-width: 600px;
+            margin-top: 60px;
+          }
+        }
+                
+        `;
+            button.textContent = this.textContent;
+            this.shadow.appendChild(button);
+            this.shadow.appendChild(style);
+        }
+    });
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"bPPIi":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "handsComp", ()=>handsComp);
@@ -1291,90 +1341,57 @@ function handsComp(params) {
             const piedra = div.querySelector(".piedra");
             const papel = div.querySelector(".papel");
             const tijera = div.querySelector(".tijera");
-            if (this.getAttribute("variant") == "selected") {
-                piedra.addEventListener("click", ()=>{
-                    papel.classList.add("transparent");
-                    tijera.classList.add("transparent");
-                    (0, _state.state).setMove("piedra");
-                    setTimeout(()=>{
-                        console.log("soy getstate", (0, _state.state).getState());
-                        params.goTo("/results");
-                    }, 2000);
-                });
-                papel.addEventListener("click", ()=>{
-                    piedra.classList.add("transparent");
-                    tijera.classList.add("transparent");
-                    (0, _state.state).setMove("papel");
-                    setTimeout(()=>{
-                        console.log("soy getstate", (0, _state.state).getState());
-                        params.goTo("/results");
-                    }, 2000);
-                });
-                tijera.addEventListener("click", ()=>{
-                    papel.classList.add("transparent");
-                    piedra.classList.add("transparent");
-                    (0, _state.state).setMove("tijera");
-                    setTimeout(()=>{
-                        console.log("soy getstate", (0, _state.state).getState());
-                        params.goTo("/results");
-                    }, 2000);
-                });
-            }
-            this.shadow.appendChild(style);
+            if (this.getAttribute("variant") == "selected") piedra.addEventListener("click", ()=>{
+                papel.classList.add("transparent");
+                tijera.classList.add("transparent");
+                (0, _state.state).setMove("piedra");
+            });
+            if (this.getAttribute("variant") == "selected") papel.addEventListener("click", ()=>{
+                piedra.classList.add("transparent");
+                tijera.classList.add("transparent");
+                (0, _state.state).setMove("papel");
+            });
+            if (this.getAttribute("variant") == "selected") tijera.addEventListener("click", ()=>{
+                papel.classList.add("transparent");
+                piedra.classList.add("transparent");
+                (0, _state.state).setMove("tijera");
+            });
+            /*          if (this.getAttribute("variant")=="selected") {
+            piedra.addEventListener("click", ()=> {
+            papel.classList.add("transparent")
+            tijera.classList.add("transparent");
+            state.setMove("piedra");
+             setTimeout(()=>{
+              
+              console.log("soy getstate",state.getState())
+              params.goTo("/results")
+            }, 2000) 
+          })
+            papel.addEventListener("click", ()=> {
+            piedra.classList.add("transparent")
+            tijera.classList.add("transparent");
+            state.setMove("papel");
+             setTimeout(()=>{
+              
+              console.log("soy getstate",state.getState())
+              params.goTo("/results")
+            }, 2000) 
+            tijera.addEventListener("click", ()=> {
+            papel.classList.add("transparent")
+            piedra.classList.add("transparent");
+            state.setMove("tijera");
+            setTimeout(()=>{
+              
+              console.log("soy getstate",state.getState())
+              params.goTo("/results")
+            }, 2000)
+            }) 
+          }  */ this.shadow.appendChild(style);
             this.shadow.appendChild(div);
         }
     });
 }
 
-},{"../../state":"d4y3Q","url:../../img/piedra.png":"lzIoH","url:../../img/papel.png":"3UuT5","url:../../img/tijera.png":"3dltE","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"4iqCu":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "buttonComp", ()=>buttonComp);
-function buttonComp(params) {
-    customElements.define("button-comp", class ButtonComp extends HTMLElement {
-        constructor(){
-            super();
-            this.shadow = this.attachShadow({
-                mode: "open"
-            });
-        }
-        connectedCallback() {
-            this.render();
-        }
-        render() {
-            const button = document.createElement("button");
-            button.className = "button";
-            const style = document.createElement("style");
-            style.innerHTML = `
-                
-        .button {
-    
-        background-color: #006CFC;
-        font-size: 45px;
-        border: 10px solid #001997;
-        border-radius: 10px;
-        min-width: 300px;
-        height: 87px;
-        font-family: Odibee sans;
-        color: #D8FCFC;
-        margin-top: 20px;
-        }
-
-        @media (min-width: 769px) {
-          .button {
-            min-width: 600px;
-            margin-top: 60px;
-          }
-        }
-                
-        `;
-            button.textContent = this.textContent;
-            this.shadow.appendChild(button);
-            this.shadow.appendChild(style);
-        }
-    });
-}
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["em2cd","1jwFz"], "1jwFz", "parcelRequire4c92")
+},{"../../state":"d4y3Q","url:../../img/piedra.png":"lzIoH","url:../../img/papel.png":"3UuT5","url:../../img/tijera.png":"3dltE","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["em2cd","1jwFz"], "1jwFz", "parcelRequire4c92")
 
 //# sourceMappingURL=index.8e9bd240.js.map

@@ -79,32 +79,49 @@ export function handsComp(params:{goTo}) {
 
     
 
-
-
-
+          if (this.getAttribute("variant")=="selected") {
+            piedra.addEventListener("click", ()=> {
+              papel.classList.add("transparent")
+              tijera.classList.add("transparent");
+              state.setMove("piedra");
+            })
+          }
+          if (this.getAttribute("variant")=="selected") {
+            papel.addEventListener("click", ()=> {
+              piedra.classList.add("transparent")
+              tijera.classList.add("transparent");
+              state.setMove("papel");
+            })
+          }
+          if (this.getAttribute("variant")=="selected") {
+            tijera.addEventListener("click", ()=> {
+              papel.classList.add("transparent")
+              piedra.classList.add("transparent");
+              state.setMove("tijera");
+            })
+          }
 
           
-         if (this.getAttribute("variant")=="selected") {
+/*          if (this.getAttribute("variant")=="selected") {
             piedra.addEventListener("click", ()=> {
             papel.classList.add("transparent")
             tijera.classList.add("transparent");
             state.setMove("piedra");
-            setTimeout(()=>{
+             setTimeout(()=>{
               
               console.log("soy getstate",state.getState())
               params.goTo("/results")
-            }, 2000)
+            }, 2000) 
           })
             papel.addEventListener("click", ()=> {
             piedra.classList.add("transparent")
             tijera.classList.add("transparent");
             state.setMove("papel");
-            setTimeout(()=>{
+             setTimeout(()=>{
               
               console.log("soy getstate",state.getState())
               params.goTo("/results")
-            }, 2000)
-          })
+            }, 2000) 
             tijera.addEventListener("click", ()=> {
             papel.classList.add("transparent")
             piedra.classList.add("transparent");
@@ -114,8 +131,8 @@ export function handsComp(params:{goTo}) {
               console.log("soy getstate",state.getState())
               params.goTo("/results")
             }, 2000)
-            })
-          }  
+            }) 
+          }  */ 
 
           this.shadow.appendChild(style)
           this.shadow.appendChild(div)

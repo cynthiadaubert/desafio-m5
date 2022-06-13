@@ -89,7 +89,7 @@ export function welcomePage(params) {
   const buttonElem: any = div.querySelector("button-comp");
 
   buttonElem.addEventListener("click", () => {
-    console.log(params.goTo)
+    /* console.log(params.goTo) */
     params.goTo("/instructions");
   }); 
 

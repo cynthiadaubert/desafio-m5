@@ -38,6 +38,7 @@ export function instructionsPage(params) {
         height: 100%;
         max-width: 500px;
         margin: 0 auto;
+        margin-right: 756px;
         padding-top: 0px;
       }
     }

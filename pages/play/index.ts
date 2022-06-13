@@ -118,7 +118,7 @@ const countdownElem = div.querySelector(".circle") as any;
 const intervalId = setInterval(() => {
   countdownElem.innerHTML= `${counter}`;
   counter--;
-  if (counter < 0 && location.pathname.includes("play")) {
+  if (counter < 0 ) {
     clearInterval(intervalId)
    /*  params.goTo("./instructions") */;
   }

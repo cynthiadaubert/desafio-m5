@@ -7,7 +7,7 @@ import { buttonComp } from "./components/button";
 
 (function () {
   buttonComp({})
-  handsComp({})
+  handsComp()
   state.initState()
   const root = document.querySelector(".root")
   initRouter(root as Element);
