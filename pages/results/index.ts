@@ -9,7 +9,7 @@ const imageLoseURL = require("url:../../img/perdiste.png");
 const imageTieURL = require("url:../../img/empate.png");
 /* ${imageTieURL} */
 
-const currentState = state.getState()
+
 
 export function resultsPage(params) {
 
@@ -18,14 +18,17 @@ export function resultsPage(params) {
   const style = document.createElement("style")
   const results = document.createElement("div")
 
+  const currentState = state.getState()
+  console.log("soy el estado de la page results", currentState)
+
   box.innerHTML = `
 
     <div class="container">
       <img class="star">${imageTieURL}</img>
       <div class="score">
         <h1 class="title">Score</h1>
-        <div class="myPlay"> Vos:${currentState.currentGame.myPlay}</div>
-        <div class="computerPlay"> Máquina:${currentState.currentGame.myPlay}</div>
+        <div class="myPlay"> Vos:${currentState.history.me}</div>
+        <div class="computerPlay"> Máquina:${currentState.history.computer}</div>
       </div>
 
       <button-comp class="home">Volver a jugar</button-comp>

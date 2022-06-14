@@ -22,7 +22,8 @@ export function instructionsPage(params) {
       box-sizing: border-box;
       margin: 0 auto;
     }
-  
+
+
     .box {
       display: flex;
       flex-direction: column;
@@ -45,7 +46,7 @@ export function instructionsPage(params) {
   
   
     .hands {
-      margin-top: 86px;
+      margin-top: 80px;
       padding: 0;
       bottom: 0,
     }

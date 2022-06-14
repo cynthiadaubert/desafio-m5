@@ -1,3 +1,4 @@
+import { handsComp } from "../../components/hands";
 
 export function playPage(params) {
 
@@ -126,13 +127,14 @@ const intervalId = setInterval(() => {
 }, 1000); 
 
 
+
 ////// TIMEOUT PARA PASAR A PAGE RESULTS //////
 
-/* const handsContainer: any = div.querySelector(".hands")
+ const handsContainer: any = div.querySelector(".hands")
 
 handsContainer.addEventListener("click", () => {
   setTimeout(() => {  params.goTo("/results") }, 1500);
-}); */
+}); 
 
 
   div.appendChild(style)

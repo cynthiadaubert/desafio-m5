@@ -1,11 +1,12 @@
 import { state } from "../../state";
 
+
 const imagePiedraURL = require("url:../../img/piedra.png");
 const imagePapelURL = require("url:../../img/papel.png");
 const imageTijeraURL = require("url:../../img/tijera.png");
 
-
-export function handsComp(params:{goTo}) {
+export function handsComp(params) {
+  console.log("soy params",params)
   
   customElements.define(
     "hands-comp",

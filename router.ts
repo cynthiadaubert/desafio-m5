@@ -3,6 +3,7 @@ import { welcomePage } from "./pages/welcome";
 import { instructionsPage } from "./pages/instructions";
 import { playPage } from "./pages/play";
 import { resultsPage } from "./pages/results";
+import { handsComp } from "./components/hands";
 
 const BASE_PATH = "/desafio-m5";
 
@@ -28,6 +29,10 @@ const routes = [
     path: /\/results/,
     component: resultsPage,
   },  
+   {
+    path: /\/results/,
+    component: handsComp,
+  },  
 ];
 
 export function initRouter(container: Element) {
@@ -49,7 +54,7 @@ export function initRouter(container: Element) {
         if (container.firstChild) {
           container.firstChild.remove();
         }
-        container.appendChild(elem);
+        container.appendChild(elem as any);
       }
     }
   }

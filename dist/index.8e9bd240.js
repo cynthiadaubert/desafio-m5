@@ -523,6 +523,7 @@ var _welcome = require("./pages/welcome");
 var _instructions = require("./pages/instructions");
 var _play = require("./pages/play");
 var _results = require("./pages/results");
+var _hands = require("./components/hands");
 const BASE_PATH = "/desafio-m5";
 function isGithubPages() {
     return location.host.includes("github.io");
@@ -543,6 +544,10 @@ const routes = [
     {
         path: /\/results/,
         component: (0, _results.resultsPage)
+    },
+    {
+        path: /\/results/,
+        component: (0, _hands.handsComp)
     }, 
 ];
 function initRouter(container) {
@@ -570,7 +575,7 @@ function initRouter(container) {
     };
 }
 
-},{"./pages/welcome":"9DGFD","./pages/instructions":"8vgGD","./pages/play":"jlIcx","./pages/results":"bQd14","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"9DGFD":[function(require,module,exports) {
+},{"./pages/welcome":"9DGFD","./pages/instructions":"8vgGD","./pages/play":"jlIcx","./pages/results":"bQd14","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./components/hands":"bPPIi"}],"9DGFD":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "welcomePage", ()=>welcomePage) /* .
@@ -751,7 +756,8 @@ function instructionsPage(params) {
       box-sizing: border-box;
       margin: 0 auto;
     }
-  
+
+
     .box {
       display: flex;
       flex-direction: column;
@@ -774,7 +780,7 @@ function instructionsPage(params) {
   
   
     .hands {
-      margin-top: 86px;
+      margin-top: 80px;
       padding: 0;
       bottom: 0,
     }
@@ -933,18 +939,20 @@ function playPage(params) {
         if (counter < 0) clearInterval(intervalId) /*  params.goTo("./instructions") */ ;
     }, 1000);
     ////// TIMEOUT PARA PASAR A PAGE RESULTS //////
-    /* const handsContainer: any = div.querySelector(".hands")
-
-handsContainer.addEventListener("click", () => {
-  setTimeout(() => {  params.goTo("/results") }, 1500);
-}); */ div.appendChild(style);
+    const handsContainer = div.querySelector(".hands");
+    handsContainer.addEventListener("click", ()=>{
+        setTimeout(()=>{
+            params.goTo("/results");
+        }, 1500);
+    });
+    div.appendChild(style);
     return div;
 }
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"bQd14":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "resultsPage", ()=>resultsPage);
+/* ${imageTieURL} */ parcelHelpers.export(exports, "resultsPage", ()=>resultsPage);
 var _state = require("../../state");
 const piedra = require("url:../../img/piedra.png");
 const papel = require("url:../../img/papel.png");
@@ -952,20 +960,21 @@ const tijera = require("url:../../img/tijera.png");
 const imageWinURL = require("url:../../img/ganaste.png");
 const imageLoseURL = require("url:../../img/perdiste.png");
 const imageTieURL = require("url:../../img/empate.png");
-/* ${imageTieURL} */ const currentState = (0, _state.state).getState();
 function resultsPage(params) {
     const div = document.createElement("div");
     const box = document.createElement("div");
     const style = document.createElement("style");
     const results = document.createElement("div");
+    const currentState = (0, _state.state).getState();
+    console.log("soy el estado de la page results", currentState);
     box.innerHTML = `
 
     <div class="container">
       <img class="star">${imageTieURL}</img>
       <div class="score">
         <h1 class="title">Score</h1>
-        <div class="myPlay"> Vos:${currentState.currentGame.myPlay}</div>
-        <div class="computerPlay"> Máquina:${currentState.currentGame.myPlay}</div>
+        <div class="myPlay"> Vos:${currentState.history.me}</div>
+        <div class="computerPlay"> Máquina:${currentState.history.computer}</div>
       </div>
 
       <button-comp class="home">Volver a jugar</button-comp>
@@ -1106,16 +1115,17 @@ const state = {
       cb();
     } */ },
     setMove (move) {
-        const currentState = this.getState();
         const options = [
             "piedra",
             "papel",
             "tijera"
         ];
-        const pcMove = currentState.currentGame.computerPlay = options[Math.floor(Math.random() * 3)];
+        const currentState = this.getState();
         currentState.currentGame.myPlay = move;
-        console.log("soy el pc move", pcMove);
         console.log("soy mi move", move);
+        const randomMove = options[Math.floor(Math.random() * 3)];
+        const pcMove = currentState.currentGame.computerPlay = randomMove;
+        console.log("soy el pc move", pcMove);
         this.pushToHistory();
     },
     whoWins () {
@@ -1149,15 +1159,14 @@ const state = {
         const result = this.whoWins();
         const currentState = this.getState();
         console.log("soy el estado de push to history", currentState);
-        const computerScore = currentState.currentGame.history.computer;
+        const computerScore = currentState.history.computer;
         console.log("pc play", computerScore);
-        const myScore = currentState.currentGame.history.me;
+        const myScore = currentState.history.me;
         console.log("my play", myScore);
-        console.log("en push to history");
         if (result == "win") this.setState({
             ...currentState,
             history: {
-                computer: computerScore + 0,
+                computer: computerScore,
                 me: myScore + 1
             }
         });
@@ -1165,11 +1174,19 @@ const state = {
             ...currentState,
             history: {
                 computer: computerScore + 1,
-                me: myScore + 0
+                me: myScore
+            }
+        });
+        if (result == "tie") this.setState({
+            ...currentState,
+            history: {
+                computer: computerScore + 1,
+                me: myScore + 1
             }
         });
         localStorage.setItem("saved-state", JSON.stringify(state.getState()));
-    }
+        console.log("soy el estado al final del history", state.getState());
+    /* localStorage.removeItem("saved-state") */ }
 };
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"lzIoH":[function(require,module,exports) {
@@ -1224,56 +1241,7 @@ module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "empate
 },{"./helpers/bundle-url":"lgJ39"}],"etiOr":[function(require,module,exports) {
 module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "ganaste.1aab8f76.png" + "?" + Date.now();
 
-},{"./helpers/bundle-url":"lgJ39"}],"4iqCu":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "buttonComp", ()=>buttonComp);
-function buttonComp(params) {
-    customElements.define("button-comp", class ButtonComp extends HTMLElement {
-        constructor(){
-            super();
-            this.shadow = this.attachShadow({
-                mode: "open"
-            });
-        }
-        connectedCallback() {
-            this.render();
-        }
-        render() {
-            const button = document.createElement("button");
-            button.className = "button";
-            const style = document.createElement("style");
-            style.innerHTML = `
-                
-        .button {
-    
-        background-color: #006CFC;
-        font-size: 45px;
-        border: 10px solid #001997;
-        border-radius: 10px;
-        min-width: 300px;
-        height: 87px;
-        font-family: Odibee sans;
-        color: #D8FCFC;
-        margin-top: 20px;
-        }
-
-        @media (min-width: 769px) {
-          .button {
-            min-width: 600px;
-            margin-top: 60px;
-          }
-        }
-                
-        `;
-            button.textContent = this.textContent;
-            this.shadow.appendChild(button);
-            this.shadow.appendChild(style);
-        }
-    });
-}
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"bPPIi":[function(require,module,exports) {
+},{"./helpers/bundle-url":"lgJ39"}],"bPPIi":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "handsComp", ()=>handsComp);
@@ -1282,6 +1250,7 @@ const imagePiedraURL = require("url:../../img/piedra.png");
 const imagePapelURL = require("url:../../img/papel.png");
 const imageTijeraURL = require("url:../../img/tijera.png");
 function handsComp(params) {
+    console.log("soy params", params);
     customElements.define("hands-comp", class handsComp extends HTMLElement {
         constructor(){
             super();
@@ -1392,6 +1361,55 @@ function handsComp(params) {
     });
 }
 
-},{"../../state":"d4y3Q","url:../../img/piedra.png":"lzIoH","url:../../img/papel.png":"3UuT5","url:../../img/tijera.png":"3dltE","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["em2cd","1jwFz"], "1jwFz", "parcelRequire4c92")
+},{"../../state":"d4y3Q","url:../../img/piedra.png":"lzIoH","url:../../img/papel.png":"3UuT5","url:../../img/tijera.png":"3dltE","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"4iqCu":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "buttonComp", ()=>buttonComp);
+function buttonComp(params) {
+    customElements.define("button-comp", class ButtonComp extends HTMLElement {
+        constructor(){
+            super();
+            this.shadow = this.attachShadow({
+                mode: "open"
+            });
+        }
+        connectedCallback() {
+            this.render();
+        }
+        render() {
+            const button = document.createElement("button");
+            button.className = "button";
+            const style = document.createElement("style");
+            style.innerHTML = `
+                
+        .button {
+    
+        background-color: #006CFC;
+        font-size: 45px;
+        border: 10px solid #001997;
+        border-radius: 10px;
+        min-width: 300px;
+        height: 87px;
+        font-family: Odibee sans;
+        color: #D8FCFC;
+        margin-top: 20px;
+        }
+
+        @media (min-width: 769px) {
+          .button {
+            min-width: 600px;
+            margin-top: 60px;
+          }
+        }
+                
+        `;
+            button.textContent = this.textContent;
+            this.shadow.appendChild(button);
+            this.shadow.appendChild(style);
+        }
+    });
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["em2cd","1jwFz"], "1jwFz", "parcelRequire4c92")
 
 //# sourceMappingURL=index.8e9bd240.js.map

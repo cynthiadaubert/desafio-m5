@@ -37,12 +37,13 @@ setState(newState) {
 },
 
 setMove(move: Jugada) {
-  const currentState = this.getState();
   const options = ["piedra", "papel", "tijera"]
-  const pcMove = currentState.currentGame.computerPlay = options[Math.floor(Math.random() * 3)];
+  const currentState = this.getState();
   currentState.currentGame.myPlay = move;
-  console.log("soy el pc move",pcMove)
   console.log("soy mi move",move)
+  const randomMove = options[Math.floor(Math.random() * 3)];
+  const pcMove = currentState.currentGame.computerPlay = randomMove;
+  console.log("soy el pc move",pcMove)
 
   this.pushToHistory()
 }, 
@@ -87,16 +88,17 @@ pushToHistory() {
 const result = this.whoWins()
 const currentState = this.getState();
 console.log("soy el estado de push to history", currentState)
-const computerScore = currentState.currentGame.history.computer;
+const computerScore = currentState.history.computer;
 console.log("pc play", computerScore)
-const myScore = currentState.currentGame.history.me;
+const myScore = currentState.history.me;
+
 console.log("my play", myScore)
-console.log("en push to history")
+
   if (result == "win") {
     this.setState({
       ...currentState,
       history: {
-        computer: computerScore + 0,
+        computer: computerScore,
         me: myScore + 1, 
       },
     });
@@ -106,12 +108,26 @@ console.log("en push to history")
       ...currentState,
       history: {
         computer: computerScore + 1,
-        me: myScore + 0,
+        me: myScore,
       },
+    
+    });
+  }
+  if (result == "tie") {
+    this.setState({
+      ...currentState,
+      history: {
+        computer: computerScore + 1,
+        me: myScore + 1,
+      },
+    
     });
   }
 
   localStorage.setItem("saved-state", JSON.stringify(state.getState()))
+  console.log("soy el estado al final del history",state.getState())
+
+  /* localStorage.removeItem("saved-state") */
 },
 
 /*   subscribe(cb: (any)=> any) {
