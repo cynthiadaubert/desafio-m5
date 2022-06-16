@@ -1,13 +1,13 @@
+import { start } from "repl";
 import { state } from "../../state"
 
 const piedra = require("url:../../img/piedra.png");
 const papel = require("url:../../img/papel.png");
 const tijera = require("url:../../img/tijera.png");
 
-const imageWinURL = require("url:../../img/ganaste.png");
-const imageLoseURL = require("url:../../img/perdiste.png");
-const imageTieURL = require("url:../../img/empate.png");
-/* ${imageTieURL} */
+const imageWin = require("url:../../img/ganaste.png");
+const imageLose = require("url:../../img/perdiste.png");
+const imageTie = require("url:../../img/empate.png");
 
 
 
@@ -16,15 +16,27 @@ export function resultsPage(params) {
   const div = document.createElement("div")
   const box = document.createElement("div")
   const style = document.createElement("style")
-  const results = document.createElement("div")
+  const star = document.createElement("div")
 
   const currentState = state.getState()
   console.log("soy el estado de la page results", currentState)
 
+  let res = state.whoWins()
+
+  if (state.whoWins() == "win") {
+    res = imageWin;
+    
+  } else if (state.whoWins() == "lose"){
+    res = imageLose;
+  } else {
+    res = imageTie;
+  }
+
+
   box.innerHTML = `
 
     <div class="container">
-      <img class="star">${imageTieURL}</img>
+      <img class="star" src=${res}>
       <div class="score">
         <h1 class="title">Score</h1>
         <div class="myPlay"> Vos:${currentState.history.me}</div>
@@ -32,6 +44,7 @@ export function resultsPage(params) {
       </div>
 
       <button-comp class="home">Volver a jugar</button-comp>
+      <button-comp class="reset">Reiniciar puntaje</button-comp>
     </div>    
   `;
 
@@ -49,7 +62,6 @@ export function resultsPage(params) {
       height: 254px;
       width: 254px;
       margin-bottom: 20px;
-      background-color: red;
     }
 
   .container {
@@ -59,7 +71,21 @@ export function resultsPage(params) {
       align-items: center;
       width: 100%;
   }
+  
+  .win {
+    background-color: rgba(136, 137, 73, 0.9);
+    ;
+  }
+  
+  .lose {
+    background-color: rgba(137, 73, 73, 0.9);
+    ;
+  }
 
+  .tie {
+    background-color: rgba(139, 76, 167, 0.9)
+    ;
+  }
 
   @media (min-width: 769px) {
     .container {
@@ -111,51 +137,54 @@ export function resultsPage(params) {
 
   `;
 
+  /////////// MOSTRAR IMAGEN Y COLOR FONDO SEGUN RESULTADO ////////////
 
-
-
-
-/*     const display = document.createElement("div")
-    setTimeout(() => {
-    const result = state.whoWins()
-
-    if (result == "win") {
-        results.appendChild(display);
-        display.innerHTML = `<img class="star" src=${imageWinURL}></img>`
-        display.style.backgroundColor = "#68FF33";    
-    }
-    if (result == "lose") {
-        results.appendChild(display);
-        display.innerHTML = `<img class="star" src=${imageLoseURL}></img>`
-        display.style.backgroundColor = "#FF4633";    
-    }
-    if (result == "tie") {
-        results.appendChild(display);
-        display.innerHTML = `<img class="star" src=${imageTieURL}></img>`
-        display.style.backgroundColor = "#6833FF";    
-    }
-
-    
-    
-    }, 1000);  */
-
-  //////////// ESTILOS ////////////
-
- 
   
 
- 
+  let result = state.whoWins()
 
+
+    if (state.whoWins() == "win") {
+      result = "win"; 
+    } else if (state.whoWins() == "lose"){
+      result = "lose" 
+    } else {
+      result = "tie" 
+    }
+    
+    document.body.className = result;
+    
+  
+console.log("soy reeeeeeeeeeeeeees",res)
+
+  
+  //////////// BOTON VOLVER A JUGAR Y REINICIAR PUNTAJE ////////////
 
   const buttonElem: any = box.querySelector(".home");
   buttonElem.addEventListener("click", () => {
     params.goTo("/play");
   }); 
 
+  const buttonReset: any = box.querySelector(".reset");
+  buttonReset.addEventListener("click", () => {
+    console.log("puntaje reiniciado")
+    localStorage.setItem("saved-state",JSON.stringify({
+      currentGame: {
+        computerPlay: "",
+        myPlay: "",
+    },
+    
+    history: {
+        computer: 0,
+        me: 0,
+    },
+    }));
+    params.goTo("/welcome");
+    location.reload();
+  }); 
+
 
   box.appendChild(style)
   return box;
-    
-    
-    
 }
+

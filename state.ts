@@ -14,8 +14,6 @@ data: {
     },
 },
 
-/*  listeners: [], */ 
-
 initState(){
 
      const localData = localStorage.getItem("saved-state")
@@ -30,10 +28,6 @@ getState(){
   
 setState(newState) {
     this.data = newState;
-/*     for (const cb of this.listeners) {
-      cb();
-    } */
-    
 },
 
 setMove(move: Jugada) {
@@ -117,8 +111,8 @@ console.log("my play", myScore)
     this.setState({
       ...currentState,
       history: {
-        computer: computerScore + 1,
-        me: myScore + 1,
+        computer: computerScore,
+        me: myScore,
       },
     
     });
@@ -127,12 +121,8 @@ console.log("my play", myScore)
   localStorage.setItem("saved-state", JSON.stringify(state.getState()))
   console.log("soy el estado al final del history",state.getState())
 
-  /* localStorage.removeItem("saved-state") */
 },
 
-/*   subscribe(cb: (any)=> any) {
-    this.listeners.push(cb)
-  }, */
 }
 
 export {state}

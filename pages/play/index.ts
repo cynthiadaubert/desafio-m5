@@ -133,7 +133,7 @@ const intervalId = setInterval(() => {
  const handsContainer: any = div.querySelector(".hands")
 
 handsContainer.addEventListener("click", () => {
-  setTimeout(() => {  params.goTo("/results") }, 1500);
+  setTimeout(() => {  params.goTo("/showhands") }, 2000);
 }); 
 
 

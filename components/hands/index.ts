@@ -1,12 +1,10 @@
 import { state } from "../../state";
 
-
 const imagePiedraURL = require("url:../../img/piedra.png");
 const imagePapelURL = require("url:../../img/papel.png");
 const imageTijeraURL = require("url:../../img/tijera.png");
 
-export function handsComp(params) {
-  console.log("soy params",params)
+export function handsComp() {
   
   customElements.define(
     "hands-comp",
@@ -78,8 +76,6 @@ export function handsComp(params) {
           const papel: any = div.querySelector(".papel")
           const tijera: any = div.querySelector(".tijera")
 
-    
-
           if (this.getAttribute("variant")=="selected") {
             piedra.addEventListener("click", ()=> {
               papel.classList.add("transparent")
@@ -102,44 +98,9 @@ export function handsComp(params) {
             })
           }
 
-          
-/*          if (this.getAttribute("variant")=="selected") {
-            piedra.addEventListener("click", ()=> {
-            papel.classList.add("transparent")
-            tijera.classList.add("transparent");
-            state.setMove("piedra");
-             setTimeout(()=>{
-              
-              console.log("soy getstate",state.getState())
-              params.goTo("/results")
-            }, 2000) 
-          })
-            papel.addEventListener("click", ()=> {
-            piedra.classList.add("transparent")
-            tijera.classList.add("transparent");
-            state.setMove("papel");
-             setTimeout(()=>{
-              
-              console.log("soy getstate",state.getState())
-              params.goTo("/results")
-            }, 2000) 
-            tijera.addEventListener("click", ()=> {
-            papel.classList.add("transparent")
-            piedra.classList.add("transparent");
-            state.setMove("tijera");
-            setTimeout(()=>{
-              
-              console.log("soy getstate",state.getState())
-              params.goTo("/results")
-            }, 2000)
-            }) 
-          }  */ 
-
           this.shadow.appendChild(style)
           this.shadow.appendChild(div)
-      
       }
-      
     }
   )
 };

@@ -1,9 +1,8 @@
-
 import { welcomePage } from "./pages/welcome";
 import { instructionsPage } from "./pages/instructions";
 import { playPage } from "./pages/play";
+import {handsPage} from "./pages/show-hands"
 import { resultsPage } from "./pages/results";
-import { handsComp } from "./components/hands";
 
 const BASE_PATH = "/desafio-m5";
 
@@ -30,9 +29,10 @@ const routes = [
     component: resultsPage,
   },  
    {
-    path: /\/results/,
-    component: handsComp,
+    path: /\/showhands/,
+    component: handsPage,
   },  
+
 ];
 
 export function initRouter(container: Element) {
