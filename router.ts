@@ -12,25 +12,25 @@ function isGithubPages() {
 
 const routes = [
   {
-    path: /\/desafio-m5\/welcome/,
+    path: /\/welcome/,
     component: welcomePage,
   },
   {
-    path: /\/desafio-m5\/instructions/,
+    path: /\/instructions/,
     component: instructionsPage,
   },
   {
-    path: /\/desafio-m5\/play/,
+    path: /\/play/,
     component: playPage,
   },
 
   {
-    path: /\/desafio-m5\/showhands/,
+    path: /\/showhands/,
     component: handsPage,
   }, 
 
    {
-    path: /\/desafio-m5\/results/,
+    path: /\/results/,
     component: resultsPage,
   },  
 
