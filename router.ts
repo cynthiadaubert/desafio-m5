@@ -12,25 +12,25 @@ function isGithubPages() {
 
 const routes = [
   {
-    path: /\/welcome/,
+    path: /\/desafio-m5\/welcome/,
     component: welcomePage,
   },
   {
-    path: /\/instructions/,
+    path: /\/desafio-m5\/instructions/,
     component: instructionsPage,
   },
   {
-    path: /\/play/,
+    path: /\/desafio-m5\/play/,
     component: playPage,
   },
 
   {
-    path: /\/showhands/,
+    path: /\/desafio-m5\/showhands/,
     component: handsPage,
   }, 
 
    {
-    path: /\/results/,
+    path: /\/desafio-m5\/results/,
     component: resultsPage,
   },  
 
@@ -55,8 +55,8 @@ export function initRouter(container: Element) {
     }
   }
 
-  if (location.pathname == "/") {
-    goTo("/welcome");
+  if (location.pathname == "/desafio-m5/") {
+    goTo("/desafio-m5/welcome");
   } else {
     handleRoute(location.pathname);
   }

@@ -7,11 +7,11 @@
   "scripts": {
     "dev": "parcel serve ./index.html",
     "build": "parcel build ./index.html --dist-dir build --public-url /dwf-m5",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build",
+    "build-and-deploy": "npm run build && npm run deploy"
   },
   "name": "src",
   "version": "1.0.0",
-  "main": "index.js",
   "devDependencies": {
     "@parcel/transformer-image": "^2.0.0-rc.0",
     "@types/node": "^17.0.39"

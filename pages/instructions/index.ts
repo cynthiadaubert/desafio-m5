@@ -79,7 +79,7 @@ export function instructionsPage(params) {
     const buttonElem: any = div.querySelector("button-comp");
   
     buttonElem.addEventListener("click", () => {
-      params.goTo("/play");
+      params.goTo("/desafio-m5/play");
     });  
   
     div.appendChild(style)
