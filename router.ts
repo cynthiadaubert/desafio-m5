@@ -4,7 +4,7 @@ import { playPage } from "./pages/play";
 import {handsPage} from "./pages/show-hands"
 import { resultsPage } from "./pages/results";
 
-const BASE_PATH = "/desafio-m5/";
+const BASE_PATH = "/desafio-m5";
 
 function isGithubPages() {
   return location.host.includes("github.io");
