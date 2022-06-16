@@ -1,26 +1,17 @@
-import { start } from "repl";
 import { state } from "../../state"
-
-const piedra = require("url:../../img/piedra.png");
-const papel = require("url:../../img/papel.png");
-const tijera = require("url:../../img/tijera.png");
 
 const imageWin = require("url:../../img/ganaste.png");
 const imageLose = require("url:../../img/perdiste.png");
 const imageTie = require("url:../../img/empate.png");
 
-
-
 export function resultsPage(params) {
 
-  const div = document.createElement("div")
   const box = document.createElement("div")
   const style = document.createElement("style")
-  const star = document.createElement("div")
 
   const currentState = state.getState()
-  console.log("soy el estado de la page results", currentState)
 
+  //// SETEA LAS IMAGENES SEGUN SI GANA, PIERDE O EMPATA ////
   let res = state.whoWins()
 
   if (state.whoWins() == "win") {
@@ -32,7 +23,7 @@ export function resultsPage(params) {
     res = imageTie;
   }
 
-
+//// MUESTRA EL SCORE CON LOS PUNTOS Y BOTONES ////
   box.innerHTML = `
 
     <div class="container">
@@ -48,6 +39,7 @@ export function resultsPage(params) {
     </div>    
   `;
 
+//// ESTILOS ////
   style.innerHTML = `
 
   .root {
@@ -74,17 +66,17 @@ export function resultsPage(params) {
   
   .win {
     background-color: rgba(136, 137, 73, 0.9);
-    ;
+    height: 100vh;
   }
   
   .lose {
     background-color: rgba(137, 73, 73, 0.9);
-    ;
+    height: 100vh;
   }
 
   .tie {
-    background-color: rgba(139, 76, 167, 0.9)
-    ;
+    background-color: rgba(139, 76, 167, 0.9);
+    height: 100vh;
   }
 
   @media (min-width: 769px) {
@@ -134,15 +126,15 @@ export function resultsPage(params) {
       margin-right: 10px;
   }
 
+  .reset {
+    margin-bottom: 35px;
+  }
 
   `;
 
-  /////////// MOSTRAR IMAGEN Y COLOR FONDO SEGUN RESULTADO ////////////
-
-  
+  //// COLOR DE FONDO SEGUN RESULTADO ////
 
   let result = state.whoWins()
-
 
     if (state.whoWins() == "win") {
       result = "win"; 
@@ -152,13 +144,9 @@ export function resultsPage(params) {
       result = "tie" 
     }
     
-    document.body.className = result;
+  document.body.className = result;
     
-  
-console.log("soy reeeeeeeeeeeeeees",res)
-
-  
-  //////////// BOTON VOLVER A JUGAR Y REINICIAR PUNTAJE ////////////
+  //// BOTON VOLVER A JUGAR Y REINICIAR PUNTAJE ////
 
   const buttonElem: any = box.querySelector(".home");
   buttonElem.addEventListener("click", () => {

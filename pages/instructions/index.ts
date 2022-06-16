@@ -4,15 +4,13 @@ export function instructionsPage(params) {
   
     div.innerHTML = `
    
-    
       <h1 class="text">Presioná jugar
       y elegí: piedra, papel o tijera antes de que pasen los 3 segundos.</h1>
       
       <button-comp class=button">¡Jugar!</button-comp>
     
       <hands-comp class="hands"></handscomp>
-     
-    
+      
     `;
   
     const style = document.createElement("style");
@@ -22,7 +20,6 @@ export function instructionsPage(params) {
       box-sizing: border-box;
       margin: 0 auto;
     }
-
 
     .box {
       display: flex;
@@ -44,7 +41,6 @@ export function instructionsPage(params) {
       }
     }
   
-  
     .hands {
       margin-top: 80px;
       padding: 0;
@@ -54,11 +50,10 @@ export function instructionsPage(params) {
   
     @media (min-width: 769px) {
       .hands {
-       margin-right: 355px;
+       margin-right: 365px;
       }
     }
     
-
    .text {
     background-image: none;
       font-size: 40px;

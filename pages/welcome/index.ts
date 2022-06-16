@@ -1,6 +1,5 @@
 import { initRouter } from "../../router";
 
-
 export function welcomePage(params) {
   
   const div = document.createElement("div");
@@ -8,15 +7,15 @@ export function welcomePage(params) {
 
   div.innerHTML = `
  
-  
     <h1 class="title">Piedra papel o tijera</h1>
     
     <button-comp>Empezar</button-comp>
     
     <hands-comp class="hands"></handscomp>
    
-  
   `;
+
+  //////// ESTILOS //////////
 
   const style = document.createElement("style");
   style.innerHTML = `
@@ -31,6 +30,13 @@ export function welcomePage(params) {
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+  
+  .box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
   }
 
   @media (min-width: 769px) {
@@ -86,10 +92,11 @@ export function welcomePage(params) {
   
   `
 
+  //////// IR A LA SIGUIENTE PÁGINA /////////
+  
   const buttonElem: any = div.querySelector("button-comp");
 
   buttonElem.addEventListener("click", () => {
-    /* console.log(params.goTo) */
     params.goTo("/instructions");
   }); 
 
@@ -98,41 +105,3 @@ export function welcomePage(params) {
   return div;
 }
 
-/* .
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
- */
-/*  connectedCallback(){
-    (lo usamos para ejecutar el render) 
-    this.render()
-} */
-
-/*  (tres customs elements diferentes vs un custom element que solamente cambia el atributo ) 
-    this.innerHTML = `
-    <jugada-piedra>
-    <my-jugada jugada="piedra">
-    
-    ` */
-
-/* usar position fixed o absolute para la ubicacion de las manos */

@@ -2,6 +2,7 @@ type Jugada = "piedra" | "papel" | "tijera";
 
 const state = {
 
+  //// DATOS INICIALES ////
 data: {
     currentGame: {
         computerPlay: "",
@@ -14,44 +15,43 @@ data: {
     },
 },
 
+//// INICIAR CON EL ESTADO GUARDADO ////
 initState(){
 
-     const localData = localStorage.getItem("saved-state")
-     console.log("soy los datos locales",localData)
-    if (localData !== null){
-    this.setState(JSON.parse(localData))} 
-  },
-  
-getState(){
-    return this.data;
+  const localData = localStorage.getItem("saved-state")
+
+  if (localData !== null){
+  this.setState(JSON.parse(localData))} 
 },
   
-setState(newState) {
-    this.data = newState;
+//// GETTER ////
+getState(){
+  return this.data;
 },
 
+//// SETER ////
+setState(newState) {
+  this.data = newState;
+},
+
+//// SETEA MOVIMIENTOS DE LAS MANOS ////
 setMove(move: Jugada) {
   const options = ["piedra", "papel", "tijera"]
   const currentState = this.getState();
   currentState.currentGame.myPlay = move;
-  console.log("soy mi move",move)
   const randomMove = options[Math.floor(Math.random() * 3)];
   const pcMove = currentState.currentGame.computerPlay = randomMove;
-  console.log("soy el pc move",pcMove)
 
   this.pushToHistory()
 }, 
 
+//// DECIDE SI GANA, PIERDE O EMPATA ////
 whoWins() {
 
   const currentState = this.getState();
-  console.log("soy el currentgame",currentState)
-
   const myPlay = currentState.currentGame.myPlay;
   const computerPlay = currentState.currentGame.computerPlay; 
-  console.log("en who wins")
-  console.log("my play", myPlay)
-  console.log("pc play", computerPlay)
+
   const ganeConTijeras = myPlay == "tijera" && computerPlay == "papel";
   const ganeConPiedra = myPlay == "piedra" && computerPlay == "tijera";
   const ganeConPapel = myPlay == "papel" && computerPlay == "piedra";
@@ -73,20 +73,15 @@ whoWins() {
       result = "tie";
   } 
 
-  console.log("soy el result",result)
   return result
 },
 
-
+//// GUARDA LOS PUNTOS SEGUN EL RESULTADO DE WHO WINS ////
 pushToHistory() {
 const result = this.whoWins()
 const currentState = this.getState();
-console.log("soy el estado de push to history", currentState)
 const computerScore = currentState.history.computer;
-console.log("pc play", computerScore)
 const myScore = currentState.history.me;
-
-console.log("my play", myScore)
 
   if (result == "win") {
     this.setState({
@@ -118,8 +113,8 @@ console.log("my play", myScore)
     });
   }
 
+  //// SETEA ESTE NUEVO ESTADO EN EL LOCALSTORAGE ////
   localStorage.setItem("saved-state", JSON.stringify(state.getState()))
-  console.log("soy el estado al final del history",state.getState())
 
 },
 

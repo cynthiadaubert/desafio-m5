@@ -1,4 +1,3 @@
-import { handsComp } from "../../components/hands";
 
 export function playPage(params) {
 
@@ -36,7 +35,6 @@ export function playPage(params) {
     }
   }
 
-
   .circle {
     display: flex;
     justify-content: center;
@@ -57,7 +55,7 @@ export function playPage(params) {
   }
 
   .hands {
-    margin-left: 0px;
+    margin: 0;
     position: fixed;
     bottom: 0;
   }
@@ -66,6 +64,7 @@ export function playPage(params) {
     .hands {
       width: 100%;
       position: fixed;
+      margin-left: -40px;
     }
   }
 
@@ -109,23 +108,21 @@ export function playPage(params) {
 
   `
 
-//////* CUENTA ATRÁS DEL CÍRCULO */////
-  
-let counter = 3;
+  ///// CUENTA ATRÁS DEL CÍRCULO Y VOLVER A INSTRUCTIONS ////
 
-const countdownElem = div.querySelector(".circle") as any;
+  let counter = 3;
 
+  const countdownElem = div.querySelector(".circle") as any;
 
-const intervalId = setInterval(() => {
-  countdownElem.innerHTML= `${counter}`;
-  counter--;
-  if (counter < 0 ) {
-    clearInterval(intervalId)
-   /*  params.goTo("./instructions") */;
-  }
-
-}, 1000); 
-
+  const intervalId = setInterval(() => {
+    countdownElem.innerHTML= `${counter}`;
+    counter--;
+    if (counter < 0 ) {
+    params.goTo("/instructions");
+      clearInterval(intervalId);
+    }
+    
+  }, 1000); 
 
 
 ////// TIMEOUT PARA PASAR A PAGE RESULTS //////
@@ -133,7 +130,8 @@ const intervalId = setInterval(() => {
  const handsContainer: any = div.querySelector(".hands")
 
 handsContainer.addEventListener("click", () => {
-  setTimeout(() => {  params.goTo("/showhands") }, 2000);
+  clearInterval(intervalId);
+  setTimeout(() => {  params.goTo("/showhands") }, 1000);
 }); 
 
 

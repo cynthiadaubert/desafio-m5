@@ -9,11 +9,11 @@ export function handsPage(params) {
     const currentState = state.getState()
     const playerPlay = currentState.currentGame.myPlay;
     const pcPlay = currentState.currentGame.computerPlay;
-
-    console.log("soy las manos", playerPlay, pcPlay)
     
     const div = document.createElement("div");
     div.className = "box"
+
+    ////// COMPROBAR MOVIMIENTOS PARA MOSTRAR MANOS //////
 
     if (playerPlay == "piedra" && pcPlay == "papel"){
 
@@ -74,20 +74,21 @@ export function handsPage(params) {
     if (playerPlay == "tijera" && pcPlay == "piedra"){
 
         div.innerHTML = `
-        <img class="computer-hand" src=${imageTijeraURL}>
-        <img class="player-hand" src=${imagePiedraURL}>
+        <img class="computer-hand" src=${imagePiedraURL}>
+        <img class="player-hand" src=${imageTijeraURL}>
         
         `
     }
     if (playerPlay == "tijera" && pcPlay == "papel"){
 
         div.innerHTML = `
-        <img class="computer-hand" src=${imageTijeraURL}>
-        <img class="player-hand" src=${imagePapelURL}>
+        <img class="computer-hand" src=${imagePapelURL}>
+        <img class="player-hand" src=${imageTijeraURL}>
         
         `
     }
 
+///////// ESTILOS /////////////
 
     const style = document.createElement("style");
     style.innerHTML = `
@@ -104,7 +105,6 @@ export function handsPage(params) {
         transform:rotate(180deg);
     }
 
-    
     .player-hand {
         width: 102px;
         height: 230px;
@@ -112,7 +112,6 @@ export function handsPage(params) {
         bottom: 0;
 
     }
-  
 
     @media (min-width:769px) {
         .computer-hand {
@@ -122,7 +121,6 @@ export function handsPage(params) {
         }
     }
 
-
     @media (min-width:769px) {
         .player-hand {
             width: 157px;
@@ -130,9 +128,10 @@ export function handsPage(params) {
         } 
     }
 
-    }
     `;
 
+    ////// PASAR A LA PÁGINA FINAL ///////
+    
    setTimeout(() => {  params.goTo("/results") }, 3000);
 
     div.appendChild(style)

@@ -542,12 +542,12 @@ const routes = [
         component: (0, _play.playPage)
     },
     {
-        path: /\/results/,
-        component: (0, _results.resultsPage)
-    },
-    {
         path: /\/showhands/,
         component: (0, _showHands.handsPage)
+    },
+    {
+        path: /\/results/,
+        component: (0, _results.resultsPage)
     }, 
 ];
 function initRouter(container) {
@@ -557,13 +557,12 @@ function initRouter(container) {
         handleRoute(completePath);
     }
     function handleRoute(route) {
-        /*    console.log("El handleRoute recibió una nueva ruta", route);
-    console.log("soy el location pathname", location.pathname); */ const newRoute = isGithubPages() ? route.replace(BASE_PATH, "") : route;
-        /*     console.log("soy el new route", newRoute); */ for (const r of routes)if (r.path.test(newRoute)) {
+        const newRoute = isGithubPages() ? route.replace(BASE_PATH, "") : route;
+        for (const r of routes)if (r.path.test(newRoute)) {
             const elem = r.component({
                 goTo: goTo
             });
-            /* console.log("soy el elem",elem) */ if (container.firstChild) container.firstChild.remove();
+            if (container.firstChild) container.firstChild.remove();
             container.appendChild(elem);
         }
     }
@@ -578,53 +577,20 @@ function initRouter(container) {
 },{"./pages/welcome":"9DGFD","./pages/instructions":"8vgGD","./pages/play":"jlIcx","./pages/results":"bQd14","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./pages/show-hands":"4Be4q"}],"9DGFD":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "welcomePage", ()=>welcomePage) /* .
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
-.
- */  /*  connectedCallback(){
-    (lo usamos para ejecutar el render) 
-    this.render()
-} */  /*  (tres customs elements diferentes vs un custom element que solamente cambia el atributo ) 
-    this.innerHTML = `
-    <jugada-piedra>
-    <my-jugada jugada="piedra">
-    
-    ` */  /* usar position fixed o absolute para la ubicacion de las manos */ ;
+parcelHelpers.export(exports, "welcomePage", ()=>welcomePage);
 function welcomePage(params) {
     const div = document.createElement("div");
     div.className = "box";
     div.innerHTML = `
  
-  
     <h1 class="title">Piedra papel o tijera</h1>
     
     <button-comp>Empezar</button-comp>
     
     <hands-comp class="hands"></handscomp>
    
-  
   `;
+    //////// ESTILOS //////////
     const style = document.createElement("style");
     style.innerHTML = `
 
@@ -638,6 +604,13 @@ function welcomePage(params) {
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+  
+  .box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100vh;
   }
 
   @media (min-width: 769px) {
@@ -692,9 +665,10 @@ function welcomePage(params) {
   }
   
   `;
+    //////// IR A LA SIGUIENTE PÁGINA /////////
     const buttonElem = div.querySelector("button-comp");
     buttonElem.addEventListener("click", ()=>{
-        /* console.log(params.goTo) */ params.goTo("/instructions");
+        params.goTo("/instructions");
     });
     div.appendChild(style);
     return div;
@@ -739,15 +713,13 @@ function instructionsPage(params) {
     div.className = "box";
     div.innerHTML = `
    
-    
       <h1 class="text">Presioná jugar
       y elegí: piedra, papel o tijera antes de que pasen los 3 segundos.</h1>
       
       <button-comp class=button">¡Jugar!</button-comp>
     
       <hands-comp class="hands"></handscomp>
-     
-    
+      
     `;
     const style = document.createElement("style");
     style.innerHTML = `
@@ -756,7 +728,6 @@ function instructionsPage(params) {
       box-sizing: border-box;
       margin: 0 auto;
     }
-
 
     .box {
       display: flex;
@@ -778,7 +749,6 @@ function instructionsPage(params) {
       }
     }
   
-  
     .hands {
       margin-top: 80px;
       padding: 0;
@@ -788,11 +758,10 @@ function instructionsPage(params) {
   
     @media (min-width: 769px) {
       .hands {
-       margin-right: 355px;
+       margin-right: 365px;
       }
     }
     
-
    .text {
     background-image: none;
       font-size: 40px;
@@ -858,7 +827,6 @@ function playPage(params) {
     }
   }
 
-
   .circle {
     display: flex;
     justify-content: center;
@@ -879,7 +847,7 @@ function playPage(params) {
   }
 
   .hands {
-    margin-left: 0px;
+    margin: 0;
     position: fixed;
     bottom: 0;
   }
@@ -888,6 +856,7 @@ function playPage(params) {
     .hands {
       width: 100%;
       position: fixed;
+      margin-left: -40px;
     }
   }
 
@@ -930,20 +899,24 @@ function playPage(params) {
   }
 
   `;
-    //////* CUENTA ATRÁS DEL CÍRCULO */////
+    ///// CUENTA ATRÁS DEL CÍRCULO Y VOLVER A INSTRUCTIONS ////
     let counter = 3;
     const countdownElem = div.querySelector(".circle");
     const intervalId = setInterval(()=>{
         countdownElem.innerHTML = `${counter}`;
         counter--;
-        if (counter < 0) clearInterval(intervalId) /*  params.goTo("./instructions") */ ;
+        if (counter < 0) {
+            params.goTo("/instructions");
+            clearInterval(intervalId);
+        }
     }, 1000);
     ////// TIMEOUT PARA PASAR A PAGE RESULTS //////
     const handsContainer = div.querySelector(".hands");
     handsContainer.addEventListener("click", ()=>{
+        clearInterval(intervalId);
         setTimeout(()=>{
             params.goTo("/showhands");
-        }, 2000);
+        }, 1000);
     });
     div.appendChild(style);
     return div;
@@ -954,23 +927,19 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "resultsPage", ()=>resultsPage);
 var _state = require("../../state");
-const piedra = require("url:../../img/piedra.png");
-const papel = require("url:../../img/papel.png");
-const tijera = require("url:../../img/tijera.png");
 const imageWin = require("url:../../img/ganaste.png");
 const imageLose = require("url:../../img/perdiste.png");
 const imageTie = require("url:../../img/empate.png");
 function resultsPage(params) {
-    const div = document.createElement("div");
     const box = document.createElement("div");
     const style = document.createElement("style");
-    const star = document.createElement("div");
     const currentState = (0, _state.state).getState();
-    console.log("soy el estado de la page results", currentState);
+    //// SETEA LAS IMAGENES SEGUN SI GANA, PIERDE O EMPATA ////
     let res = (0, _state.state).whoWins();
     if ((0, _state.state).whoWins() == "win") res = imageWin;
     else if ((0, _state.state).whoWins() == "lose") res = imageLose;
     else res = imageTie;
+    //// MUESTRA EL SCORE CON LOS PUNTOS Y BOTONES ////
     box.innerHTML = `
 
     <div class="container">
@@ -985,6 +954,7 @@ function resultsPage(params) {
       <button-comp class="reset">Reiniciar puntaje</button-comp>
     </div>    
   `;
+    //// ESTILOS ////
     style.innerHTML = `
 
   .root {
@@ -1011,17 +981,17 @@ function resultsPage(params) {
   
   .win {
     background-color: rgba(136, 137, 73, 0.9);
-    ;
+    height: 100vh;
   }
   
   .lose {
     background-color: rgba(137, 73, 73, 0.9);
-    ;
+    height: 100vh;
   }
 
   .tie {
-    background-color: rgba(139, 76, 167, 0.9)
-    ;
+    background-color: rgba(139, 76, 167, 0.9);
+    height: 100vh;
   }
 
   @media (min-width: 769px) {
@@ -1071,16 +1041,18 @@ function resultsPage(params) {
       margin-right: 10px;
   }
 
+  .reset {
+    margin-bottom: 35px;
+  }
 
   `;
-    /////////// MOSTRAR IMAGEN Y COLOR FONDO SEGUN RESULTADO ////////////
+    //// COLOR DE FONDO SEGUN RESULTADO ////
     let result = (0, _state.state).whoWins();
     if ((0, _state.state).whoWins() == "win") result = "win";
     else if ((0, _state.state).whoWins() == "lose") result = "lose";
     else result = "tie";
     document.body.className = result;
-    console.log("soy reeeeeeeeeeeeeees", res);
-    //////////// BOTON VOLVER A JUGAR Y REINICIAR PUNTAJE ////////////
+    //// BOTON VOLVER A JUGAR Y REINICIAR PUNTAJE ////
     const buttonElem = box.querySelector(".home");
     buttonElem.addEventListener("click", ()=>{
         params.goTo("/play");
@@ -1105,11 +1077,12 @@ function resultsPage(params) {
     return box;
 }
 
-},{"../../state":"d4y3Q","url:../../img/piedra.png":"lzIoH","url:../../img/papel.png":"3UuT5","url:../../img/tijera.png":"3dltE","url:../../img/perdiste.png":"9ho5B","url:../../img/empate.png":"6aNTq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","url:../../img/ganaste.png":"etiOr"}],"d4y3Q":[function(require,module,exports) {
+},{"../../state":"d4y3Q","url:../../img/perdiste.png":"9ho5B","url:../../img/empate.png":"6aNTq","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","url:../../img/ganaste.png":"etiOr"}],"d4y3Q":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "state", ()=>state);
 const state = {
+    //// DATOS INICIALES ////
     data: {
         currentGame: {
             computerPlay: "",
@@ -1120,17 +1093,20 @@ const state = {
             me: 0
         }
     },
+    //// INICIAR CON EL ESTADO GUARDADO ////
     initState () {
         const localData = localStorage.getItem("saved-state");
-        console.log("soy los datos locales", localData);
         if (localData !== null) this.setState(JSON.parse(localData));
     },
+    //// GETTER ////
     getState () {
         return this.data;
     },
+    //// SETER ////
     setState (newState) {
         this.data = newState;
     },
+    //// SETEA MOVIMIENTOS DE LAS MANOS ////
     setMove (move) {
         const options = [
             "piedra",
@@ -1139,20 +1115,15 @@ const state = {
         ];
         const currentState = this.getState();
         currentState.currentGame.myPlay = move;
-        console.log("soy mi move", move);
         const randomMove = options[Math.floor(Math.random() * 3)];
         const pcMove = currentState.currentGame.computerPlay = randomMove;
-        console.log("soy el pc move", pcMove);
         this.pushToHistory();
     },
+    //// DECIDE SI GANA, PIERDE O EMPATA ////
     whoWins () {
         const currentState = this.getState();
-        console.log("soy el currentgame", currentState);
         const myPlay = currentState.currentGame.myPlay;
         const computerPlay = currentState.currentGame.computerPlay;
-        console.log("en who wins");
-        console.log("my play", myPlay);
-        console.log("pc play", computerPlay);
         const ganeConTijeras = myPlay == "tijera" && computerPlay == "papel";
         const ganeConPiedra = myPlay == "piedra" && computerPlay == "tijera";
         const ganeConPapel = myPlay == "papel" && computerPlay == "piedra";
@@ -1169,17 +1140,14 @@ const state = {
         if (win == true) result = "win";
         else if (lose == true) result = "lose";
         else result = "tie";
-        console.log("soy el result", result);
         return result;
     },
+    //// GUARDA LOS PUNTOS SEGUN EL RESULTADO DE WHO WINS ////
     pushToHistory () {
         const result = this.whoWins();
         const currentState = this.getState();
-        console.log("soy el estado de push to history", currentState);
         const computerScore = currentState.history.computer;
-        console.log("pc play", computerScore);
         const myScore = currentState.history.me;
-        console.log("my play", myScore);
         if (result == "win") this.setState({
             ...currentState,
             history: {
@@ -1201,13 +1169,13 @@ const state = {
                 me: myScore
             }
         });
+        //// SETEA ESTE NUEVO ESTADO EN EL LOCALSTORAGE ////
         localStorage.setItem("saved-state", JSON.stringify(state.getState()));
-        console.log("soy el estado al final del history", state.getState());
     }
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"lzIoH":[function(require,module,exports) {
-module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "piedra.09238fcc.png" + "?" + Date.now();
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"9ho5B":[function(require,module,exports) {
+module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "perdiste.90c6bbd7.png" + "?" + Date.now();
 
 },{"./helpers/bundle-url":"lgJ39"}],"lgJ39":[function(require,module,exports) {
 "use strict";
@@ -1243,16 +1211,7 @@ exports.getBundleURL = getBundleURLCached;
 exports.getBaseURL = getBaseURL;
 exports.getOrigin = getOrigin;
 
-},{}],"3UuT5":[function(require,module,exports) {
-module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "papel.02ed7e33.png" + "?" + Date.now();
-
-},{"./helpers/bundle-url":"lgJ39"}],"3dltE":[function(require,module,exports) {
-module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "tijera.bcbc49ac.png" + "?" + Date.now();
-
-},{"./helpers/bundle-url":"lgJ39"}],"9ho5B":[function(require,module,exports) {
-module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "perdiste.90c6bbd7.png" + "?" + Date.now();
-
-},{"./helpers/bundle-url":"lgJ39"}],"6aNTq":[function(require,module,exports) {
+},{}],"6aNTq":[function(require,module,exports) {
 module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "empate.ef275105.png" + "?" + Date.now();
 
 },{"./helpers/bundle-url":"lgJ39"}],"etiOr":[function(require,module,exports) {
@@ -1270,9 +1229,9 @@ function handsPage(params) {
     const currentState = (0, _state.state).getState();
     const playerPlay = currentState.currentGame.myPlay;
     const pcPlay = currentState.currentGame.computerPlay;
-    console.log("soy las manos", playerPlay, pcPlay);
     const div = document.createElement("div");
     div.className = "box";
+    ////// COMPROBAR MOVIMIENTOS PARA MOSTRAR MANOS //////
     if (playerPlay == "piedra" && pcPlay == "papel") div.innerHTML = `
         <img class="computer-hand" src=${imagePapelURL}>
         <img class="player-hand" src=${imagePiedraURL}>
@@ -1309,15 +1268,16 @@ function handsPage(params) {
         
         `;
     if (playerPlay == "tijera" && pcPlay == "piedra") div.innerHTML = `
-        <img class="computer-hand" src=${imageTijeraURL}>
-        <img class="player-hand" src=${imagePiedraURL}>
+        <img class="computer-hand" src=${imagePiedraURL}>
+        <img class="player-hand" src=${imageTijeraURL}>
         
         `;
     if (playerPlay == "tijera" && pcPlay == "papel") div.innerHTML = `
-        <img class="computer-hand" src=${imageTijeraURL}>
-        <img class="player-hand" src=${imagePapelURL}>
+        <img class="computer-hand" src=${imagePapelURL}>
+        <img class="player-hand" src=${imageTijeraURL}>
         
         `;
+    ///////// ESTILOS /////////////
     const style = document.createElement("style");
     style.innerHTML = `
 
@@ -1333,7 +1293,6 @@ function handsPage(params) {
         transform:rotate(180deg);
     }
 
-    
     .player-hand {
         width: 102px;
         height: 230px;
@@ -1341,7 +1300,6 @@ function handsPage(params) {
         bottom: 0;
 
     }
-  
 
     @media (min-width:769px) {
         .computer-hand {
@@ -1351,7 +1309,6 @@ function handsPage(params) {
         }
     }
 
-
     @media (min-width:769px) {
         .player-hand {
             width: 157px;
@@ -1359,8 +1316,8 @@ function handsPage(params) {
         } 
     }
 
-    }
     `;
+    ////// PASAR A LA PÁGINA FINAL ///////
     setTimeout(()=>{
         params.goTo("/results");
     }, 3000);
@@ -1368,7 +1325,16 @@ function handsPage(params) {
     return div;
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","url:../../img/piedra.png":"lzIoH","url:../../img/papel.png":"3UuT5","url:../../img/tijera.png":"3dltE","../../state":"d4y3Q"}],"4iqCu":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","url:../../img/piedra.png":"lzIoH","url:../../img/papel.png":"3UuT5","url:../../img/tijera.png":"3dltE","../../state":"d4y3Q"}],"lzIoH":[function(require,module,exports) {
+module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "piedra.09238fcc.png" + "?" + Date.now();
+
+},{"./helpers/bundle-url":"lgJ39"}],"3UuT5":[function(require,module,exports) {
+module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "papel.02ed7e33.png" + "?" + Date.now();
+
+},{"./helpers/bundle-url":"lgJ39"}],"3dltE":[function(require,module,exports) {
+module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "tijera.bcbc49ac.png" + "?" + Date.now();
+
+},{"./helpers/bundle-url":"lgJ39"}],"4iqCu":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "buttonComp", ()=>buttonComp);

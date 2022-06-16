@@ -4,7 +4,6 @@ import { handsComp } from "./components/hands";
 import { buttonComp } from "./components/button";
 
 
-
 (function () {
   buttonComp({})
   handsComp()
