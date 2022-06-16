@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "gh-pages": "^4.0.0",
     "parcel": "^2.6.0",
     "yarn": "^1.22.18"
   },
