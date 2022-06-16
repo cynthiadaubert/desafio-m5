@@ -118,7 +118,7 @@ export function playPage(params) {
     countdownElem.innerHTML= `${counter}`;
     counter--;
     if (counter < 0 ) {
-    params.goTo("/desafio-m5/instructions");
+    params.goTo("/instructions");
       clearInterval(intervalId);
     }
     

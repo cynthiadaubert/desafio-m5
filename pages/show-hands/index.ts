@@ -132,7 +132,7 @@ export function handsPage(params) {
 
     ////// PASAR A LA PÁGINA FINAL ///////
     
-   setTimeout(() => {  params.goTo("/desafio-m5/results") }, 3000);
+   setTimeout(() => {  params.goTo("/results") }, 3000);
 
     div.appendChild(style)
     return div;

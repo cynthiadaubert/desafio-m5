@@ -97,7 +97,7 @@ export function welcomePage(params) {
   const buttonElem: any = div.querySelector("button-comp");
 
   buttonElem.addEventListener("click", () => {
-    params.goTo("/desafio-m5/instructions");
+    params.goTo("/instructions");
   }); 
 
   
