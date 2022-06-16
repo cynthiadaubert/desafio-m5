@@ -524,7 +524,7 @@ var _instructions = require("./pages/instructions");
 var _play = require("./pages/play");
 var _showHands = require("./pages/show-hands");
 var _results = require("./pages/results");
-const BASE_PATH = "/desafio-m5";
+const BASE_PATH = "/desafio-m5/";
 function isGithubPages() {
     return location.host.includes("github.io");
 }
@@ -566,8 +566,8 @@ function initRouter(container) {
             container.appendChild(elem);
         }
     }
-    if (location.pathname == "/") goTo("/welcome");
-    else handleRoute(location.pathname);
+    if (location.pathname == "/desafio-m5/") goTo("/desafio-m5/welcome");
+    else handleRoute("desafio-m5/welcome");
     ///ESCUCHA LOS CAMBIOS PARA PODER NAVEGAR POR EL HISTORIAL///
     window.onpopstate = function() {
         handleRoute(location.pathname);
@@ -668,7 +668,7 @@ function welcomePage(params) {
     //////// IR A LA SIGUIENTE PÁGINA /////////
     const buttonElem = div.querySelector("button-comp");
     buttonElem.addEventListener("click", ()=>{
-        params.goTo("/instructions");
+        params.goTo("/desafio-m5/instructions");
     });
     div.appendChild(style);
     return div;
@@ -785,7 +785,7 @@ function instructionsPage(params) {
     `;
     const buttonElem = div.querySelector("button-comp");
     buttonElem.addEventListener("click", ()=>{
-        params.goTo("/play");
+        params.goTo("/desafio-m5/play");
     });
     div.appendChild(style);
     return div;
@@ -906,7 +906,7 @@ function playPage(params) {
         countdownElem.innerHTML = `${counter}`;
         counter--;
         if (counter < 0) {
-            params.goTo("/instructions");
+            params.goTo("/desafio-m5/instructions");
             clearInterval(intervalId);
         }
     }, 1000);
@@ -915,7 +915,7 @@ function playPage(params) {
     handsContainer.addEventListener("click", ()=>{
         clearInterval(intervalId);
         setTimeout(()=>{
-            params.goTo("/showhands");
+            params.goTo("/desafio-m5/showhands");
         }, 1000);
     });
     div.appendChild(style);
@@ -1055,7 +1055,7 @@ function resultsPage(params) {
     //// BOTON VOLVER A JUGAR Y REINICIAR PUNTAJE ////
     const buttonElem = box.querySelector(".home");
     buttonElem.addEventListener("click", ()=>{
-        params.goTo("/play");
+        params.goTo("/desafio-m5/play");
     });
     const buttonReset = box.querySelector(".reset");
     buttonReset.addEventListener("click", ()=>{
@@ -1070,7 +1070,7 @@ function resultsPage(params) {
                 me: 0
             }
         }));
-        params.goTo("/welcome");
+        params.goTo("/desafio-m5/welcome");
         location.reload();
     });
     box.appendChild(style);
@@ -1319,7 +1319,7 @@ function handsPage(params) {
     `;
     ////// PASAR A LA PÁGINA FINAL ///////
     setTimeout(()=>{
-        params.goTo("/results");
+        params.goTo("/desafio-m5/results");
     }, 3000);
     div.appendChild(style);
     return div;

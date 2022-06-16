@@ -4,7 +4,7 @@ import { playPage } from "./pages/play";
 import {handsPage} from "./pages/show-hands"
 import { resultsPage } from "./pages/results";
 
-const BASE_PATH = "/desafio-m5";
+const BASE_PATH = "/desafio-m5/";
 
 function isGithubPages() {
   return location.host.includes("github.io");
@@ -12,25 +12,25 @@ function isGithubPages() {
 
 const routes = [
   {
-    path: /\/desafio-m5\/welcome/,
+    path: /\/welcome/,
     component: welcomePage,
   },
   {
-    path: /\/desafio-m5\/instructions/,
+    path: /\/instructions/,
     component: instructionsPage,
   },
   {
-    path: /\/desafio-m5\/play/,
+    path: /\/play/,
     component: playPage,
   },
 
   {
-    path: /\/desafio-m5\/showhands/,
+    path: /\/showhands/,
     component: handsPage,
   }, 
 
    {
-    path: /\/desafio-m5\/results/,
+    path: /\/results/,
     component: resultsPage,
   },  
 
@@ -58,7 +58,7 @@ export function initRouter(container: Element) {
   if (location.pathname == "/desafio-m5/") {
     goTo("/desafio-m5/welcome");
   } else {
-    handleRoute(location.pathname);
+    handleRoute("desafio-m5/welcome");
   }
 
   ///ESCUCHA LOS CAMBIOS PARA PODER NAVEGAR POR EL HISTORIAL///
