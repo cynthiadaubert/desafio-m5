@@ -530,23 +530,23 @@ function isGithubPages() {
 }
 const routes = [
     {
-        path: /\/welcome/,
+        path: /\/desafio-m5\/welcome/,
         component: (0, _welcome.welcomePage)
     },
     {
-        path: /\/instructions/,
+        path: /\/desafio-m5\/instructions/,
         component: (0, _instructions.instructionsPage)
     },
     {
-        path: /\/play/,
+        path: /\/desafio-m5\/play/,
         component: (0, _play.playPage)
     },
     {
-        path: /\/showhands/,
+        path: /\/desafio-m5\/showhands/,
         component: (0, _showHands.handsPage)
     },
     {
-        path: /\/results/,
+        path: /\/desafio-m5\/results/,
         component: (0, _results.resultsPage)
     }, 
 ];
@@ -567,7 +567,7 @@ function initRouter(container) {
         }
     }
     if (location.pathname == "/desafio-m5/") goTo("/desafio-m5/welcome");
-    else handleRoute("desafio-m5/welcome");
+    else handleRoute(location.pathname);
     ///ESCUCHA LOS CAMBIOS PARA PODER NAVEGAR POR EL HISTORIAL///
     window.onpopstate = function() {
         handleRoute(location.pathname);
