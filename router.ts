@@ -59,7 +59,7 @@ export function initRouter(container: Element) {
     goTo("/welcome");
   } else {
     handleRoute(location.pathname);
-  /*   handleRoute("desafio-m5/welcome"); */
+  
   }
 
   ///ESCUCHA LOS CAMBIOS PARA PODER NAVEGAR POR EL HISTORIAL///

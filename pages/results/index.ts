@@ -168,7 +168,6 @@ export function resultsPage(params) {
     },
     }));
     params.goTo("/welcome");
-    /*  location.reload(); */ 
   }); 
 
 
