@@ -150,7 +150,7 @@ export function resultsPage(params) {
 
   const buttonElem: any = box.querySelector(".home");
   buttonElem.addEventListener("click", () => {
-    params.goTo("/desafio-m5/play");
+    params.goTo("/play");
   }); 
 
   const buttonReset: any = box.querySelector(".reset");
@@ -167,7 +167,7 @@ export function resultsPage(params) {
         me: 0,
     },
     }));
-    params.goTo("/desafio-m5/");
+    params.goTo("/welcome");
     /*  location.reload(); */ 
   }); 
 

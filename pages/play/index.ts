@@ -131,7 +131,7 @@ export function playPage(params) {
 
 handsContainer.addEventListener("click", () => {
   clearInterval(intervalId);
-  setTimeout(() => {  params.goTo("/desafio-m5/showhands") }, 1000);
+  setTimeout(() => {  params.goTo("/showhands") }, 1000);
 }); 
 
 
