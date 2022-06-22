@@ -167,8 +167,8 @@ export function resultsPage(params) {
         me: 0,
     },
     }));
-    params.goTo("/welcome");
-     location.reload(); 
+    params.goTo("/desafio-m5/");
+    /*  location.reload(); */ 
   }); 
 
 
