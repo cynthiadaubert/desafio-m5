@@ -167,8 +167,8 @@ export function resultsPage(params) {
         me: 0,
     },
     }));
-    params.goTo("/");
-    location.reload();
+    params.goTo("/welcome");
+     location.reload(); 
   }); 
 
 
