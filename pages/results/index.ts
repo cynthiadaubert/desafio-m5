@@ -155,6 +155,7 @@ export function resultsPage(params) {
 
   const buttonReset: any = box.querySelector(".reset");
   buttonReset.addEventListener("click", () => {
+    params.goTo("/");
     console.log("puntaje reiniciado")
     localStorage.setItem("saved-state",JSON.stringify({
       currentGame: {
@@ -167,7 +168,7 @@ export function resultsPage(params) {
         me: 0,
     },
     }));
-    params.goTo("/");
+    
   }); 
 
 
