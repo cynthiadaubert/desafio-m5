@@ -167,7 +167,7 @@ export function resultsPage(params) {
         me: 0,
     },
     }));
-    params.goTo("/desafio-m5");
+    params.goTo("/welcome");
     /*  location.reload(); */ 
   }); 
 
