@@ -153,7 +153,7 @@ export function resultsPage(params) {
 
   const buttonReset: any = box.querySelector(".reset");
   buttonReset.addEventListener("click", () => {
-    localStorage.removeItem("saved-state");
+    (state.data.history.computer = 0), (state.data.history.me = 0);
     params.goTo("/welcome");
     console.log("puntaje reiniciado");
   });
@@ -162,14 +162,17 @@ export function resultsPage(params) {
   return box;
 }
 
-/* localStorage.setItem("saved-state",JSON.stringify({
-  currentGame: {
-    computerPlay: "",
-    myPlay: "",
-},
+/* localStorage.setItem(
+  "saved-data",
+  JSON.stringify({
+    currentGame: {
+      computerPlay: "",
+      myPlay: "",
+    },
 
-history: {
-    computer: 0,
-    me: 0,
-},
-}) */
+    history: {
+      computer: 0,
+      me: 0,
+    },
+  })
+); */

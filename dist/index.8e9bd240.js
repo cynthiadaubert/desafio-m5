@@ -513,6 +513,7 @@ var _button = require("./components/button");
     (0, _state.state).initState();
     const root = document.querySelector(".root");
     (0, _router.initRouter)(root);
+    localStorage.removeItem("saved-state");
 })();
 
 },{"./router":"eBUGN","./state":"d4y3Q","./components/hands":"bPPIi","./components/button":"4iqCu"}],"eBUGN":[function(require,module,exports) {
@@ -1038,7 +1039,7 @@ function handsPage(params) {
 },{"../../state":"d4y3Q","url:../../img/piedra.png":"lzIoH","url:../../img/papel.png":"3UuT5","url:../../img/tijera.png":"3dltE","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"d4y3Q":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "state", ()=>state);
+parcelHelpers.export(exports, "state", ()=>state) /* localStorage.setItem("saved-state", JSON.stringify(state.getState())) */ ;
 const state = {
     //// DATOS INICIALES ////
     data: {
@@ -1053,7 +1054,7 @@ const state = {
     },
     //// INICIAR CON EL ESTADO GUARDADO ////
     initState () {
-        const localData = localStorage.getItem("saved-state");
+        const localData = localStorage.getItem("saved-data");
         if (localData !== null) this.setState(JSON.parse(localData));
     },
     //// GETTER ////
@@ -1128,7 +1129,7 @@ const state = {
             }
         });
         //// SETEA ESTE NUEVO ESTADO EN EL LOCALSTORAGE ////
-        localStorage.setItem("saved-state", JSON.stringify(state.getState()));
+        localStorage.setItem("saved-data", JSON.stringify(state.data));
     }
 };
 
@@ -1178,17 +1179,20 @@ module.exports = require("./helpers/bundle-url").getBundleURL("ao0Rz") + "tijera
 },{"./helpers/bundle-url":"lgJ39"}],"bQd14":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "resultsPage", ()=>resultsPage) /* localStorage.setItem("saved-state",JSON.stringify({
-  currentGame: {
-    computerPlay: "",
-    myPlay: "",
-},
+parcelHelpers.export(exports, "resultsPage", ()=>resultsPage) /* localStorage.setItem(
+  "saved-data",
+  JSON.stringify({
+    currentGame: {
+      computerPlay: "",
+      myPlay: "",
+    },
 
-history: {
-    computer: 0,
-    me: 0,
-},
-}) */ ;
+    history: {
+      computer: 0,
+      me: 0,
+    },
+  })
+); */ ;
 var _state = require("../../state");
 const imageWin = require("url:../../img/ganaste.png");
 const imageLose = require("url:../../img/perdiste.png");
@@ -1322,9 +1326,9 @@ function resultsPage(params) {
     });
     const buttonReset = box.querySelector(".reset");
     buttonReset.addEventListener("click", ()=>{
+        (0, _state.state).data.history.computer = 0, (0, _state.state).data.history.me = 0;
         params.goTo("/welcome");
         console.log("puntaje reiniciado");
-        localStorage.removeItem("saved-state");
     });
     box.appendChild(style);
     return box;

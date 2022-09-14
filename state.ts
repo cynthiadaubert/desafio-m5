@@ -16,7 +16,7 @@ const state = {
 
   //// INICIAR CON EL ESTADO GUARDADO ////
   initState() {
-    const localData = localStorage.getItem("saved-state");
+    const localData = localStorage.getItem("saved-data");
 
     if (localData !== null) {
       this.setState(JSON.parse(localData));
@@ -112,7 +112,7 @@ const state = {
     }
 
     //// SETEA ESTE NUEVO ESTADO EN EL LOCALSTORAGE ////
-    localStorage.setItem("saved-state", JSON.stringify(state.data));
+    localStorage.setItem("saved-data", JSON.stringify(state.data));
   },
 };
 
