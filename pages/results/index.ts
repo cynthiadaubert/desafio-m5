@@ -153,9 +153,9 @@ export function resultsPage(params) {
 
   const buttonReset: any = box.querySelector(".reset");
   buttonReset.addEventListener("click", () => {
+    localStorage.removeItem("saved-state");
     params.goTo("/welcome");
     console.log("puntaje reiniciado");
-    localStorage.removeItem("saved-state");
   });
 
   box.appendChild(style);
