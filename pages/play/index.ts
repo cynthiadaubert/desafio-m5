@@ -1,8 +1,6 @@
-
 export function playPage(params) {
-
   const div = document.createElement("div");
-  div.className = "container-play"
+  div.className = "container-play";
 
   div.innerHTML = `
  
@@ -14,7 +12,7 @@ export function playPage(params) {
   
   `;
 
-//////* ESTILOS *//////
+  //////* ESTILOS *//////
 
   const style = document.createElement("style");
   style.innerHTML = `
@@ -106,7 +104,7 @@ export function playPage(params) {
 
   }
 
-  `
+  `;
 
   ///// CUENTA ATRÁS DEL CÍRCULO Y VOLVER A INSTRUCTIONS ////
 
@@ -115,33 +113,25 @@ export function playPage(params) {
   const countdownElem = div.querySelector(".circle") as any;
 
   const intervalId = setInterval(() => {
-    countdownElem.innerHTML= `${counter}`;
+    countdownElem.innerHTML = `${counter}`;
     counter--;
-    if (counter < 0 ) {
-    params.goTo("/instructions");
+    if (counter < 0) {
+      params.goTo("/instructions");
       clearInterval(intervalId);
     }
-    
-  }, 1000); 
+  }, 1000);
 
+  ////// TIMEOUT PARA PASAR A PAGE RESULTS //////
 
-////// TIMEOUT PARA PASAR A PAGE RESULTS //////
+  const handsContainer: any = div.querySelector(".hands");
 
- const handsContainer: any = div.querySelector(".hands")
+  handsContainer.addEventListener("click", () => {
+    clearInterval(intervalId);
+    setTimeout(() => {
+      params.goTo("/showhands");
+    }, 1000);
+  });
 
-handsContainer.addEventListener("click", () => {
-  clearInterval(intervalId);
-  setTimeout(() => {  params.goTo("/showhands") }, 1000);
-}); 
-
-
-  div.appendChild(style)
+  div.appendChild(style);
   return div;
-  
 }
-
-
-
-
-
-

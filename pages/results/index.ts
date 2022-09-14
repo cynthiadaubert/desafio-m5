@@ -1,29 +1,27 @@
-import { state } from "../../state"
+import { state } from "../../state";
 
 const imageWin = require("url:../../img/ganaste.png");
 const imageLose = require("url:../../img/perdiste.png");
 const imageTie = require("url:../../img/empate.png");
 
 export function resultsPage(params) {
+  const box = document.createElement("div");
+  const style = document.createElement("style");
 
-  const box = document.createElement("div")
-  const style = document.createElement("style")
-
-  const currentState = state.getState()
+  const currentState = state.getState();
 
   //// SETEA LAS IMAGENES SEGUN SI GANA, PIERDE O EMPATA ////
-  let res = state.whoWins()
+  let res = state.whoWins();
 
   if (state.whoWins() == "win") {
     res = imageWin;
-    
-  } else if (state.whoWins() == "lose"){
+  } else if (state.whoWins() == "lose") {
     res = imageLose;
   } else {
     res = imageTie;
   }
 
-//// MUESTRA EL SCORE CON LOS PUNTOS Y BOTONES ////
+  //// MUESTRA EL SCORE CON LOS PUNTOS Y BOTONES ////
   box.innerHTML = `
 
     <div class="container">
@@ -39,7 +37,7 @@ export function resultsPage(params) {
     </div>    
   `;
 
-//// ESTILOS ////
+  //// ESTILOS ////
   style.innerHTML = `
 
   .root {
@@ -134,45 +132,44 @@ export function resultsPage(params) {
 
   //// COLOR DE FONDO SEGUN RESULTADO ////
 
-  let result = state.whoWins()
+  let result = state.whoWins();
 
-    if (state.whoWins() == "win") {
-      result = "win"; 
-    } else if (state.whoWins() == "lose"){
-      result = "lose" 
-    } else {
-      result = "tie" 
-    }
-    
+  if (state.whoWins() == "win") {
+    result = "win";
+  } else if (state.whoWins() == "lose") {
+    result = "lose";
+  } else {
+    result = "tie";
+  }
+
   document.body.className = result;
-    
+
   //// BOTON VOLVER A JUGAR Y REINICIAR PUNTAJE ////
 
   const buttonElem: any = box.querySelector(".home");
   buttonElem.addEventListener("click", () => {
     params.goTo("/play");
-  }); 
+  });
 
   const buttonReset: any = box.querySelector(".reset");
   buttonReset.addEventListener("click", () => {
     params.goTo("/welcome");
-    console.log("puntaje reiniciado")
-    localStorage.setItem("saved-state",JSON.stringify({
-      currentGame: {
-        computerPlay: "",
-        myPlay: "",
-    },
-    
-    history: {
-        computer: 0,
-        me: 0,
-    },
-    }));
-    
-  }); 
+    console.log("puntaje reiniciado");
+    localStorage.removeItem("saved-state");
+  });
 
-
-  box.appendChild(style)
+  box.appendChild(style);
   return box;
 }
 
+/* localStorage.setItem("saved-state",JSON.stringify({
+  currentGame: {
+    computerPlay: "",
+    myPlay: "",
+},
+
+history: {
+    computer: 0,
+    me: 0,
+},
+}) */
